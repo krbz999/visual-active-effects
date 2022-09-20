@@ -1,0 +1,80 @@
+<section id="visual-active-effects" class="visual-active-effects">
+    {{#each enabledEffects as |effect|}}
+        <div class="effect-item">
+            <div class="effect-info">
+                <h1 class="effect-info-header">{{effect.label}}</h1>
+                <div class="effect-info-details">
+                    {{#if effect.strings}}
+                        <div class="effect-intro">{{{paragraphy effect.strings.intro}}}</div>
+                        <section class="collapsible">
+                            <header class="collapsible-header">{{effect.strings.header}}</header>
+                            <div class="collapsible-content">{{{paragraphy effect.strings.contents}}}</div>
+                        </section>
+                    {{else if effect.desc}}
+                        <div class="effect-intro">{{{effect.desc}}}</div>
+                    {{/if}}
+                </div>
+                <hr>
+                <div class="effect-tags">
+                    <div class="effect-tag temporary">
+                        {{#if effect.isTemporary}}
+                            temporary ({{remainingTimeLabel effect}})
+                        {{else}}
+                            passive
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+            <div class="effect-icon" data-effect-id="{{effect._id}}" style="background-image: url({{effect.icon}})">
+                {{#if effect.isExpired}}
+                    <i class="expired badge fas fa-clock"></i>
+                {{else if effect.isTemporary}}
+                    <i class="badge fas fa-clock"></i>
+                {{else}}
+                    <i class="unlimited badge fas fa-infinity"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/each}}
+    
+    {{#if (and enabledEffects.length disabledEffects.length)}}<hr>{{/if}}
+    
+    {{#each disabledEffects as |effect|}}
+        <div class="effect-item">
+            <div class="effect-info">
+                <h1 class="effect-info-header">{{effect.label}}</h1>
+                <div class="effect-info-details">
+                    {{#if effect.strings}}
+                        <div class="effect-intro">{{{paragraphy effect.strings.intro}}}</div>
+                        <section class="collapsible">
+                            <header class="collapsible-header">{{effect.strings.header}}</header>
+                            <div class="collapsible-content">{{{paragraphy effect.strings.contents}}}</div>
+                        </section>
+                    {{else if effect.desc}}
+                        <div class="effect-intro">{{{effect.desc}}}</div>
+                    {{/if}}
+                </div>
+                <hr>
+                <div class="effect-tags">
+                    <div class="effect-tag temporary">
+                        {{#if effect.isTemporary}}
+                            temporary ({{remainingTimeLabel effect}})
+                        {{else}}
+                            passive
+                        {{/if}}
+                    </div>
+                    <div class="effect-tag disabled">disabled</div>
+                </div>
+            </div>
+            <div class="effect-icon disabled" data-effect-id="{{effect._id}}" style="background-image: url({{effect.icon}});">
+                {{#if effect.isExpired}}
+                    <i class="expired badge fas fa-clock"></i>
+                {{else if effect.isTemporary}}
+                    <i class="badge fas fa-clock"></i>
+                {{else}}
+                    <i class="unlimited badge fas fa-infinity"></i>
+                {{/if}}
+            </div>
+        </div>
+    {{/each}}
+</section>

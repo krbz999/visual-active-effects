@@ -1,0 +1,51 @@
+{
+    "VISUAL_ACTIVE_EFFECTS": {
+        "SETTINGS": {
+            "DAYS_PER_WEEK": {
+                "NAME": "Days in a Week",
+                "HINT": "The number of days in a week."
+            },
+            "WEEKS_PER_MONTH": {
+                "NAME": "Weeks per Month",
+                "HINT": "The number of weeks in a month."
+            },
+            "MONTHS_PER_YEAR": {
+                "NAME": "Months per Year",
+                "HINT": "The number of months in a year."
+            },
+            "EXTRA_DAYS_PER_YEAR": {
+                "NAME": "Extra Days per Year",
+                "HINT": "Any extra days per year."
+            }
+        },
+        "LABELS": {
+            "TEMPORARY": "Temporary",
+            "DISABLED": "Disabled",
+            "DETAILS": "Details"
+        },
+        "MISC": {
+            "DELETE_EFFECT": "Delete Effect",
+            "DELETE_ME": "Delete {label}?"
+        },
+        "TIME": {
+            "TURN": "1 turn",
+            "TURNS": "{qty} turns",
+            "UNLIMITED": "Unlimited",
+            "YEARS": "{qty} years",
+            "YEAR": "1 year",
+            "MONTHS": "{qty} months",
+            "MONTH": "1 month",
+            "WEEKS": "{qty} weeks",
+            "WEEK": "1 week",
+            "DAYS": "{qty} days",
+            "DAY": "1 day",
+            "HOURS": "{qty} hours",
+            "HOUR": "1 hour",
+            "MINUTES": "{qty} minutes",
+            "MINUTE": "1 minute",
+            "SECONDS": "{qty} seconds",
+            "SECOND": "1 second",
+            "EXPIRED": "Expired"
+        }
+    }
+}
