@@ -15,14 +15,14 @@ export async function getEffectData(actor){
         const { _id, icon, label, isTemporary, isExpired, remainingSeconds, turns, disabled } = eff;
         const effect = { _id, icon, label, isTemporary, isExpired, remainingSeconds, turns };
 
-        if ( intro && contents ) {
+        if ( intro || desc ) {
             effect.strings = {
-                intro: await TextEditor.enrichHTML(intro, { async: true }),
-                header: header ?? game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS"),
-                contents: await TextEditor.enrichHTML(contents, { async: true })
+                intro: await TextEditor.enrichHTML(intro ?? desc, { async: true })
             }
-        } else if ( desc ) {
-            effect.desc = await TextEditor.enrichHTML(desc, { async: true });
+            if ( contents ) {
+                effect.strings.header = header ?? game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
+                effect.strings.contents = await TextEditor.enrichHTML(contents, { async: true });
+            }
         }
         
         if ( disabled ) disabledEffects.push(effect);

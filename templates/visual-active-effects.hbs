@@ -6,12 +6,12 @@
                 <div class="effect-info-details">
                     {{#if effect.strings}}
                         <div class="effect-intro">{{{paragraphy effect.strings.intro}}}</div>
+                        {{#if effect.strings.contents}}
                         <section class="collapsible">
                             <header class="collapsible-header">{{effect.strings.header}}</header>
                             <div class="collapsible-content">{{{paragraphy effect.strings.contents}}}</div>
                         </section>
-                    {{else if effect.desc}}
-                        <div class="effect-intro">{{{effect.desc}}}</div>
+                        {{/if}}
                     {{/if}}
                 </div>
                 <hr>
@@ -46,12 +46,12 @@
                 <div class="effect-info-details">
                     {{#if effect.strings}}
                         <div class="effect-intro">{{{paragraphy effect.strings.intro}}}</div>
+                        {{#if effect.strings.contents}}
                         <section class="collapsible">
                             <header class="collapsible-header">{{effect.strings.header}}</header>
                             <div class="collapsible-content">{{{paragraphy effect.strings.contents}}}</div>
                         </section>
-                    {{else if effect.desc}}
-                        <div class="effect-intro">{{{effect.desc}}}</div>
+                        {{/if}}
                     {{/if}}
                 </div>
                 <hr>
