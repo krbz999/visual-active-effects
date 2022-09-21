@@ -10,7 +10,7 @@ export async function getEffectData(actor){
     // set up enable effects.
     for ( const eff of effects ) {
         const desc = foundry.utils.getProperty(eff, "flags.convenientDescription");
-        const { intro, header, contents } = eff.getFlag(MODULE, "data") ?? {};
+        const { intro, header, content } = eff.getFlag(MODULE, "data") ?? {};
 
         const { _id, icon, label, isTemporary, isExpired, remainingSeconds, turns, disabled } = eff;
         const effect = { _id, icon, label, isTemporary, isExpired, remainingSeconds, turns };
@@ -19,9 +19,9 @@ export async function getEffectData(actor){
             effect.strings = {
                 intro: await TextEditor.enrichHTML(intro ?? desc, { async: true })
             }
-            if ( contents ) {
+            if ( content ) {
                 effect.strings.header = header ?? game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
-                effect.strings.contents = await TextEditor.enrichHTML(contents, { async: true });
+                effect.strings.content = await TextEditor.enrichHTML(content, { async: true });
             }
         }
         
