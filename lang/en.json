@@ -1,6 +1,10 @@
 {
     "VISUAL_ACTIVE_EFFECTS": {
         "SETTINGS": {
+            "ICON_SIZE": {
+                "NAME": "Icon Size",
+                "HINT": "Change the pixel size of the icons. Default: 50."
+            },
             "DAYS_PER_WEEK": {
                 "NAME": "Days in a Week",
                 "HINT": "The number of days in a week."

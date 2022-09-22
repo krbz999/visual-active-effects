@@ -1,3 +1,4 @@
+export const ICON_SIZE = "iconSize";
 export const MODULE = "visual-active-effects";
 export const DAYS_PER_WEEK = "daysPerWeek";
 export const WEEKS_PER_MONTH = "weeksPerMonth";
