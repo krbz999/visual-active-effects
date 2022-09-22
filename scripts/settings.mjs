@@ -1,6 +1,16 @@
-import { DAYS_PER_WEEK, EXTRA_DAYS_PER_YEAR, MODULE, MONTHS_PER_YEAR, WEEKS_PER_MONTH } from "./constants.mjs";
+import { DAYS_PER_WEEK, EXTRA_DAYS_PER_YEAR, ICON_SIZE, MODULE, MONTHS_PER_YEAR, WEEKS_PER_MONTH } from "./constants.mjs";
 
 export function registerSettings(){
+    game.settings.register(MODULE, ICON_SIZE, {
+        name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.NAME"),
+        hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.HINT"),
+        scope: "world",
+        config: true,
+        type: Number,
+        default: 50,
+        requiresReload: true
+    });
+
     game.settings.register(MODULE, DAYS_PER_WEEK, {
         name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.NAME"),
         hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.HINT"),

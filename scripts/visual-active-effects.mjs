@@ -28,8 +28,8 @@ export class VisualEffects extends Application {
     handleExpand(_, bool){
         if ( !bool ) {
             const right = `${this._initialSidebarWidth + 18}px`;
-            this.element.animate({ right }, 150);
-        } else this.element.delay(250).animate({ right: "50px" }, 150);
+            this.element.animate({ right }, 50);
+        } else this.element.delay(50).animate({ right: "50px" }, 50);
     }
 
     get actor(){
