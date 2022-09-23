@@ -141,9 +141,11 @@ body :root {
 }
 
 /* The separator between enabled and disabled effects */
-.visual-active-effects hr {
+.visual-active-effects > hr {
     margin-right: 0;
-    width: 42px;
+    width: var(--visual-active-effects-icon-size);
+    margin-top: calc(var(--visual-active-effects-icon-size)/5);
+    margin-bottom: calc(var(--visual-active-effects-icon-size)/5);
 }
 
 /* THE ICON */
