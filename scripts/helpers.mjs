@@ -40,13 +40,11 @@ function getTemporaryEffects(actor){
         effectData.remainingSeconds = getSecondsRemaining(effectData.duration);
         effectData.turns = effectData.duration.turns;
         effectData.isExpired = effectData.remainingSeconds <= 0;
+        effectData.supp = effect.isSuppressed;
         return effectData;
     }).filter(effectData => {
+        if ( effectData.supp ) return false;
         return effectData.isTemporary;
-    }).sort((a, b) => {
-        if ( a.isTemporary ) return -1;
-        if ( b.isTemporary ) return 1;
-        return 0;
     });
 }
 
