@@ -2,7 +2,4 @@
 
 Visualize your active effects.
 
-
-
-[![Example using Concentration Notifier]("https://i.imgur.com/uAwixC5.png")]("https://i.imgur.com/muwmpk3.mp4" "Link Title")
-
+[Visual Active Effects](https://user-images.githubusercontent.com/50169243/193346164-ac204ab1-2d28-47cf-b41e-a7343a5002a6.webm)
