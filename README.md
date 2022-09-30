@@ -9,7 +9,7 @@ The text in the effects have to be set manually in some fashion, see below.
 
 The below video demonstrates how to use it and how it looks, using the module Concentration Notifier as an example.
 
-[Visual Active Effects](https://user-images.githubusercontent.com/50169243/193346164-ac204ab1-2d28-47cf-b41e-a7343a5002a6.webm)
+[Visual Active Effects](https://i.imgur.com/Qs8elyp.mp4)
 
 The text in the effects support two parts: the intro and the content. Structure the effect data like this (the `content` is optional):
 
