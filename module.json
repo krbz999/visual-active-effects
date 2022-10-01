@@ -41,7 +41,7 @@
         {
             "lang": "cs",
             "name": "Česky",
-            "path": "lang/cs.json"
+            "path": "lang/cs.json",
             "flags": {}
         }
     ],
