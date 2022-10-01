@@ -49,7 +49,7 @@
             "MINUTE": "1 minuta",
             "SECONDS": "{qty} vteřin",
             "SECOND": "1 vteřina",
-            "EXPIRED": "Vypršelé"
+            "EXPIRED": "Vypršelo"
         }
     }
 }
