@@ -2,54 +2,54 @@
     "VISUAL_ACTIVE_EFFECTS": {
         "SETTINGS": {
             "ICON_SIZE": {
-                "NAME": "Icon Size",
-                "HINT": "Change the pixel size of the icons. Default: 50."
+                "NAME": "Velikost ikony",
+                "HINT": "Změte velikost ikony v pixelech. Výchozí: 50."
             },
             "DAYS_PER_WEEK": {
-                "NAME": "Days in a Week",
-                "HINT": "The number of days in a week."
+                "NAME": "Dnů v týdnu",
+                "HINT": "Počet dnů v týdnu."
             },
             "WEEKS_PER_MONTH": {
-                "NAME": "Weeks per Month",
-                "HINT": "The number of weeks in a month."
+                "NAME": "Týdnů v měsíci",
+                "HINT": "Počet týdnů v měsíci."
             },
             "MONTHS_PER_YEAR": {
-                "NAME": "Months per Year",
-                "HINT": "The number of months in a year."
+                "NAME": "Měsíců v roce",
+                "HINT": "Počet měsíců v roce."
             },
             "EXTRA_DAYS_PER_YEAR": {
-                "NAME": "Extra Days per Year",
-                "HINT": "Any extra days per year."
+                "NAME": "Navíc dnů v roce",
+                "HINT": "Počet dnů navíc v roce."
             }
         },
         "LABELS": {
-            "TEMPORARY": "Temporary",
-            "DISABLED": "Disabled",
-            "DETAILS": "Details"
+            "TEMPORARY": "Dočasné",
+            "DISABLED": "Zakázané",
+            "DETAILS": "Detaily"
         },
         "MISC": {
-            "DELETE_EFFECT": "Delete Effect",
-            "DELETE_ME": "Delete {label}?"
+            "DELETE_EFFECT": "Smazat efekt",
+            "DELETE_ME": "Smazat {label}?"
         },
         "TIME": {
-            "TURN": "1 turn",
-            "TURNS": "{qty} turns",
-            "UNLIMITED": "Unlimited",
-            "YEARS": "{qty} years",
-            "YEAR": "1 year",
-            "MONTHS": "{qty} months",
-            "MONTH": "1 month",
-            "WEEKS": "{qty} weeks",
-            "WEEK": "1 week",
-            "DAYS": "{qty} days",
-            "DAY": "1 day",
-            "HOURS": "{qty} hours",
-            "HOUR": "1 hour",
-            "MINUTES": "{qty} minutes",
-            "MINUTE": "1 minute",
-            "SECONDS": "{qty} seconds",
-            "SECOND": "1 second",
-            "EXPIRED": "Expired"
+            "TURN": "1 tah",
+            "TURNS": "{qty} tahů",
+            "UNLIMITED": "Neomezeně",
+            "YEARS": "{qty} let",
+            "YEAR": "1 rok",
+            "MONTHS": "{qty} měsíců",
+            "MONTH": "1 měsíc",
+            "WEEKS": "{qty} týdnů",
+            "WEEK": "1 týden",
+            "DAYS": "{qty} dnů",
+            "DAY": "1 den",
+            "HOURS": "{qty} hodin",
+            "HOUR": "1 hodinu",
+            "MINUTES": "{qty} minut",
+            "MINUTE": "1 minuta",
+            "SECONDS": "{qty} vteřin",
+            "SECOND": "1 vteřina",
+            "EXPIRED": "Vypršelé"
         }
     }
 }
