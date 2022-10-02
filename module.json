@@ -37,6 +37,12 @@
       "name": "English",
       "path": "lang/en.json",
       "flags": {}
+    },
+    {
+      "lang": "cs",
+      "name": "Česky",
+      "path": "lang/cs.json",
+      "flags": {}
     }
   ],
   "url": "https://github.com/krbz999/visual-active-effects",
