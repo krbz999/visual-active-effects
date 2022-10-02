@@ -25,7 +25,8 @@
         "LABELS": {
             "TEMPORARY": "Dočasné",
             "DISABLED": "Zakázané",
-            "DETAILS": "Detaily"
+            "DETAILS": "Detaily",
+            "PASSIVE": "Pasivní"
         },
         "MISC": {
             "DELETE_EFFECT": "Smazat efekt",
