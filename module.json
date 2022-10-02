@@ -1,45 +1,45 @@
 {
-    "id": "visual-active-effects",
-    "title": "Visual Active Effects",
-    "version": "10.0.0",
-    "authors": [
-        {
-            "name": "Zhell",
-            "url": "https://github.com/krbz999",
-            "discord": "Zhell#9201",
-            "ko-fi": "https://ko-fi.com/zhell"
-        }
-    ],
-    "compatibility": {
-        "minimum": "10",
-        "maximum": "10",
-        "verified": "10.286"
-    },
-    "esmodules": [
-        "setup.js"
-    ],
-    "styles": [
-        "styles/visual-active-effects.css"
-    ],
-    "relationships": {
-        "systems": [
-            {
-                "id": "dnd5e",
-                "type": "system",
-                "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
-                "compatibility": {}
-            }
-        ]
-    },
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "lang/en.json",
-            "flags": {}
-        }
-    ],
-    "url": "https://github.com/krbz999/visual-active-effects",
-    "manifest": "https://github.com/krbz999/visual-active-effects/releases/latest/download/module.json",
-    "download": "https://github.com/krbz999/visual-active-effects/releases/download/v10.0.0/module.zip"
+  "id": "visual-active-effects",
+  "title": "Visual Active Effects",
+  "version": "10.0.1",
+  "authors": [
+    {
+      "name": "Zhell",
+      "url": "https://github.com/krbz999",
+      "discord": "Zhell#9201",
+      "ko-fi": "https://ko-fi.com/zhell"
+    }
+  ],
+  "compatibility": {
+    "minimum": "10",
+    "maximum": "10",
+    "verified": "10.286"
+  },
+  "esmodules": [
+    "setup.js"
+  ],
+  "styles": [
+    "styles/visual-active-effects.css"
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
+        "compatibility": {}
+      }
+    ]
+  },
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    }
+  ],
+  "url": "https://github.com/krbz999/visual-active-effects",
+  "manifest": "https://github.com/krbz999/visual-active-effects/releases/latest/download/module.json",
+  "download": "https://github.com/krbz999/visual-active-effects/releases/download/v10.0.1/module.zip"
 }
