@@ -6,14 +6,14 @@ import {
   WEEKS_PER_MONTH
 } from "./constants.mjs";
 
-// create the needed objects of effect data for the effect panel, sorted into enabled/disabled arrays.
+// create the needed objects of effect data in enabled/disabled arrays.
 export async function getEffectData(actor) {
   const enabledEffects = [];
   const disabledEffects = [];
 
   const effects = getTemporaryEffects(actor);
 
-  // set up enable effects.
+  // set up enabled effects.
   for (const eff of effects) {
     const desc = foundry.utils.getProperty(eff, "flags.convenientDescription");
     const { intro, header, content } = eff.getFlag(MODULE, "data") ?? {};
@@ -151,10 +151,10 @@ export function registerHelpers() {
       string = "EXPIRED";
     }
 
-    return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME." + string, { qty });
+    return game.i18n.format(`VISUAL_ACTIVE_EFFECTS.TIME.${string}`, { qty });
   });
 
-  Handlebars.registerHelper("paragraphy", (string) => {
+  Handlebars.registerHelper("vaeParagraphy", (string) => {
     if (string.trim().startsWith("<p")) {
       return string;
     }

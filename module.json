@@ -21,16 +21,6 @@
   "styles": [
     "styles/visual-active-effects.css"
   ],
-  "relationships": {
-    "systems": [
-      {
-        "id": "dnd5e",
-        "type": "system",
-        "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
-        "compatibility": {}
-      }
-    ]
-  },
   "languages": [
     {
       "lang": "en",

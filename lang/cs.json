@@ -1,56 +1,56 @@
 {
-    "VISUAL_ACTIVE_EFFECTS": {
-        "SETTINGS": {
-            "ICON_SIZE": {
-                "NAME": "Velikost ikony",
-                "HINT": "Změte velikost ikony v pixelech. Výchozí: 50."
-            },
-            "DAYS_PER_WEEK": {
-                "NAME": "Dnů v týdnu",
-                "HINT": "Počet dnů v týdnu."
-            },
-            "WEEKS_PER_MONTH": {
-                "NAME": "Týdnů v měsíci",
-                "HINT": "Počet týdnů v měsíci."
-            },
-            "MONTHS_PER_YEAR": {
-                "NAME": "Měsíců v roce",
-                "HINT": "Počet měsíců v roce."
-            },
-            "EXTRA_DAYS_PER_YEAR": {
-                "NAME": "Navíc dnů v roce",
-                "HINT": "Počet dnů navíc v roce."
-            }
-        },
-        "LABELS": {
-            "TEMPORARY": "Dočasné",
-            "DISABLED": "Zakázané",
-            "DETAILS": "Detaily",
-            "PASSIVE": "Pasivní"
-        },
-        "MISC": {
-            "DELETE_EFFECT": "Smazat efekt",
-            "DELETE_ME": "Smazat {label}?"
-        },
-        "TIME": {
-            "TURN": "1 tah",
-            "TURNS": "{qty} tahů",
-            "UNLIMITED": "Neomezeně",
-            "YEARS": "{qty} let",
-            "YEAR": "1 rok",
-            "MONTHS": "{qty} měsíců",
-            "MONTH": "1 měsíc",
-            "WEEKS": "{qty} týdnů",
-            "WEEK": "1 týden",
-            "DAYS": "{qty} dnů",
-            "DAY": "1 den",
-            "HOURS": "{qty} hodin",
-            "HOUR": "1 hodinu",
-            "MINUTES": "{qty} minut",
-            "MINUTE": "1 minuta",
-            "SECONDS": "{qty} vteřin",
-            "SECOND": "1 vteřina",
-            "EXPIRED": "Vypršelo"
-        }
+  "VISUAL_ACTIVE_EFFECTS": {
+    "SETTINGS": {
+      "ICON_SIZE": {
+        "NAME": "Velikost ikony",
+        "HINT": "Změte velikost ikony v pixelech. Výchozí: 50."
+      },
+      "DAYS_PER_WEEK": {
+        "NAME": "Dnů v týdnu",
+        "HINT": "Počet dnů v týdnu."
+      },
+      "WEEKS_PER_MONTH": {
+        "NAME": "Týdnů v měsíci",
+        "HINT": "Počet týdnů v měsíci."
+      },
+      "MONTHS_PER_YEAR": {
+        "NAME": "Měsíců v roce",
+        "HINT": "Počet měsíců v roce."
+      },
+      "EXTRA_DAYS_PER_YEAR": {
+        "NAME": "Navíc dnů v roce",
+        "HINT": "Počet dnů navíc v roce."
+      }
+    },
+    "LABELS": {
+      "TEMPORARY": "Dočasné",
+      "DISABLED": "Zakázané",
+      "DETAILS": "Detaily",
+      "PASSIVE": "Pasivní"
+    },
+    "MISC": {
+      "DELETE_EFFECT": "Smazat efekt",
+      "DELETE_ME": "Smazat {label}?"
+    },
+    "TIME": {
+      "TURN": "1 tah",
+      "TURNS": "{qty} tahů",
+      "UNLIMITED": "Neomezeně",
+      "YEARS": "{qty} let",
+      "YEAR": "1 rok",
+      "MONTHS": "{qty} měsíců",
+      "MONTH": "1 měsíc",
+      "WEEKS": "{qty} týdnů",
+      "WEEK": "1 týden",
+      "DAYS": "{qty} dnů",
+      "DAY": "1 den",
+      "HOURS": "{qty} hodin",
+      "HOUR": "1 hodinu",
+      "MINUTES": "{qty} minut",
+      "MINUTE": "1 minuta",
+      "SECONDS": "{qty} vteřin",
+      "SECOND": "1 vteřina",
+      "EXPIRED": "Vypršelo"
     }
+  }
 }
