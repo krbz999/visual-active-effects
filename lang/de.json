@@ -14,7 +14,7 @@
         "HINT": "Anzahl der Wochen im Monat."
       },
       "MONTHS_PER_YEAR": {
-        "NAME": "Months per Year",
+        "NAME": "Monat pro Jahr",
         "HINT": "Anzahl der Monate im Jahr."
       },
       "EXTRA_DAYS_PER_YEAR": {
