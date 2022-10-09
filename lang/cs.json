@@ -7,7 +7,7 @@
       },
       "HIDE_DISABLED": {
         "NAME": "Hide Disabled Effects",
-        "HINT": "If enabled, only enabled effects will show up."
+        "HINT": "If enabled, any disabled effects will not show up."
       },
       "DAYS_PER_WEEK": {
         "NAME": "Dnů v týdnu",
