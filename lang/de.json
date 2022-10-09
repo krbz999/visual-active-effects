@@ -6,8 +6,8 @@
         "HINT": "Ändere die Größe des Icons (in Pixel). Default: 50."
       },
       "HIDE_DISABLED": {
-        "NAME": "Hide Disabled Effects",
-        "HINT": "If enabled, any disabled effects will not show up."
+        "NAME": "Verstecke unterbrochene Effekte",
+        "HINT": "Wenn aktiviert, werden unterbrochene Effekte nicht angezeigt."
       },
       "DAYS_PER_WEEK": {
         "NAME": "Tage pro Woche",
