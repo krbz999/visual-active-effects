@@ -5,6 +5,10 @@
         "NAME": "Icon Größe",
         "HINT": "Ändere die Größe des Icons (in Pixel). Default: 50."
       },
+      "HIDE_DISABLED": {
+        "NAME": "Hide Disabled Effects",
+        "HINT": "If enabled, only enabled effects will show up."
+      },
       "DAYS_PER_WEEK": {
         "NAME": "Tage pro Woche",
         "HINT": "Anzahl der Tage in der Woche."

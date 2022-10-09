@@ -1,6 +1,7 @@
 import {
   DAYS_PER_WEEK,
   EXTRA_DAYS_PER_YEAR,
+  HIDE_DISABLED,
   MODULE,
   MONTHS_PER_YEAR,
   WEEKS_PER_MONTH
@@ -12,6 +13,8 @@ export async function getEffectData(actor) {
   const disabledEffects = [];
 
   const effects = getTemporaryEffects(actor);
+  const hideDisabled = game.settings.get(MODULE, HIDE_DISABLED);
+  const locale = game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
 
   // set up enabled effects.
   for (const eff of effects) {
@@ -37,16 +40,13 @@ export async function getEffectData(actor) {
       }
       if (content) {
         if (header) effect.strings.header = header;
-        else {
-          const locale = game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
-          effect.strings.header = locale;
-        }
+        else effect.strings.header = locale;
         effect.strings.content = await TextEditor.enrichHTML(content, { async: true });
       }
     }
 
-    if (disabled) disabledEffects.push(effect);
-    else enabledEffects.push(effect);
+    if (!disabled) enabledEffects.push(effect);
+    else if (!hideDisabled) disabledEffects.push(effect);
   }
   return { enabledEffects, disabledEffects };
 }
