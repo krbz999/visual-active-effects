@@ -17,11 +17,7 @@
       <hr>
       <div class="effect-tags">
         <div class="effect-tag temporary">
-          {{#if effect.isTemporary}}
           {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{remainingTimeLabel effect}})
-          {{else}}
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
-          {{/if}}
         </div>
       </div>
     </div>
@@ -37,7 +33,37 @@
   </div>
   {{/each}}
 
-  {{#if (and enabledEffects.length disabledEffects.length)}}
+  {{#if (and passiveEffects.length enabledEffects.length)}}
+  <hr>
+  {{/if}}
+
+  {{#each passiveEffects as |effect|}}
+  <div class="effect-item">
+    <div class="effect-info">
+      <h1 class="effect-info-header">{{effect.label}}</h1>
+      <div class="effect-info-details">
+        {{#if effect.strings}}
+        <div class="effect-intro">{{{vaeParagraphy effect.strings.intro}}}</div>
+        {{#if effect.strings.content}}
+        <section class="collapsible">
+          <header class="collapsible-header">{{effect.strings.header}}</header>
+          <div class="collapsible-content">{{{vaeParagraphy effect.strings.content}}}</div>
+        </section>
+        {{/if}}
+        {{/if}}
+      </div>
+      <hr>
+      <div class="effect-tags">
+        <div class="effect-tag temporary">
+          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
+        </div>
+      </div>
+    </div>
+    <div class="effect-icon" data-effect-id="{{effect._id}}" style="background-image: url({{effect.icon}});"></div>
+  </div>
+  {{/each}}
+
+  {{#if (and disabledEffects.length (or enabledEffects.length passiveEffects.length))}}
   <hr>
   {{/if}}
 
@@ -79,4 +105,5 @@
     </div>
   </div>
   {{/each}}
+
 </section>

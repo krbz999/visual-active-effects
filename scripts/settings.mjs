@@ -5,7 +5,8 @@ import {
   MODULE,
   MONTHS_PER_YEAR,
   WEEKS_PER_MONTH,
-  HIDE_DISABLED
+  HIDE_DISABLED,
+  HIDE_PASSIVE
 } from "./constants.mjs";
 
 export function registerSettings() {
@@ -26,6 +27,16 @@ export function registerSettings() {
     config: true,
     type: Boolean,
     default: false,
+    requiresReload: true
+  });
+
+  game.settings.register(MODULE, HIDE_PASSIVE, {
+    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.NAME"),
+    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.HINT"),
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
     requiresReload: true
   });
 

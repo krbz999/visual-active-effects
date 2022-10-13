@@ -2,6 +2,7 @@ import {
   DAYS_PER_WEEK,
   EXTRA_DAYS_PER_YEAR,
   HIDE_DISABLED,
+  HIDE_PASSIVE,
   MODULE,
   MONTHS_PER_YEAR,
   WEEKS_PER_MONTH
@@ -11,9 +12,11 @@ import {
 export async function getEffectData(actor) {
   const enabledEffects = [];
   const disabledEffects = [];
+  const passiveEffects = [];
 
-  const effects = getTemporaryEffects(actor);
+  const effects = getEffects(actor);
   const hideDisabled = game.settings.get(MODULE, HIDE_DISABLED);
+  const hidePassive = game.settings.get(MODULE, HIDE_PASSIVE);
   const locale = game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
 
   // set up enabled effects.
@@ -45,27 +48,31 @@ export async function getEffectData(actor) {
       }
     }
 
-    if (!disabled) enabledEffects.push(effect);
-    else if (!hideDisabled) disabledEffects.push(effect);
+    if (disabled) {
+      if (!hideDisabled) disabledEffects.push(effect);
+    }
+    else if (isTemporary) enabledEffects.push(effect);
+    else if (!hidePassive) passiveEffects.push(effect);
   }
-  return { enabledEffects, disabledEffects };
+  return { enabledEffects, disabledEffects, passiveEffects };
 }
 
-// gets all of an actor's temporary effects, sorted, with some appended info.
-function getTemporaryEffects(actor) {
+// gets all of an actor's effects, sorted, with some appended info.
+function getEffects(actor) {
   if (!actor) return [];
 
   return actor.effects.map((effect) => {
     const effectData = effect.clone({}, { keepId: true });
-    effectData.remainingSeconds = getSecondsRemaining(effectData.duration);
-    effectData.turns = effectData.duration.turns;
-    effectData.isExpired = effectData.remainingSeconds <= 0;
+    if (effectData.isTemporary) {
+      effectData.remainingSeconds = getSecondsRemaining(effectData.duration);
+      effectData.turns = effectData.duration.turns;
+      effectData.isExpired = effectData.remainingSeconds <= 0;
+      effectData.infinite = effectData.remainingSeconds === Infinity;
+    }
     effectData.supp = effect.isSuppressed;
-    effectData.infinite = effectData.remainingSeconds === Infinity;
     return effectData;
   }).filter(effectData => {
-    if (effectData.supp) return false;
-    return effectData.isTemporary;
+    return !effectData.supp;
   });
 }
 
