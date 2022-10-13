@@ -9,6 +9,10 @@
         "NAME": "Verstecke unterbrochene Effekte",
         "HINT": "Wenn aktiviert, werden unterbrochene Effekte nicht angezeigt."
       },
+      "HIDE_PASSIVE": {
+        "NAME": "Hide Passive Effects",
+        "HINT": "If enabled, any passive effects will not show up."
+      },
       "DAYS_PER_WEEK": {
         "NAME": "Tage pro Woche",
         "HINT": "Anzahl der Tage in der Woche."
