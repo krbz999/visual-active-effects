@@ -4,7 +4,8 @@ import {
   ICON_SIZE,
   MODULE,
   MONTHS_PER_YEAR,
-  WEEKS_PER_MONTH
+  WEEKS_PER_MONTH,
+  HIDE_DISABLED
 } from "./constants.mjs";
 
 export function registerSettings() {
@@ -15,6 +16,16 @@ export function registerSettings() {
     config: true,
     type: Number,
     default: 50,
+    requiresReload: true
+  });
+
+  game.settings.register(MODULE, HIDE_DISABLED, {
+    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.NAME"),
+    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.HINT"),
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
     requiresReload: true
   });
 

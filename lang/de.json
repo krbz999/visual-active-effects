@@ -1,0 +1,60 @@
+{
+  "VISUAL_ACTIVE_EFFECTS": {
+    "SETTINGS": {
+      "ICON_SIZE": {
+        "NAME": "Icon Größe",
+        "HINT": "Ändere die Größe des Icons (in Pixel). Default: 50."
+      },
+      "HIDE_DISABLED": {
+        "NAME": "Verstecke unterbrochene Effekte",
+        "HINT": "Wenn aktiviert, werden unterbrochene Effekte nicht angezeigt."
+      },
+      "DAYS_PER_WEEK": {
+        "NAME": "Tage pro Woche",
+        "HINT": "Anzahl der Tage in der Woche."
+      },
+      "WEEKS_PER_MONTH": {
+        "NAME": "Wochen pro Monat",
+        "HINT": "Anzahl der Wochen im Monat."
+      },
+      "MONTHS_PER_YEAR": {
+        "NAME": "Monat pro Jahr",
+        "HINT": "Anzahl der Monate im Jahr."
+      },
+      "EXTRA_DAYS_PER_YEAR": {
+        "NAME": "Zusätzliche Tage im Jahr",
+        "HINT": "Jeder zusätzliche Tag im Jahr."
+      }
+    },
+    "LABELS": {
+      "TEMPORARY": "Vorübergehend",
+      "DISABLED": "Deaktiviert",
+      "DETAILS": "Details",
+      "PASSIVE": "Passiv"
+    },
+    "MISC": {
+      "DELETE_EFFECT": "Lösche Effekt",
+      "DELETE_ME": "Lösche {label}?"
+    },
+    "TIME": {
+      "TURN": "1 Zug",
+      "TURNS": "{qty} Züge",
+      "UNLIMITED": "Unbegrenzt",
+      "YEARS": "{qty} Jahre",
+      "YEAR": "1 Jahr",
+      "MONTHS": "{qty} Monate",
+      "MONTH": "1 Monat",
+      "WEEKS": "{qty} Wochen",
+      "WEEK": "1 Woche",
+      "DAYS": "{qty} Tage",
+      "DAY": "1 Tag",
+      "HOURS": "{qty} Stunden",
+      "HOUR": "1 Stunde",
+      "MINUTES": "{qty} minuten",
+      "MINUTE": "1 Minute",
+      "SECONDS": "{qty} Sekunden",
+      "SECOND": "1 Sekunde",
+      "EXPIRED": "Abgelaufen"
+    }
+  }
+}

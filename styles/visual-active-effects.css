@@ -155,12 +155,12 @@ body :root {
   height: var(--visual-active-effects-icon-size);
   width: var(--visual-active-effects-icon-size);
   position: relative;
+  transition: transform 0.3s;
 }
 
 .visual-active-effects .effect-item:hover .effect-icon {
   transform: scale(1.25);
   z-index: 100;
-  transition: 0.3s;
 }
 
 .visual-active-effects .effect-item .effect-icon.disabled {

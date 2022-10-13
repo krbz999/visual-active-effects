@@ -28,8 +28,8 @@ export class VisualEffects extends Application {
   handleExpand(_, bool) {
     if (!bool) {
       const right = `${this._initialSidebarWidth + 18}px`;
-      this.element.animate({ right }, 50);
-    } else this.element.delay(50).animate({ right: "50px" }, 50);
+      this.element.animate({ right }, 0);
+    } else this.element.delay(50).animate({ right: "50px" }, 500);
   }
 
   get actor() {
@@ -49,15 +49,13 @@ export class VisualEffects extends Application {
     const effect = this.actor.effects.get(effectId);
     if (!effect) return;
 
-    await Dialog.confirm({
-      title: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.MISC.DELETE_EFFECT"),
-      content: `<h4>${game.i18n.format("VISUAL_ACTIVE_EFFECTS.MISC.DELETE_ME", {
-        label: effect.label
-      })}</h4>`,
-      yes: async () => {
-        await effect.delete();
-      }
-    });
+    const stringA = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_ME";
+    const content = game.i18n.format(stringA, { label: effect.label });
+    const stringB = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_EFFECT";
+    const title = game.i18n.localize(stringB);
+    const yes = () => effect.delete();
+
+    await Dialog.confirm({ title, content, yes });
   }
 
   onIconDoubleClick(event) {

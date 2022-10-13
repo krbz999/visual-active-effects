@@ -5,6 +5,10 @@
         "NAME": "Velikost ikony",
         "HINT": "Změte velikost ikony v pixelech. Výchozí: 50."
       },
+      "HIDE_DISABLED": {
+        "NAME": "Hide Disabled Effects",
+        "HINT": "If enabled, any disabled effects will not show up."
+      },
       "DAYS_PER_WEEK": {
         "NAME": "Dnů v týdnu",
         "HINT": "Počet dnů v týdnu."
