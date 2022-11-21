@@ -22,7 +22,7 @@ export async function getEffectData(actor) {
   // set up enabled effects.
   for (const eff of effects) {
     const desc = foundry.utils.getProperty(eff, "flags.convenientDescription");
-    const { intro, header, content } = eff.getFlag(MODULE, "data") ?? {};
+    const { intro, header, content, forceInclude = false } = eff.getFlag(MODULE, "data") ?? {};
 
     const {
       _id, icon, label,
@@ -49,10 +49,10 @@ export async function getEffectData(actor) {
     }
 
     if (disabled) {
-      if (!hideDisabled) disabledEffects.push(effect);
+      if (!hideDisabled || forceInclude) disabledEffects.push(effect);
     }
     else if (isTemporary) enabledEffects.push(effect);
-    else if (!hidePassive) passiveEffects.push(effect);
+    else if (!hidePassive || forceInclude) passiveEffects.push(effect);
   }
   return { enabledEffects, disabledEffects, passiveEffects };
 }
