@@ -1,0 +1,23 @@
+<form class="visual-active-effects">
+  <div class="form-group">
+    <div class="form-fields">
+      <label>{{localize "VISUAL_ACTIVE_EFFECTS.STATUS_ID"}}</label>
+      <input type="text" name="flags.core.statusId" value="{{statusId}}">
+      <label>{{localize "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE"}}</label>
+      <input type="checkbox" name="flags.visual-active-effects.data.forceInclude" {{checked forceInclude}}>
+    </div>
+  </div>
+  <div class="intro">
+    <label>{{localize "VISUAL_ACTIVE_EFFECTS.INTRO"}}</label>
+    {{editor descriptionHTML target="flags.visual-active-effects.data.intro" button=true editable=editable engine="prosemirror" collaborate=false}}
+  </div>
+  <div class="content">
+    <hr>
+    <label>{{localize "VISUAL_ACTIVE_EFFECTS.CONTENT"}}</label>
+    {{editor descriptionHTML target="flags.visual-active-effects.data.content" button=true editable=editable engine="prosemirror" collaborate=false}}
+    <hr>
+  </div>
+  <button type="submit">
+    <i class="fa-solid fa-save"></i> {{localize "Save"}}
+  </button>
+</form>

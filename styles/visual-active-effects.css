@@ -1,8 +1,23 @@
 body :root {
   --visual-active-effects-icon-size: 50px;
+  --visual-active-effects-font-size: 16px;
+  --visual-active-effects-max-width: 350px;
 }
 
-.visual-active-effects {
+form.visual-active-effects {
+  display: grid;
+  grid-template-rows: 0fr 1fr 2fr;
+}
+
+form.visual-active-effects label {
+  white-space: nowrap;
+}
+
+form.visual-active-effects .editor {
+  height: 90%;
+}
+
+section.visual-active-effects {
   position: fixed;
   z-index: 50;
   top: 25px;
@@ -29,8 +44,8 @@ body :root {
   padding: 0 1em 0.5em 1em;
   visibility: visible;
   opacity: 1;
-  max-width: 350px;
-  min-width: 350px;
+  max-width: var(--visual-active-effects-max-width);
+  min-width: var(--visual-active-effects-max-width);
   filter: drop-shadow(2px 4px 6px black);
   border-radius: 30px;
   background-color: rgb(58, 56, 56);
@@ -44,16 +59,16 @@ body :root {
   padding: 0.5rem;
   border-bottom: 2px solid #411a13;
   font-size: 2em;
-  margin-bottom: 1rem;
 }
-
-/*.visual-active-effects .effect-item .effect-info .effect-info-details {}*/
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .effect-intro,
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
   color: #ddd;
-  font-size: 16px;
   padding: 0 0.5rem;
+}
+
+.visual-active-effects .effect-item * {
+  font-size: var(--visual-active-effects-font-size);
 }
 
 /* COLLAPSIBLES */
@@ -72,12 +87,10 @@ body :root {
   color: #efe6d8;
   font-weight: bold;
   margin-bottom: 0;
-  font-size: 16px;
 }
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header::after {
   content: "\02795";
-  font-size: 13px;
   float: right;
   margin-left: 0.5rem;
   color: #f7f3e8;
@@ -88,19 +101,21 @@ body :root {
 }
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
-  max-height: 0;
   overflow: hidden;
-  opacity: 0;
   border: 1px solid #000;
   border-top: none;
   border-radius: 0 0 4px 4px;
   transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
 }
 
+.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible:not(.active) .collapsible-content {
+  max-height: 0 !important;
+  opacity: 0;
+}
+
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-content {
   opacity: 1;
-  max-height: 600px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* set color of inline roll text */
@@ -138,6 +153,10 @@ body :root {
 
 .visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.disabled {
   background-color: hsl(0, 70%, 28%);
+}
+
+.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.source {
+  background-color: hsl(299deg 46% 29%);
 }
 
 /* The separator between enabled and disabled effects */

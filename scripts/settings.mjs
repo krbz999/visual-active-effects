@@ -6,13 +6,14 @@ import {
   MONTHS_PER_YEAR,
   WEEKS_PER_MONTH,
   HIDE_DISABLED,
-  HIDE_PASSIVE
+  HIDE_PASSIVE,
+  FONT_SIZE
 } from "./constants.mjs";
 
 export function registerSettings() {
   game.settings.register(MODULE, ICON_SIZE, {
-    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.NAME"),
-    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.HINT"),
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.HINT",
     scope: "world",
     config: true,
     type: Number,
@@ -20,9 +21,19 @@ export function registerSettings() {
     requiresReload: true
   });
 
+  game.settings.register(MODULE, FONT_SIZE, {
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.HINT",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 16,
+    requiresReload: true
+  });
+
   game.settings.register(MODULE, HIDE_DISABLED, {
-    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.NAME"),
-    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.HINT"),
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.HINT",
     scope: "world",
     config: true,
     type: Boolean,
@@ -31,8 +42,8 @@ export function registerSettings() {
   });
 
   game.settings.register(MODULE, HIDE_PASSIVE, {
-    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.NAME"),
-    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.HINT"),
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.HINT",
     scope: "world",
     config: true,
     type: Boolean,
@@ -41,8 +52,8 @@ export function registerSettings() {
   });
 
   game.settings.register(MODULE, DAYS_PER_WEEK, {
-    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.NAME"),
-    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.HINT"),
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.HINT",
     scope: "world",
     config: true,
     type: Number,
@@ -51,8 +62,8 @@ export function registerSettings() {
   });
 
   game.settings.register(MODULE, WEEKS_PER_MONTH, {
-    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.NAME"),
-    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.HINT"),
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.HINT",
     scope: "world",
     config: true,
     type: Number,
@@ -61,8 +72,8 @@ export function registerSettings() {
   });
 
   game.settings.register(MODULE, MONTHS_PER_YEAR, {
-    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.MONTHS_PER_YEAR.NAME"),
-    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.MONTHS_PER_YEAR.HINT"),
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.MONTHS_PER_YEAR.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.MONTHS_PER_YEAR.HINT",
     scope: "world",
     config: true,
     type: Number,
@@ -71,8 +82,8 @@ export function registerSettings() {
   });
 
   game.settings.register(MODULE, EXTRA_DAYS_PER_YEAR, {
-    name: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.EXTRA_DAYS_PER_YEAR.NAME"),
-    hint: game.i18n.localize("VISUAL_ACTIVE_EFFECTS.SETTINGS.EXTRA_DAYS_PER_YEAR.HINT"),
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.EXTRA_DAYS_PER_YEAR.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.EXTRA_DAYS_PER_YEAR.HINT",
     scope: "world",
     config: true,
     type: Number,

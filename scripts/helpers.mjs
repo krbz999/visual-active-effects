@@ -22,37 +22,39 @@ export async function getEffectData(actor) {
   // set up enabled effects.
   for (const eff of effects) {
     const desc = foundry.utils.getProperty(eff, "flags.convenientDescription");
-    const { intro, header, content } = eff.getFlag(MODULE, "data") ?? {};
+    const { intro, header, content, forceInclude = false } = eff.getFlag(MODULE, "data") ?? {};
 
     const {
       _id, icon, label,
       isTemporary, isExpired,
-      remainingSeconds,
+      remainingSeconds, src,
       turns, disabled, infinite
     } = eff;
     const effect = {
       _id, icon, label,
       isTemporary, isExpired,
       remainingSeconds,
-      turns, infinite
+      turns, infinite, src,
+      strings: {
+        intro: "",
+        content: ""
+      }
     };
 
-    if (intro || desc) {
-      effect.strings = {
-        intro: await TextEditor.enrichHTML(intro ?? desc, { async: true })
-      }
-      if (content) {
-        if (header) effect.strings.header = header;
-        else effect.strings.header = locale;
-        effect.strings.content = await TextEditor.enrichHTML(content, { async: true });
-      }
+    if (intro?.length || desc?.length) {
+      effect.strings.intro = await TextEditor.enrichHTML(intro ?? desc, { async: true });
+    }
+    if (content?.length) {
+      if (header?.length) effect.strings.header = header;
+      else effect.strings.header = locale;
+      effect.strings.content = await TextEditor.enrichHTML(content, { async: true });
     }
 
     if (disabled) {
-      if (!hideDisabled) disabledEffects.push(effect);
+      if (!hideDisabled || forceInclude) disabledEffects.push(effect);
     }
     else if (isTemporary) enabledEffects.push(effect);
-    else if (!hidePassive) passiveEffects.push(effect);
+    else if (!hidePassive || forceInclude) passiveEffects.push(effect);
   }
   return { enabledEffects, disabledEffects, passiveEffects };
 }
@@ -62,6 +64,7 @@ function getEffects(actor) {
   if (!actor) return [];
 
   return actor.effects.map((effect) => {
+    const src = getSourceName(effect);
     const effectData = effect.clone({}, { keepId: true });
     if (effectData.isTemporary) {
       effectData.remainingSeconds = getSecondsRemaining(effectData.duration);
@@ -70,6 +73,7 @@ function getEffects(actor) {
       effectData.infinite = effectData.remainingSeconds === Infinity;
     }
     effectData.supp = effect.isSuppressed;
+    effectData.src = src;
     return effectData;
   }).filter(effectData => {
     return !effectData.supp;
@@ -81,6 +85,11 @@ function getSecondsRemaining(duration) {
     const seconds = duration.seconds ?? duration.rounds * (CONFIG.time.roundTime ?? 6);
     return duration.startTime + seconds - game.time.worldTime;
   } else return Infinity;
+}
+
+function getSourceName(effect) {
+  if (!effect.origin) return false;
+  return fromUuidSync(effect.origin)?.name ?? false;
 }
 
 // Registers the handlebar helpers
@@ -160,25 +169,19 @@ export function registerHelpers() {
 
     return game.i18n.format(`VISUAL_ACTIVE_EFFECTS.TIME.${string}`, { qty });
   });
-
-  Handlebars.registerHelper("vaeParagraphy", (string) => {
-    if (string.trim().startsWith("<p")) {
-      return string;
-    }
-    return string.split("\n").map(i => {
-      return i.trim();
-    }).filter(i => {
-      return !!i;
-    }).reduce((acc, e) => {
-      return acc + `<p>${e}</p>`;
-    }, "");
-  });
 }
 
 export function collapsibleSetup() {
   document.addEventListener("click", (event) => {
     const t = event.target.closest(".visual-active-effects .collapsible-header");
     if (!t) return;
-    t.closest(".collapsible").classList.toggle("active");
+    const section = t.closest(".collapsible");
+    section.classList.toggle("active");
+    const div = section.querySelector(".collapsible-content");
+    const item = section.closest(".effect-item");
+    const header = item.querySelector(".collapsible-header");
+    const tags = item.querySelector(".effect-tags");
+    const win = window.innerHeight;
+    div.style.maxHeight = `${win - (50 + header.getBoundingClientRect().bottom + tags.getBoundingClientRect().height)}px`;
   });
 }

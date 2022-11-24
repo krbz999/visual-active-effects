@@ -5,6 +5,10 @@
         "NAME": "Icon Size",
         "HINT": "Change the pixel size of the icons. Default: 50."
       },
+      "FONT_SIZE": {
+        "NAME": "Font Size",
+        "HINT": "Change the font size of the text in the effects. Default: 16."
+      },
       "HIDE_DISABLED": {
         "NAME": "Hide Disabled Effects",
         "HINT": "If enabled, any disabled effects will not show up."
@@ -34,7 +38,8 @@
       "TEMPORARY": "Temporary",
       "DISABLED": "Disabled",
       "DETAILS": "Details",
-      "PASSIVE": "Passive"
+      "PASSIVE": "Passive",
+      "SOURCE": "Source"
     },
     "MISC": {
       "DELETE_EFFECT": "Delete Effect",
@@ -59,6 +64,12 @@
       "SECONDS": "{qty} seconds",
       "SECOND": "1 second",
       "EXPIRED": "Expired"
-    }
+    },
+    "INTRO": "Intro",
+    "CONTENT": "Content",
+    "STATUS_ID": "Status Id:",
+    "FORCE_INCLUDE": "Always show this effect:",
+    "EDITOR_TITLE": "Visual Active Effects Editor: {id}",
+    "EDITOR_SAVED": "Text contents have been saved."
   }
 }
