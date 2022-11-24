@@ -1,6 +1,7 @@
 body :root {
   --visual-active-effects-icon-size: 50px;
   --visual-active-effects-font-size: 16px;
+  --visual-active-effects-max-width: 350px;
 }
 
 form.visual-active-effects {
@@ -43,8 +44,8 @@ section.visual-active-effects {
   padding: 0 1em 0.5em 1em;
   visibility: visible;
   opacity: 1;
-  max-width: 350px;
-  min-width: 350px;
+  max-width: var(--visual-active-effects-max-width);
+  min-width: var(--visual-active-effects-max-width);
   filter: drop-shadow(2px 4px 6px black);
   border-radius: 30px;
   background-color: rgb(58, 56, 56);
@@ -58,17 +59,15 @@ section.visual-active-effects {
   padding: 0.5rem;
   border-bottom: 2px solid #411a13;
   font-size: 2em;
-  /*margin-bottom: 1rem;*/
 }
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .effect-intro,
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
   color: #ddd;
-  font-size: 16px;
   padding: 0 0.5rem;
 }
 
-.visual-active-effects p {
+.visual-active-effects .effect-item * {
   font-size: var(--visual-active-effects-font-size);
 }
 
@@ -88,12 +87,10 @@ section.visual-active-effects {
   color: #efe6d8;
   font-weight: bold;
   margin-bottom: 0;
-  font-size: 16px;
 }
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header::after {
   content: "\02795";
-  font-size: 13px;
   float: right;
   margin-left: 0.5rem;
   color: #f7f3e8;
