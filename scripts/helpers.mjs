@@ -27,14 +27,14 @@ export async function getEffectData(actor) {
     const {
       _id, icon, label,
       isTemporary, isExpired,
-      remainingSeconds,
+      remainingSeconds, src,
       turns, disabled, infinite
     } = eff;
     const effect = {
       _id, icon, label,
       isTemporary, isExpired,
       remainingSeconds,
-      turns, infinite,
+      turns, infinite, src,
       strings: {
         intro: "",
         content: ""
@@ -64,6 +64,7 @@ function getEffects(actor) {
   if (!actor) return [];
 
   return actor.effects.map((effect) => {
+    const src = getSourceName(effect);
     const effectData = effect.clone({}, { keepId: true });
     if (effectData.isTemporary) {
       effectData.remainingSeconds = getSecondsRemaining(effectData.duration);
@@ -72,6 +73,7 @@ function getEffects(actor) {
       effectData.infinite = effectData.remainingSeconds === Infinity;
     }
     effectData.supp = effect.isSuppressed;
+    effectData.src = src;
     return effectData;
   }).filter(effectData => {
     return !effectData.supp;
@@ -83,6 +85,11 @@ function getSecondsRemaining(duration) {
     const seconds = duration.seconds ?? duration.rounds * (CONFIG.time.roundTime ?? 6);
     return duration.startTime + seconds - game.time.worldTime;
   } else return Infinity;
+}
+
+function getSourceName(effect) {
+  if (!effect.origin) return false;
+  return fromUuidSync(effect.origin)?.name ?? false;
 }
 
 // Registers the handlebar helpers

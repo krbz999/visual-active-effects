@@ -158,6 +158,10 @@ section.visual-active-effects {
   background-color: hsl(0, 70%, 28%);
 }
 
+.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.source {
+  background-color: hsl(299deg 46% 29%);
+}
+
 /* The separator between enabled and disabled effects */
 .visual-active-effects>hr {
   margin-right: 0;

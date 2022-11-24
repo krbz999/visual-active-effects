@@ -38,7 +38,8 @@
       "TEMPORARY": "Temporary",
       "DISABLED": "Disabled",
       "DETAILS": "Details",
-      "PASSIVE": "Passive"
+      "PASSIVE": "Passive",
+      "SOURCE": "Source"
     },
     "MISC": {
       "DELETE_EFFECT": "Delete Effect",
