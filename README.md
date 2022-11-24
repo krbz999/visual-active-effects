@@ -29,10 +29,10 @@ actor.createEmbeddedDocuments("ActiveEffect", [{
   }
 }]);
 ```
-As a fallback, the text will default to `flags.convenientDescription` for users using DFred's Convenient Effects.
+As a fallback, the text will default to `flags.convenientDescription` for users using DFred's Convenient Effects. You can also edit all these properties, and more, in the header of an ActiveEffect.
 
 # Module Requirements
 There are none, not even libwrapper.
 
 # Settings
-You can change the pixel size of the icons. The default is 50px.
+You can change the pixel size (default 50px) of the icons and the font size (default 16px) of the text; the width of the panels will scale accordingly.
