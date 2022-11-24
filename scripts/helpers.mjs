@@ -34,18 +34,20 @@ export async function getEffectData(actor) {
       _id, icon, label,
       isTemporary, isExpired,
       remainingSeconds,
-      turns, infinite
+      turns, infinite,
+      strings: {
+        intro: "",
+        content: ""
+      }
     };
 
-    if (intro || desc) {
-      effect.strings = {
-        intro: await TextEditor.enrichHTML(intro ?? desc, { async: true })
-      }
-      if (content) {
-        if (header) effect.strings.header = header;
-        else effect.strings.header = locale;
-        effect.strings.content = await TextEditor.enrichHTML(content, { async: true });
-      }
+    if (intro?.length || desc?.length) {
+      effect.strings.intro = await TextEditor.enrichHTML(intro ?? desc, { async: true });
+    }
+    if (content?.length) {
+      if (header?.length) effect.strings.header = header;
+      else effect.strings.header = locale;
+      effect.strings.content = await TextEditor.enrichHTML(content, { async: true });
     }
 
     if (disabled) {
@@ -159,19 +161,6 @@ export function registerHelpers() {
     }
 
     return game.i18n.format(`VISUAL_ACTIVE_EFFECTS.TIME.${string}`, { qty });
-  });
-
-  Handlebars.registerHelper("vaeParagraphy", (string) => {
-    if (string.trim().startsWith("<p")) {
-      return string;
-    }
-    return string.split("\n").map(i => {
-      return i.trim();
-    }).filter(i => {
-      return !!i;
-    }).reduce((acc, e) => {
-      return acc + `<p>${e}</p>`;
-    }, "");
   });
 }
 

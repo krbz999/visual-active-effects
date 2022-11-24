@@ -63,6 +63,12 @@
       "SECONDS": "{qty} seconds",
       "SECOND": "1 second",
       "EXPIRED": "Expired"
-    }
+    },
+    "INTRO": "Intro",
+    "CONTENT": "Content",
+    "STATUS_ID": "Status Id:",
+    "FORCE_INCLUDE": "Always show this effect:",
+    "EDITOR_TITLE": "Visual Active Effects Editor: {id}",
+    "EDITOR_SAVED": "Text contents have been saved."
   }
 }

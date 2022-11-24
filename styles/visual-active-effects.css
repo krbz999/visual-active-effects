@@ -3,7 +3,20 @@ body :root {
   --visual-active-effects-font-size: 16px;
 }
 
-.visual-active-effects {
+form.visual-active-effects {
+  display: grid;
+  grid-template-rows: 0fr 1fr 2fr;
+}
+
+form.visual-active-effects label {
+  white-space: nowrap;
+}
+
+form.visual-active-effects .editor {
+  height: 90%;
+}
+
+section.visual-active-effects {
   position: fixed;
   z-index: 50;
   top: 25px;
