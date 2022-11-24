@@ -1,4 +1,4 @@
-import { ICON_SIZE, MODULE } from "./scripts/constants.mjs";
+import { FONT_SIZE, ICON_SIZE, MODULE } from "./scripts/constants.mjs";
 import { collapsibleSetup, registerHelpers } from "./scripts/helpers.mjs";
 import { registerSettings } from "./scripts/settings.mjs";
 import { VisualEffects } from "./scripts/visual-active-effects.mjs";
@@ -18,14 +18,18 @@ Hooks.once("ready", async function () {
   for (const hook of [
     "updateWorldTime", "createActiveEffect",
     "updateActiveEffect", "deleteActiveEffect",
-    "controlToken", "preUpdateToken"
+    "controlToken"
   ]) {
     Hooks.on(hook, () => panel.refresh());
   }
 
   collapsibleSetup();
 
-  const pixels = game.settings.get(MODULE, ICON_SIZE) ?? 50;
-  const property = "--visual-active-effects-icon-size";
-  document.documentElement.style.setProperty(property, `${pixels}px`);
+  const iconSize = game.settings.get(MODULE, ICON_SIZE) ?? 50;
+  const iconProperty = "--visual-active-effects-icon-size";
+  document.documentElement.style.setProperty(iconProperty, `${iconSize}px`);
+
+  const fontSize = game.settings.get(MODULE, FONT_SIZE) ?? 16;
+  const fontProperty = "--visual-active-effects-font-size";
+  document.documentElement.style.setProperty(fontProperty, `${fontSize}px`);
 });

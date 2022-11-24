@@ -5,6 +5,10 @@
         "NAME": "Icon Size",
         "HINT": "Change the pixel size of the icons. Default: 50."
       },
+      "FONT_SIZE": {
+        "NAME": "Font Size",
+        "HINT": "Change the font size of the text in the effects. Default: 16."
+      },
       "HIDE_DISABLED": {
         "NAME": "Hide Disabled Effects",
         "HINT": "If enabled, any disabled effects will not show up."

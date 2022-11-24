@@ -1,5 +1,6 @@
 body :root {
   --visual-active-effects-icon-size: 50px;
+  --visual-active-effects-font-size: 16px;
 }
 
 .visual-active-effects {
@@ -44,16 +45,18 @@ body :root {
   padding: 0.5rem;
   border-bottom: 2px solid #411a13;
   font-size: 2em;
-  margin-bottom: 1rem;
+  /*margin-bottom: 1rem;*/
 }
-
-/*.visual-active-effects .effect-item .effect-info .effect-info-details {}*/
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .effect-intro,
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
   color: #ddd;
   font-size: 16px;
   padding: 0 0.5rem;
+}
+
+.visual-active-effects p {
+  font-size: var(--visual-active-effects-font-size);
 }
 
 /* COLLAPSIBLES */
@@ -88,19 +91,21 @@ body :root {
 }
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
-  max-height: 0;
   overflow: hidden;
-  opacity: 0;
   border: 1px solid #000;
   border-top: none;
   border-radius: 0 0 4px 4px;
   transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
 }
 
+.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible:not(.active) .collapsible-content {
+  max-height: 0 !important;
+  opacity: 0;
+}
+
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-content {
   opacity: 1;
-  max-height: 600px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 /* set color of inline roll text */

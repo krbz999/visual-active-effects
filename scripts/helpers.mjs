@@ -179,6 +179,13 @@ export function collapsibleSetup() {
   document.addEventListener("click", (event) => {
     const t = event.target.closest(".visual-active-effects .collapsible-header");
     if (!t) return;
-    t.closest(".collapsible").classList.toggle("active");
+    const section = t.closest(".collapsible");
+    section.classList.toggle("active");
+    const div = section.querySelector(".collapsible-content");
+    const item = section.closest(".effect-item");
+    const header = item.querySelector(".collapsible-header");
+    const tags = item.querySelector(".effect-tags");
+    const win = window.innerHeight;
+    div.style.maxHeight = `${win - (50 + header.getBoundingClientRect().bottom + tags.getBoundingClientRect().height)}px`;
   });
 }

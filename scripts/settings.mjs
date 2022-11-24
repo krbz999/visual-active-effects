@@ -6,7 +6,8 @@ import {
   MONTHS_PER_YEAR,
   WEEKS_PER_MONTH,
   HIDE_DISABLED,
-  HIDE_PASSIVE
+  HIDE_PASSIVE,
+  FONT_SIZE
 } from "./constants.mjs";
 
 export function registerSettings() {
@@ -17,6 +18,16 @@ export function registerSettings() {
     config: true,
     type: Number,
     default: 50,
+    requiresReload: true
+  });
+
+  game.settings.register(MODULE, FONT_SIZE, {
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.HINT",
+    scope: "world",
+    config: true,
+    type: Number,
+    default: 16,
     requiresReload: true
   });
 
