@@ -10,7 +10,7 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       width: 560,
       height: 800,
-      classes: ["visual-active-effects", "sheet"],
+      classes: [MODULE, "sheet"],
       resizable: true,
       scrollY: [],
       tabs: [],
@@ -20,11 +20,11 @@ export default class VisualActiveEffectsEditor extends FormApplication {
   }
 
   get template() {
-    return `modules/visual-active-effects/templates/vae-editor.hbs`;
+    return `modules/${MODULE}/templates/vae-editor.hbs`;
   }
 
   get id() {
-    return `visual-active-effects-editor-${this.effect.uuid.replaceAll(".", "-")}`;
+    return `${MODULE}-editor-${this.effect.uuid.replaceAll(".", "-")}`;
   }
 
   async getData() {
@@ -67,8 +67,8 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     return super._render(...T);
   }
 
-  _close(...T) {
+  close(...T) {
     delete this.effect.apps[this.appId];
-    return super._close(...T);
+    return super.close(...T);
   }
 }

@@ -28,7 +28,7 @@ export class VisualEffects extends Application {
   handleExpand(_, bool) {
     if (!bool) {
       const right = `${this._initialSidebarWidth + 18}px`;
-      this.element.animate({ right }, 0);
+      this.element.css("right", right);
     } else this.element.delay(50).animate({ right: "50px" }, 500);
   }
 

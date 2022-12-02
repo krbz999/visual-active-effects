@@ -14,7 +14,7 @@ export function registerSettings() {
   game.settings.register(MODULE, ICON_SIZE, {
     name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.NAME",
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.HINT",
-    scope: "world",
+    scope: "client",
     config: true,
     type: Number,
     default: 50,
@@ -24,7 +24,7 @@ export function registerSettings() {
   game.settings.register(MODULE, FONT_SIZE, {
     name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.NAME",
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.HINT",
-    scope: "world",
+    scope: "client",
     config: true,
     type: Number,
     default: 16,

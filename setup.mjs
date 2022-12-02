@@ -1,7 +1,6 @@
 import { FONT_SIZE, ICON, ICON_SIZE, MODULE } from "./scripts/constants.mjs";
-import { collapsibleSetup, registerHelpers } from "./scripts/helpers.mjs";
+import { collapsibleSetup, registerHelpers, _renderEditor } from "./scripts/helpers.mjs";
 import { registerSettings } from "./scripts/settings.mjs";
-import VisualActiveEffectsEditor from "./scripts/textEditor.mjs";
 import { VisualEffects } from "./scripts/visual-active-effects.mjs";
 
 Hooks.once("init", () => {
@@ -43,8 +42,6 @@ Hooks.on("getActiveEffectConfigHeaderButtons", function(app, array) {
   array.unshift({
     class: MODULE,
     icon: ICON,
-    onclick: async () => new VisualActiveEffectsEditor(app.object, {
-      title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE", { id: app.object.id })
-    }).render(true)
+    onclick: () => _renderEditor(app.object)
   });
 });

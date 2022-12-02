@@ -7,6 +7,7 @@ import {
   MONTHS_PER_YEAR,
   WEEKS_PER_MONTH
 } from "./constants.mjs";
+import VisualActiveEffectsEditor from "./textEditor.mjs";
 
 // create the needed objects of effect data in enabled/disabled arrays.
 export async function getEffectData(actor) {
@@ -184,4 +185,12 @@ export function collapsibleSetup() {
     const win = window.innerHeight;
     div.style.maxHeight = `${win - (50 + header.getBoundingClientRect().bottom + tags.getBoundingClientRect().height)}px`;
   });
+}
+
+export function _renderEditor(effect){
+  const editor = Object.values(effect.apps).find(e => e instanceof VisualActiveEffectsEditor);
+  if(editor) return editor.render();
+  return new VisualActiveEffectsEditor(effect, {
+    title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE", { id: effect.id })
+  }).render(true);
 }
