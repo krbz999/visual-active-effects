@@ -34,8 +34,8 @@ section.visual-active-effects {
 .visual-active-effects .effect-item .effect-info {
   visibility: hidden;
   opacity: 0;
-  max-width: 0px;
-  min-width: 0px;
+  max-width: 0;
+  min-width: 0;
 }
 
 .visual-active-effects .effect-item:hover .effect-info {
@@ -46,8 +46,8 @@ section.visual-active-effects {
   opacity: 1;
   max-width: var(--visual-active-effects-max-width);
   min-width: var(--visual-active-effects-max-width);
-  filter: drop-shadow(2px 4px 6px black);
-  border-radius: 30px;
+  filter: drop-shadow(0 0 10px black);
+  border-radius: 10px;
   background-color: rgb(58, 56, 56);
   transition: visibility 0.15s, opacity 0.15s linear;
 }
@@ -75,7 +75,6 @@ section.visual-active-effects {
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible {
   width: 100%;
   margin: 1rem 0;
-  cursor: pointer;
 }
 
 .visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header {
@@ -119,15 +118,9 @@ section.visual-active-effects {
 }
 
 /* set color of inline roll text */
-.visual-active-effects .effect-item .effect-info .effect-info-details .inline-roll.roll,
+.visual-active-effects .effect-item .effect-info .effect-info-details .inline-roll,
 .visual-active-effects .effect-item .effect-info .effect-info-details .content-link {
   color: black;
-}
-
-/* The separator between effect description and tags */
-.visual-active-effects .effect-item .effect-info hr {
-  width: 100%;
-  margin-top: 1rem;
 }
 
 /* TAGS */
@@ -178,7 +171,7 @@ section.visual-active-effects {
 }
 
 .visual-active-effects .effect-item:hover .effect-icon {
-  transform: scale(1.25);
+  transform: scale(1.2);
   z-index: 100;
 }
 
@@ -194,7 +187,7 @@ section.visual-active-effects {
   display: inline-block;
   left: 5%;
   position: absolute;
-  text-shadow: 0px 0px 5px black;
+  text-shadow: 0 0 5px black;
   font-size: calc(var(--visual-active-effects-icon-size)/3);
 }
 

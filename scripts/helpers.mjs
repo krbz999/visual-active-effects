@@ -26,20 +26,14 @@ export async function getEffectData(actor) {
     const { intro, header, content, forceInclude = false } = eff.getFlag(MODULE, "data") ?? {};
 
     const {
-      _id, icon, label,
-      isTemporary, isExpired,
-      remainingSeconds, src,
-      turns, disabled, infinite
+      _id, icon, label, uuid, isTemporary, isExpired,
+      remainingSeconds, turns, disabled, infinite, src
     } = eff;
+
     const effect = {
-      _id, icon, label,
-      isTemporary, isExpired,
-      remainingSeconds,
-      turns, infinite, src,
-      strings: {
-        intro: "",
-        content: ""
-      }
+      _id, icon, label, uuid, isTemporary, isExpired,
+      remainingSeconds, turns, infinite, src,
+      strings: { intro: "", content: "" }
     };
 
     if (intro?.length || desc?.length) {
@@ -187,9 +181,9 @@ export function collapsibleSetup() {
   });
 }
 
-export function _renderEditor(effect){
+export function _renderEditor(effect) {
   const editor = Object.values(effect.apps).find(e => e instanceof VisualActiveEffectsEditor);
-  if(editor) return editor.render();
+  if (editor) return editor.render();
   return new VisualActiveEffectsEditor(effect, {
     title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE", { id: effect.id })
   }).render(true);
