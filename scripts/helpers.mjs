@@ -84,7 +84,11 @@ function getSecondsRemaining(duration) {
 
 function getSourceName(effect) {
   if (!effect.origin) return false;
-  return fromUuidSync(effect.origin)?.name ?? false;
+  try {
+    return fromUuidSync(effect.origin).name;
+  } catch {
+    return false;
+  }
 }
 
 // Registers the handlebar helpers
