@@ -8,12 +8,12 @@ export default class VisualActiveEffectsEditor extends FormApplication {
 
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      width: 560,
+      width: 450,
       height: 800,
       classes: [MODULE, "sheet"],
       resizable: true,
       scrollY: [],
-      tabs: [],
+      tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "intro"}],
       dragDrop: [],
       closeOnSubmit: false
     });

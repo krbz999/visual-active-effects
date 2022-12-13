@@ -7,7 +7,8 @@ import {
   WEEKS_PER_MONTH,
   HIDE_DISABLED,
   HIDE_PASSIVE,
-  FONT_SIZE
+  FONT_SIZE,
+  TOP_OFFSET
 } from "./constants.mjs";
 
 export function registerSettings() {
@@ -28,6 +29,16 @@ export function registerSettings() {
     config: true,
     type: Number,
     default: 16,
+    requiresReload: true
+  });
+
+  game.settings.register(MODULE, TOP_OFFSET, {
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.HINT",
+    scope: "client",
+    config: true,
+    type: Number,
+    default: 25,
     requiresReload: true
   });
 

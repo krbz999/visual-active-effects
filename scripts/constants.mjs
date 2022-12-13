@@ -1,5 +1,6 @@
 export const ICON_SIZE = "iconSize";
 export const FONT_SIZE = "fontSize";
+export const TOP_OFFSET = "topOffset";
 export const MODULE = "visual-active-effects";
 export const ICON = "fa-solid fa-pen-fancy";
 export const DAYS_PER_WEEK = "daysPerWeek";

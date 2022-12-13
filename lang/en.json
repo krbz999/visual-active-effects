@@ -9,6 +9,10 @@
         "NAME": "Font Size",
         "HINT": "Change the font size of the text in the effects. Default: 16."
       },
+      "TOP_OFFSET": {
+        "NAME": "Top Offset",
+        "HINT": "Change the space between the panel off effects and the top of the window. Default: 25."
+      },
       "HIDE_DISABLED": {
         "NAME": "Hide Disabled Effects",
         "HINT": "If enabled, any disabled effects will not show up."

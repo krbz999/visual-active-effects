@@ -2,43 +2,62 @@ body :root {
   --visual-active-effects-icon-size: 50px;
   --visual-active-effects-font-size: 16px;
   --visual-active-effects-max-width: 350px;
+  --visual-active-effects-top-offset: 25px;
+}
+
+.app.window-app.visual-active-effects.sheet {
+  min-width: 450px;
+  min-height: 400px;
 }
 
 form.visual-active-effects {
   display: grid;
-  grid-template-rows: 0fr 1fr 2fr;
+  grid-template-rows: 1fr 0fr;
+}
+
+form.visual-active-effects .inputs {
+  display: grid;
+  grid-template-rows: 0fr 0fr 1fr;
+}
+
+form.visual-active-effects .sections {
+  position: relative;
+}
+
+form.visual-active-effects .sections > .tab {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 form.visual-active-effects label {
   white-space: nowrap;
 }
 
-form.visual-active-effects .editor {
-  height: 90%;
-}
-
 section.visual-active-effects {
   position: fixed;
-  z-index: 50;
-  top: 25px;
+  z-index: 100;
+  top: var(--visual-active-effects-top-offset);
   filter: drop-shadow(2px 4px 6px black);
 }
 
-.visual-active-effects .effect-item {
+section.visual-active-effects .effect-item {
   display: flex;
   justify-content: flex-end;
   height: var(--visual-active-effects-icon-size);
   margin-bottom: calc(var(--visual-active-effects-icon-size)/5);
 }
 
-.visual-active-effects .effect-item .effect-info {
+section.visual-active-effects .effect-item .effect-info {
   visibility: hidden;
   opacity: 0;
   max-width: 0;
   min-width: 0;
 }
 
-.visual-active-effects .effect-item:hover .effect-info {
+section.visual-active-effects .effect-item:hover .effect-info {
   height: fit-content;
   margin: 0 calc(max(1.5rem, var(--visual-active-effects-icon-size)/5));
   padding: 0 1em 0.5em 1em;
@@ -53,7 +72,7 @@ section.visual-active-effects {
 }
 
 /* The name of the effect */
-.visual-active-effects .effect-item .effect-info .effect-info-header {
+section.visual-active-effects .effect-item .effect-info .effect-info-header {
   color: navajowhite;
   text-align: center;
   padding: 0.5rem;
@@ -61,23 +80,23 @@ section.visual-active-effects {
   font-size: 2em;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-info-details .effect-intro,
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .effect-intro,
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
   color: #ddd;
   padding: 0 0.5rem;
 }
 
-.visual-active-effects .effect-item * {
+section.visual-active-effects .effect-item * {
   font-size: var(--visual-active-effects-font-size);
 }
 
 /* COLLAPSIBLES */
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible {
   width: 100%;
   margin: 1rem 0;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header {
   cursor: pointer;
   padding: 0.5rem 1rem;
   background-color: #411a13;
@@ -86,20 +105,23 @@ section.visual-active-effects {
   color: #efe6d8;
   font-weight: bold;
   margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header::after {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header::after {
   content: "\02795";
   float: right;
   margin-left: 0.5rem;
   color: #f7f3e8;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-header::after {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-header::after {
   content: "\2796";
 }
 
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
   overflow: hidden;
   border: 1px solid #000;
   border-top: none;
@@ -107,31 +129,31 @@ section.visual-active-effects {
   transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible:not(.active) .collapsible-content {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible:not(.active) .collapsible-content {
   max-height: 0 !important;
   opacity: 0;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-content {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-content {
   opacity: 1;
   overflow-y: auto;
 }
 
 /* set color of inline roll text */
-.visual-active-effects .effect-item .effect-info .effect-info-details .inline-roll,
-.visual-active-effects .effect-item .effect-info .effect-info-details .content-link {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .inline-roll,
+section.visual-active-effects .effect-item .effect-info .effect-info-details .content-link {
   color: black;
 }
 
 /* TAGS */
-.visual-active-effects .effect-item .effect-info .effect-tags {
+section.visual-active-effects .effect-item .effect-info .effect-tags {
   display: grid;
   gap: 3px;
   color: white;
   margin-bottom: 5px;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag {
+section.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag {
   text-align: center;
   border-radius: 10px;
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 50%);
@@ -140,20 +162,20 @@ section.visual-active-effects {
   text-transform: uppercase;
 }
 
-.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.temporary {
+section.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.temporary {
   background-color: hsl(235, 28.5%, 37.8%);
 }
 
-.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.disabled {
+section.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.disabled {
   background-color: hsl(0, 70%, 28%);
 }
 
-.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.source {
+section.visual-active-effects .effect-item .effect-info .effect-tags .effect-tag.source {
   background-color: hsl(299deg 46% 29%);
 }
 
 /* The separator between enabled and disabled effects */
-.visual-active-effects>hr {
+section.visual-active-effects > hr {
   margin-right: 0;
   width: var(--visual-active-effects-icon-size);
   margin-top: calc(var(--visual-active-effects-icon-size)/5);
@@ -161,27 +183,27 @@ section.visual-active-effects {
 }
 
 /* THE ICON */
-.visual-active-effects .effect-item .effect-icon {
+section.visual-active-effects .effect-item .effect-icon {
   background-size: contain;
   box-shadow: 0 0 0 1px silver, 0 0 0 2px gray, inset 0 0 4px rgba(0, 0, 0, 0.5);
   height: var(--visual-active-effects-icon-size);
   width: var(--visual-active-effects-icon-size);
+  min-width: var(--visual-active-effects-icon-size);
   position: relative;
   transition: transform 0.3s;
 }
 
-.visual-active-effects .effect-item:hover .effect-icon {
+section.visual-active-effects .effect-item:hover .effect-icon {
   transform: scale(1.2);
   z-index: 100;
 }
 
-.visual-active-effects .effect-item .effect-icon.disabled {
-  filter: grayscale(1.0);
-  filter: brightness(0.25);
+section.visual-active-effects .effect-item .effect-icon.disabled {
+  filter: brightness(0.25) grayscale(1);
 }
 
 /* CLOCK BADGE */
-.visual-active-effects .effect-item .effect-icon .badge {
+section.visual-active-effects .effect-item .effect-icon .badge {
   bottom: 5%;
   color: white;
   display: inline-block;
@@ -191,10 +213,10 @@ section.visual-active-effects {
   font-size: calc(var(--visual-active-effects-icon-size)/3);
 }
 
-.visual-active-effects .effect-item .effect-icon .badge.unlimited {
+section.visual-active-effects .effect-item .effect-icon .badge.unlimited {
   font-size: calc(var(--visual-active-effects-icon-size)/4);
 }
 
-.visual-active-effects .effect-item .effect-icon .badge.expired {
+section.visual-active-effects .effect-item .effect-icon .badge.expired {
   color: orange;
 }
