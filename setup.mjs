@@ -1,7 +1,7 @@
 import { FONT_SIZE, ICON, ICON_SIZE, MODULE, TOP_OFFSET } from "./scripts/constants.mjs";
-import { collapsibleSetup, registerHelpers, _renderEditor } from "./scripts/helpers.mjs";
+import { registerHelpers, _renderEditor } from "./scripts/helpers.mjs";
 import { registerSettings } from "./scripts/settings.mjs";
-import { VisualEffects } from "./scripts/visual-active-effects.mjs";
+import { VisualActiveEffects } from "./scripts/visual-active-effects.mjs";
 
 Hooks.once("init", () => {
   console.log("ZHELL | Initializing Visual Active Effects");
@@ -11,7 +11,7 @@ Hooks.once("setup", registerSettings);
 
 Hooks.once("ready", async function() {
   registerHelpers();
-  const panel = new VisualEffects();
+  const panel = new VisualActiveEffects();
   await panel.render(true);
   Hooks.on("collapseSidebar", panel.handleExpand.bind(panel));
 
@@ -22,8 +22,6 @@ Hooks.once("ready", async function() {
   ]) {
     Hooks.on(hook, () => panel.refresh());
   }
-
-  collapsibleSetup();
 
 
   const iconSize = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) ?? 50));

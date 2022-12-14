@@ -13,7 +13,7 @@ export default class VisualActiveEffectsEditor extends FormApplication {
       classes: [MODULE, "sheet"],
       resizable: true,
       scrollY: [],
-      tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "intro"}],
+      tabs: [{ navSelector: ".tabs", contentSelector: "form", initial: "intro" }],
       dragDrop: [],
       closeOnSubmit: false
     });

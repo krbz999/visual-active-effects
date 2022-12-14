@@ -1,6 +1,6 @@
 <section id="visual-active-effects" class="visual-active-effects">
   {{#each enabledEffects as |effect|}}
-  <div class="effect-item">
+  <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
     <div class="effect-info">
       <h1 class="effect-info-header">{{effect.label}}</h1>
       <div class="effect-info-details">
@@ -25,7 +25,7 @@
         {{/if}}
       </div>
     </div>
-    <div class="effect-icon" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}" style="background-image: url({{effect.icon}})">
+    <div class="effect-icon" style="background-image: url({{effect.icon}})">
       {{#if effect.isExpired}}
       <i class="expired badge fa-solid fa-clock"></i>
       {{else if effect.infinite}}
@@ -42,7 +42,7 @@
   {{/if}}
 
   {{#each passiveEffects as |effect|}}
-  <div class="effect-item">
+  <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
     <div class="effect-info">
       <h1 class="effect-info-header">{{effect.label}}</h1>
       <div class="effect-info-details">
@@ -67,7 +67,7 @@
         {{/if}}
       </div>
     </div>
-    <div class="effect-icon" data-effect-id="{{effect._id}}" style="background-image: url({{effect.icon}});"></div>
+    <div class="effect-icon" style="background-image: url({{effect.icon}});"></div>
   </div>
   {{/each}}
 
@@ -76,7 +76,7 @@
   {{/if}}
 
   {{#each disabledEffects as |effect|}}
-  <div class="effect-item">
+  <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
     <div class="effect-info">
       <h1 class="effect-info-header">{{effect.label}}</h1>
       <div class="effect-info-details">
@@ -106,7 +106,7 @@
         {{/if}}
       </div>
     </div>
-    <div class="effect-icon disabled" data-effect-id="{{effect._id}}" style="background-image: url({{effect.icon}});">
+    <div class="effect-icon disabled" style="background-image: url({{effect.icon}});">
       {{#if effect.isExpired}}
       <i class="expired badge fa-solid fa-clock"></i>
       {{else if effect.infinite}}

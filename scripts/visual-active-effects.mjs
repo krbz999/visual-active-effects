@@ -1,7 +1,7 @@
 import { MODULE } from "./constants.mjs";
 import { getEffectData } from "./helpers.mjs";
 
-export class VisualEffects extends Application {
+export class VisualActiveEffects extends Application {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: MODULE,
@@ -23,6 +23,7 @@ export class VisualEffects extends Application {
   activateListeners(html) {
     html[0].addEventListener("contextmenu", this.onIconRightClick.bind(this));
     html[0].addEventListener("dblclick", this.onIconDoubleClick.bind(this));
+    html[0].addEventListener("click", this.onCollapsibleClick.bind(this));
   }
 
   handleExpand(_, bool) {
@@ -43,27 +44,35 @@ export class VisualEffects extends Application {
   }
 
   async onIconRightClick(event) {
-    const div = event.target.closest("div[data-effect-id]");
-    if (!div) return;
-    const effectId = div.dataset.effectId;
-    const effect = this.actor.effects.get(effectId);
-    if (!effect) return;
-
+    const uuid = event.target.closest("div[data-effect-uuid]")?.dataset.effectUuid;
+    if (!uuid) return;
+    const effect = await fromUuid(uuid);
+    if (event.shiftKey && game.user.isGM) return effect.delete();
     const stringA = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_ME";
     const content = game.i18n.format(stringA, { label: effect.label });
     const stringB = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_EFFECT";
     const title = game.i18n.localize(stringB);
     const yes = () => effect.delete();
-
-    await Dialog.confirm({ title, content, yes });
+    return Dialog.confirm({ title, content, yes });
   }
 
-  onIconDoubleClick(event) {
-    const div = event.target.closest("div[data-effect-id]");
-    if (!div) return;
-    const effectId = div.dataset.effectId;
-    const effect = this.actor.effects.get(effectId);
-    if (!effect) return;
+  async onIconDoubleClick(event) {
+    const uuid = event.target.closest("div[data-effect-uuid]")?.dataset.effectUuid;
+    if (!uuid) return;
+    const effect = await fromUuid(uuid);
     return effect.update({ disabled: !effect.disabled });
+  }
+
+  onCollapsibleClick(event) {
+    const t = event.target.closest(".visual-active-effects .collapsible-header");
+    if (!t) return;
+    const section = t.closest(".collapsible");
+    section.classList.toggle("active");
+    const div = section.querySelector(".collapsible-content");
+    const item = section.closest(".effect-item");
+    const header = item.querySelector(".collapsible-header");
+    const tags = item.querySelector(".effect-tags");
+    const win = window.innerHeight;
+    div.style.maxHeight = `${win - (50 + header.getBoundingClientRect().bottom + tags.getBoundingClientRect().height)}px`;
   }
 }

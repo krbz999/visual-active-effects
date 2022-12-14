@@ -145,7 +145,7 @@ export function registerHelpers() {
       qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_WEEK);
       string = "WEEKS";
     } else if (remainingSeconds >= SECONDS.IN_ONE_WEEK) {
-      strin = "WEEK";
+      string = "WEEK";
     } else if (remainingSeconds >= SECONDS.IN_TWO_DAYS) {
       qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_DAY);
       string = "DAY";
@@ -167,21 +167,6 @@ export function registerHelpers() {
     }
 
     return game.i18n.format(`VISUAL_ACTIVE_EFFECTS.TIME.${string}`, { qty });
-  });
-}
-
-export function collapsibleSetup() {
-  document.addEventListener("click", (event) => {
-    const t = event.target.closest(".visual-active-effects .collapsible-header");
-    if (!t) return;
-    const section = t.closest(".collapsible");
-    section.classList.toggle("active");
-    const div = section.querySelector(".collapsible-content");
-    const item = section.closest(".effect-item");
-    const header = item.querySelector(".collapsible-header");
-    const tags = item.querySelector(".effect-tags");
-    const win = window.innerHeight;
-    div.style.maxHeight = `${win - (50 + header.getBoundingClientRect().bottom + tags.getBoundingClientRect().height)}px`;
   });
 }
 
