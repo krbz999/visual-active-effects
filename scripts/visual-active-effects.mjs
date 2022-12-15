@@ -44,7 +44,8 @@ export class VisualActiveEffects extends Application {
   }
 
   async onIconRightClick(event) {
-    const uuid = event.target.closest("div[data-effect-uuid]")?.dataset.effectUuid;
+    if (!event.target.classList.contains("effect-icon")) return;
+    const uuid = event.target.closest("[data-effect-uuid]")?.dataset.effectUuid;
     if (!uuid) return;
     const effect = await fromUuid(uuid);
     if (event.shiftKey && game.user.isGM) return effect.delete();
@@ -57,7 +58,8 @@ export class VisualActiveEffects extends Application {
   }
 
   async onIconDoubleClick(event) {
-    const uuid = event.target.closest("div[data-effect-uuid]")?.dataset.effectUuid;
+    if (!event.target.classList.contains("effect-icon")) return;
+    const uuid = event.target.closest("[data-effect-uuid]")?.dataset.effectUuid;
     if (!uuid) return;
     const effect = await fromUuid(uuid);
     return effect.update({ disabled: !effect.disabled });
