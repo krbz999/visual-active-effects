@@ -23,7 +23,6 @@ Hooks.once("ready", async function() {
     Hooks.on(hook, () => panel.refresh());
   }
 
-
   const iconSize = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) ?? 50));
   const iconProperty = "--visual-active-effects-icon-size";
   document.documentElement.style.setProperty(iconProperty, `${iconSize}px`);

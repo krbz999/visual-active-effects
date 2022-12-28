@@ -1,4 +1,4 @@
-import { MODULE } from "./constants.mjs";
+import { ICON, MODULE } from "./constants.mjs";
 
 export default class VisualActiveEffectsEditor extends FormApplication {
   constructor(effect, ...T) {
@@ -35,7 +35,8 @@ export default class VisualActiveEffectsEditor extends FormApplication {
       forceInclude: this.effect.getFlag(MODULE, "data.forceInclude") === true,
       content: await TextEditor.enrichHTML(this.effect.getFlag(MODULE, "data.content") ?? "", { async: true, relativeTo: this.effect }),
       intro: await TextEditor.enrichHTML(this.effect.getFlag(MODULE, "data.intro") ?? "", { async: true, relativeTo: this.effect }),
-      editable: this.isEditable
+      editable: this.isEditable,
+      ICON: ICON
     });
 
     return data;
@@ -48,6 +49,7 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     }
     ui.notifications.info("VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED", { localize: true });
     if (event.submitter) this.close();
+    await this.effect.sheet?.submit({ preventClose: true, preventRender: true });
     return this.effect.update(formData);
   }
 

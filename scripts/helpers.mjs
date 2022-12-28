@@ -9,7 +9,7 @@ import {
 } from "./constants.mjs";
 import VisualActiveEffectsEditor from "./textEditor.mjs";
 
-// create the needed objects of effect data in enabled/disabled arrays.
+// create the needed objects of effect data in enabled/disabled/passive arrays.
 export async function getEffectData(actor) {
   const enabledEffects = [];
   const disabledEffects = [];

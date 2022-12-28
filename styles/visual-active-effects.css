@@ -32,6 +32,10 @@ form.visual-active-effects .sections > .tab {
   left: 0;
 }
 
+form.visual-active-effects .sections > .tab > .editor > .editor-content {
+  margin: 0 1em;
+}
+
 form.visual-active-effects label {
   white-space: nowrap;
 }
@@ -126,7 +130,7 @@ section.visual-active-effects .effect-item .effect-info .effect-info-details .co
   border: 1px solid #000;
   border-top: none;
   border-radius: 0 0 4px 4px;
-  transition: max-height 0.2s ease-out, opacity 0.2s ease-out;
+  transition: max-height 0.15s ease-out, opacity 0.15s ease-out;
 }
 
 section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible:not(.active) .collapsible-content {
@@ -190,7 +194,7 @@ section.visual-active-effects .effect-item .effect-icon {
   width: var(--visual-active-effects-icon-size);
   min-width: var(--visual-active-effects-icon-size);
   position: relative;
-  transition: transform 0.3s;
+  transition: transform 0.15s;
 }
 
 section.visual-active-effects .effect-item:hover .effect-icon {

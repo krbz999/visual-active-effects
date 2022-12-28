@@ -5,7 +5,7 @@ While the module is enabled, all temporary effects (including status conditions)
 * Double-clicking an effect will toggle it between enabled and disabled.
 * Right-clicking an effect will let you delete it.
 
-The below video demonstrates how to use it and how it looks, using the module Concentration Notifier as an example.
+The below video demonstrates how to use it and how it looks, using an effect created by the module Concentration Notifier as an example.
 
 [Visual Active Effects](https://i.imgur.com/Qs8elyp.mp4)
 
@@ -27,10 +27,10 @@ actor.createEmbeddedDocuments("ActiveEffect", [{
   }
 }]);
 ```
-As a fallback, the text will default to `flags.convenientDescription` for users using DFred's Convenient Effects. You can also edit all these properties, and more, in the header of an Active Effect.
+As a fallback, the text will default to `flags.convenientDescription` for users using DFred's Convenient Effects. You can also edit all these properties, and more, in the header of an Active Effect (click the Pen icon).
 
-# Module Requirements
-There are none, not even libwrapper.
+# Module and System Requirements
+None.
 
 # Settings
-You can change the pixel size (default 50px) of the icons and the font size (default 16px) of the text; the width of the panels will scale accordingly. You can also optionally show passive and disabled effects.
+You can change the pixel size (default 50px) of the icons and the font size (default 16px) of the text; the width of the panels will scale accordingly, and you can change the top offset of the panel itself. You can also optionally show passive and disabled effects, as well as adjust the time units to suit your needs.
