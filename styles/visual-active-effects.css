@@ -215,6 +215,7 @@ section.visual-active-effects .effect-item .effect-icon .badge {
   position: absolute;
   text-shadow: 0 0 5px black;
   font-size: calc(var(--visual-active-effects-icon-size)/3);
+  pointer-events: none;
 }
 
 section.visual-active-effects .effect-item .effect-icon .badge.unlimited {

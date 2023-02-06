@@ -29,12 +29,13 @@ export default class VisualActiveEffectsEditor extends FormApplication {
 
   async getData() {
     const data = await super.getData();
+    const flag = this.effect.getFlag(MODULE, "data") ?? {};
 
     foundry.utils.mergeObject(data, {
-      statusId: this.effect.getFlag("core", "statusId") ?? "",
-      forceInclude: this.effect.getFlag(MODULE, "data.forceInclude") === true,
-      content: await TextEditor.enrichHTML(this.effect.getFlag(MODULE, "data.content") ?? "", { async: true, relativeTo: this.effect }),
-      intro: await TextEditor.enrichHTML(this.effect.getFlag(MODULE, "data.intro") ?? "", { async: true, relativeTo: this.effect }),
+      statusId: this.effect.flags?.core?.statusId ?? "",
+      forceInclude: flag.forceInclude === true,
+      content: await TextEditor.enrichHTML(flag.content ?? "", { async: true, relativeTo: this.effect }),
+      intro: await TextEditor.enrichHTML(flag.intro ?? "", { async: true, relativeTo: this.effect }),
       editable: this.isEditable,
       ICON: ICON
     });

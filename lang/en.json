@@ -1,79 +1,51 @@
 {
-  "VISUAL_ACTIVE_EFFECTS": {
-    "SETTINGS": {
-      "ICON_SIZE": {
-        "NAME": "Icon Size",
-        "HINT": "Change the pixel size of the icons. Default: 50."
-      },
-      "FONT_SIZE": {
-        "NAME": "Font Size",
-        "HINT": "Change the font size of the text in the effects. Default: 16."
-      },
-      "TOP_OFFSET": {
-        "NAME": "Top Offset",
-        "HINT": "Change the space between the panel off effects and the top of the window. Default: 25."
-      },
-      "HIDE_DISABLED": {
-        "NAME": "Hide Disabled Effects",
-        "HINT": "If enabled, any disabled effects will not show up."
-      },
-      "HIDE_PASSIVE": {
-        "NAME": "Hide Passive Effects",
-        "HINT": "If enabled, any passive effects will not show up."
-      },
-      "DAYS_PER_WEEK": {
-        "NAME": "Days per Week",
-        "HINT": "The number of days in a week."
-      },
-      "WEEKS_PER_MONTH": {
-        "NAME": "Weeks per Month",
-        "HINT": "The number of weeks in a month."
-      },
-      "MONTHS_PER_YEAR": {
-        "NAME": "Months per Year",
-        "HINT": "The number of months in a year."
-      },
-      "EXTRA_DAYS_PER_YEAR": {
-        "NAME": "Extra Days per Year",
-        "HINT": "Any extra days per year."
-      }
-    },
-    "LABELS": {
-      "TEMPORARY": "Temporary",
-      "DISABLED": "Disabled",
-      "DETAILS": "Details",
-      "PASSIVE": "Passive",
-      "SOURCE": "Source"
-    },
-    "MISC": {
-      "DELETE_EFFECT": "Delete Effect",
-      "DELETE_ME": "Delete {label}?"
-    },
-    "TIME": {
-      "TURN": "1 turn",
-      "TURNS": "{qty} turns",
-      "UNLIMITED": "Unlimited",
-      "YEARS": "{qty} years",
-      "YEAR": "1 year",
-      "MONTHS": "{qty} months",
-      "MONTH": "1 month",
-      "WEEKS": "{qty} weeks",
-      "WEEK": "1 week",
-      "DAYS": "{qty} days",
-      "DAY": "1 day",
-      "HOURS": "{qty} hours",
-      "HOUR": "1 hour",
-      "MINUTES": "{qty} minutes",
-      "MINUTE": "1 minute",
-      "SECONDS": "{qty} seconds",
-      "SECOND": "1 second",
-      "EXPIRED": "Expired"
-    },
-    "INTRO": "Intro",
-    "CONTENT": "Content",
-    "STATUS_ID": "Status Id:",
-    "FORCE_INCLUDE": "Always show this effect:",
-    "EDITOR_TITLE": "Visual Active Effects Editor: {id}",
-    "EDITOR_SAVED": "Text contents have been saved."
-  }
+  "VISUAL_ACTIVE_EFFECTS.CONTENT": "Content",
+  "VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED": "Text contents have been saved.",
+  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Visual Active Effects Editor: {id}",
+  "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE": "Always show this effect:",
+  "VISUAL_ACTIVE_EFFECTS.INTRO": "Intro",
+  "VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS": "Details",
+  "VISUAL_ACTIVE_EFFECTS.LABELS.DISABLED": "Disabled",
+  "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE": "Passive",
+  "VISUAL_ACTIVE_EFFECTS.LABELS.SOURCE": "Source",
+  "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY": "Temporary",
+  "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_EFFECT": "Delete Effect",
+  "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_ME": "Delete {label}?",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.HINT": "The number of days in a week.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.NAME": "Days per Week",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.EXTRA_DAYS_PER_YEAR.HINT": "Any extra days per year.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.EXTRA_DAYS_PER_YEAR.NAME": "Extra Days per Year",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.HINT": "Change the font size of the text in the effects. Default: 16.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.NAME": "Font Size",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.HINT": "If enabled, any disabled effects will not show up.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.NAME": "Hide Disabled Effects",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.HINT": "If enabled, any passive effects will not show up.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.NAME": "Hide Passive Effects",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.HINT": "Change the pixel size of the icons. Default: 50.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.NAME": "Icon Size",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.MONTHS_PER_YEAR.HINT": "The number of months in a year.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.MONTHS_PER_YEAR.NAME": "Months per Year",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.HINT": "Change the space between the panel off effects and the top of the window. Default: 25.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.NAME": "Top Offset",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.HINT": "The number of weeks in a month.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.NAME": "Weeks per Month",
+  "VISUAL_ACTIVE_EFFECTS.STATUS_ID": "Status Id:",
+  "VISUAL_ACTIVE_EFFECTS.TIME.DAY": "1 day",
+  "VISUAL_ACTIVE_EFFECTS.TIME.DAYS": "{qty} days",
+  "VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED": "Expired",
+  "VISUAL_ACTIVE_EFFECTS.TIME.HOUR": "1 hour",
+  "VISUAL_ACTIVE_EFFECTS.TIME.HOURS": "{qty} hours",
+  "VISUAL_ACTIVE_EFFECTS.TIME.MINUTE": "1 minute",
+  "VISUAL_ACTIVE_EFFECTS.TIME.MINUTES": "{qty} minutes",
+  "VISUAL_ACTIVE_EFFECTS.TIME.MONTH": "1 month",
+  "VISUAL_ACTIVE_EFFECTS.TIME.MONTHS": "{qty} months",
+  "VISUAL_ACTIVE_EFFECTS.TIME.SECOND": "1 second",
+  "VISUAL_ACTIVE_EFFECTS.TIME.SECONDS": "{qty} seconds",
+  "VISUAL_ACTIVE_EFFECTS.TIME.TURN": "1 turn",
+  "VISUAL_ACTIVE_EFFECTS.TIME.TURNS": "{qty} turns",
+  "VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED": "Unlimited",
+  "VISUAL_ACTIVE_EFFECTS.TIME.WEEK": "1 week",
+  "VISUAL_ACTIVE_EFFECTS.TIME.WEEKS": "{qty} weeks",
+  "VISUAL_ACTIVE_EFFECTS.TIME.YEAR": "1 year",
+  "VISUAL_ACTIVE_EFFECTS.TIME.YEARS": "{qty} years"
 }
