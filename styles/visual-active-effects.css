@@ -84,8 +84,14 @@ section.visual-active-effects .effect-item .effect-info .effect-info-header {
   font-size: 2em;
 }
 
-section.visual-active-effects .effect-item .effect-info .effect-info-details .effect-intro,
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
+section.visual-active-effects .effect-info-details {
+  gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em 0;
+}
+
+section.visual-active-effects .effect-item .effect-info .effect-info-details :is(.effect-intro, .collapsible-content, .vae-buttons) {
   color: #ddd;
   padding: 0 0.5rem;
 }
@@ -95,12 +101,7 @@ section.visual-active-effects .effect-item * {
 }
 
 /* COLLAPSIBLES */
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible {
-  width: 100%;
-  margin: 1rem 0;
-}
-
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible-section .collapsible-header {
   cursor: pointer;
   padding: 0.5rem 1rem;
   background-color: #411a13;
@@ -114,18 +115,18 @@ section.visual-active-effects .effect-item .effect-info .effect-info-details .co
   align-items: center;
 }
 
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-header::after {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible-section .collapsible-header::after {
   content: "\02795";
   float: right;
   margin-left: 0.5rem;
   color: #f7f3e8;
 }
 
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-header::after {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible-section.active .collapsible-header::after {
   content: "\2796";
 }
 
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible .collapsible-content {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible-section .collapsible-content {
   overflow: hidden;
   border: 1px solid #000;
   border-top: none;
@@ -133,12 +134,12 @@ section.visual-active-effects .effect-item .effect-info .effect-info-details .co
   transition: max-height 0.15s ease-out, opacity 0.15s ease-out;
 }
 
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible:not(.active) .collapsible-content {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible-section:not(.active) .collapsible-content {
   max-height: 0 !important;
   opacity: 0;
 }
 
-section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible.active .collapsible-content {
+section.visual-active-effects .effect-item .effect-info .effect-info-details .collapsible-section.active .collapsible-content {
   opacity: 1;
   overflow-y: auto;
 }
@@ -224,4 +225,30 @@ section.visual-active-effects .effect-item .effect-icon .badge.unlimited {
 
 section.visual-active-effects .effect-item .effect-icon .badge.expired {
   color: orange;
+}
+
+/* BUTTONS */
+.vae-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vae-buttons .vae-button {
+  font-size: 14px;
+  height: 30px;
+  line-height: 26px;
+  margin: 2px 0;
+  background: #6f2f31ad;
+  border: 2px groove #9e6161;
+  width: 100%;
+  border-radius: 6px;
+  text-align: center;
+  padding: 1px 6px;
+}
+
+.vae-buttons .vae-button:hover {
+  text-shadow: 0 0 8px white;
+  background: brown;
+  color: black;
 }

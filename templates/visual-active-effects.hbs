@@ -5,19 +5,26 @@
     <div class="effect-info">
       <h1 class="effect-info-header">{{effect.label}}</h1>
       <div class="effect-info-details">
-        {{#if effect.strings}}
+        {{#if effect.strings.intro}}
         <div class="effect-intro">{{{effect.strings.intro}}}</div>
+        {{/if}}
+        {{#if effect.buttons.length}}
+        <div class="vae-buttons">
+          {{#each effect.buttons as |button|}}
+          <a class="vae-button" data-action="custom-button" data-id="{{button.id}}">{{button.label}}</a>
+          {{/each}}
+        </div>
+        {{/if}}
         {{#if effect.strings.content}}
-        <section class="collapsible">
+        <section class="collapsible-section">
           <header class="collapsible-header">{{effect.strings.header}}</header>
           <div class="collapsible-content">{{{effect.strings.content}}}</div>
         </section>
         {{/if}}
-        {{/if}}
       </div>
       <div class="effect-tags">
         <div class="effect-tag temporary">
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{remainingTimeLabel effect}})
+          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{"VAE.remainingTimeLabel" effect}})
         </div>
         {{#if effect.src}}
         <div class="effect-tag source">
@@ -47,14 +54,21 @@
     <div class="effect-info">
       <h1 class="effect-info-header">{{effect.label}}</h1>
       <div class="effect-info-details">
-        {{#if effect.strings}}
+        {{#if effect.strings.intro}}
         <div class="effect-intro">{{{effect.strings.intro}}}</div>
+        {{/if}}
+        {{#if effect.buttons.length}}
+        <div class="vae-buttons">
+          {{#each effect.buttons as |button|}}
+          <a class="vae-button" data-action="custom-button" data-id="{{button.id}}">{{button.label}}</a>
+          {{/each}}
+        </div>
+        {{/if}}
         {{#if effect.strings.content}}
-        <section class="collapsible">
+        <section class="collapsible-section">
           <header class="collapsible-header">{{effect.strings.header}}</header>
           <div class="collapsible-content">{{{effect.strings.content}}}</div>
         </section>
-        {{/if}}
         {{/if}}
       </div>
       <div class="effect-tags">
@@ -81,20 +95,27 @@
     <div class="effect-info">
       <h1 class="effect-info-header">{{effect.label}}</h1>
       <div class="effect-info-details">
-        {{#if effect.strings}}
+        {{#if effect.strings.intro}}
         <div class="effect-intro">{{{effect.strings.intro}}}</div>
+        {{/if}}
+        {{#if effect.buttons.length}}
+        <div class="vae-buttons">
+          {{#each effect.buttons as |button|}}
+          <a class="vae-button" data-action="custom-button" data-id="{{button.id}}">{{button.label}}</a>
+          {{/each}}
+        </div>
+        {{/if}}
         {{#if effect.strings.content}}
-        <section class="collapsible">
+        <section class="collapsible-section">
           <header class="collapsible-header">{{effect.strings.header}}</header>
           <div class="collapsible-content">{{{effect.strings.content}}}</div>
         </section>
-        {{/if}}
         {{/if}}
       </div>
       <div class="effect-tags">
         <div class="effect-tag temporary">
           {{#if effect.isTemporary}}
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{remainingTimeLabel effect}})
+          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{"VAE.remainingTimeLabel" effect}})
           {{else}}
           {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
           {{/if}}

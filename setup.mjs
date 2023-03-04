@@ -1,7 +1,7 @@
-import { FONT_SIZE, ICON, ICON_SIZE, MODULE, TOP_OFFSET } from "./scripts/constants.mjs";
-import { registerHelpers, _renderEditor } from "./scripts/helpers.mjs";
-import { registerSettings } from "./scripts/settings.mjs";
-import { VisualActiveEffects } from "./scripts/visual-active-effects.mjs";
+import {FONT_SIZE, ICON, ICON_SIZE, MODULE, TOP_OFFSET} from "./scripts/constants.mjs";
+import {registerHelpers, _renderEditor} from "./scripts/helpers.mjs";
+import {registerSettings} from "./scripts/settings.mjs";
+import {VisualActiveEffects} from "./scripts/visual-active-effects.mjs";
 
 Hooks.once("init", () => {
   console.log("ZHELL | Initializing Visual Active Effects");
@@ -15,12 +15,12 @@ Hooks.once("ready", async function() {
   await panel.render(true);
   Hooks.on("collapseSidebar", panel.handleExpand.bind(panel));
 
-  for (const hook of [
-    "updateWorldTime", "createActiveEffect",
-    "updateActiveEffect", "deleteActiveEffect",
-    "controlToken"
-  ]) {
-    Hooks.on(hook, () => panel.refresh());
+  Hooks.on("updateWorldTime", () => panel.refresh());
+  Hooks.on("controlToken", () => panel.refresh());
+  for (const hook of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
+    Hooks.on(hook, function(effect) {
+      if (effect.parent === panel.actor) panel.refresh();
+    });
   }
 
   const iconSize = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) ?? 50));
