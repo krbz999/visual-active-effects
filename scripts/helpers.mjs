@@ -1,8 +1,11 @@
 import {
   DAYS_PER_WEEK,
   EXTRA_DAYS_PER_YEAR,
+  FONT_SIZE,
+  ICON_SIZE,
   MODULE,
   MONTHS_PER_YEAR,
+  TOP_OFFSET,
   WEEKS_PER_MONTH
 } from "./constants.mjs";
 import VisualActiveEffectsEditor from "./textEditor.mjs";
@@ -92,4 +95,25 @@ export function _renderEditor(effect) {
   return new VisualActiveEffectsEditor(effect, {
     title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE", {id: effect.id})
   }).render(true);
+}
+
+/**
+ * Refreshes the style sheet when a user changes the various css-related module settings.
+ */
+export function applyStyleSettings() {
+  const iconSize = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) ?? 50));
+  const fontSize = Math.max(6, Math.round(game.settings.get(MODULE, FONT_SIZE) ?? 16));
+  const maxWidth = Math.round(350 * fontSize / 16);
+  const topOffset = Math.max(0, Math.round(game.settings.get(MODULE, TOP_OFFSET) ?? 25));
+
+  const root = document.querySelector(":root")
+  const cssSheet = Object.values(root.parentNode.styleSheets).find(s => {
+    return s.href.includes("visual-active-effects/styles/visual-active-effects.css");
+  });
+  const map = Object.values(cssSheet.rules).find(r => r.selectorText === ":root").styleMap;
+
+  map.set(`--${MODULE}-icon-size`, iconSize + "px");
+  map.set(`--${MODULE}-font-size`, fontSize + "px");
+  map.set(`--${MODULE}-max-width`, maxWidth + "px");
+  map.set(`--${MODULE}-top-offset`, topOffset + "px");
 }

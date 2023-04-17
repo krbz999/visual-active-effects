@@ -1,4 +1,4 @@
-import {HIDE_DISABLED, HIDE_PASSIVE, MODULE} from "./constants.mjs";
+import {HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS} from "./constants.mjs";
 
 export class VisualActiveEffects extends Application {
   // Array of buttons for other modules.
@@ -16,6 +16,7 @@ export class VisualActiveEffects extends Application {
     super();
     this.refresh = foundry.utils.debounce(this.render.bind(this), 100);
     this._initialSidebarWidth = ui.sidebar.element.outerWidth();
+    this._playerClicks = game.settings.get(MODULE, PLAYER_CLICKS);
   }
 
   /** @override */
@@ -32,7 +33,7 @@ export class VisualActiveEffects extends Application {
 
     // set up enabled effects.
     for (const eff of effects) {
-      const desc = foundry.utils.getProperty(eff, "flags.convenientDescription");
+      const desc = eff.flags["dfreds-convenient-effects"]?.description;
       const {intro, header, content, forceInclude = false} = eff.getFlag(MODULE, "data") ?? {};
 
       const {
@@ -148,8 +149,10 @@ export class VisualActiveEffects extends Application {
 
   /** @override */
   activateListeners(html) {
-    html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("contextmenu", this.onIconRightClick.bind(this)));
-    html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("dblclick", this.onIconDoubleClick.bind(this)));
+    if (this._playerClicks || game.user.isGM) {
+      html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("contextmenu", this.onIconRightClick.bind(this)));
+      html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("dblclick", this.onIconDoubleClick.bind(this)));
+    }
     html[0].querySelectorAll(".collapsible-header").forEach(n => n.addEventListener("click", this.onCollapsibleClick.bind(this)));
     html[0].querySelectorAll("[data-action='custom-button']").forEach(n => n.addEventListener("click", this.onClickCustomButton.bind(this)));
   }
