@@ -108,7 +108,7 @@ export function applyStyleSettings() {
 
   const root = document.querySelector(":root")
   const cssSheet = Object.values(root.parentNode.styleSheets).find(s => {
-    return s.href.includes("visual-active-effects/styles/visual-active-effects.css");
+    return s.href?.includes("visual-active-effects/styles/visual-active-effects.css");
   });
   const map = Object.values(cssSheet.rules).find(r => r.selectorText === ":root").styleMap;
 
