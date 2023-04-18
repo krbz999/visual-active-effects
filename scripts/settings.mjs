@@ -8,8 +8,10 @@ import {
   HIDE_DISABLED,
   HIDE_PASSIVE,
   FONT_SIZE,
-  TOP_OFFSET
+  TOP_OFFSET,
+  PLAYER_CLICKS
 } from "./constants.mjs";
+import {applyStyleSettings} from "./helpers.mjs";
 
 export function registerSettings() {
   game.settings.register(MODULE, ICON_SIZE, {
@@ -19,7 +21,8 @@ export function registerSettings() {
     config: true,
     type: Number,
     default: 50,
-    requiresReload: true
+    requiresReload: false,
+    onChange: applyStyleSettings
   });
 
   game.settings.register(MODULE, FONT_SIZE, {
@@ -29,7 +32,8 @@ export function registerSettings() {
     config: true,
     type: Number,
     default: 16,
-    requiresReload: true
+    requiresReload: false,
+    onChange: applyStyleSettings
   });
 
   game.settings.register(MODULE, TOP_OFFSET, {
@@ -39,7 +43,8 @@ export function registerSettings() {
     config: true,
     type: Number,
     default: 25,
-    requiresReload: true
+    requiresReload: false,
+    onChange: applyStyleSettings
   });
 
   game.settings.register(MODULE, HIDE_DISABLED, {
@@ -55,6 +60,16 @@ export function registerSettings() {
   game.settings.register(MODULE, HIDE_PASSIVE, {
     name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.NAME",
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.HINT",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true
+  });
+
+  game.settings.register(MODULE, PLAYER_CLICKS, {
+    name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.NAME",
+    hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.HINT",
     scope: "world",
     config: true,
     type: Boolean,
