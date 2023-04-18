@@ -47,5 +47,7 @@
   "VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED": "Ilimitado",
   "VISUAL_ACTIVE_EFFECTS.TIME.WEEK": "1 semana",
   "VISUAL_ACTIVE_EFFECTS.TIME.WEEKS": "{qty} semanas",
-  "VISUAL_ACTIVE_EFFECTS.TIME.YEAR": "1 ano"
+  "VISUAL_ACTIVE_EFFECTS.TIME.YEAR": "1 ano",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.NAME": "Permitir interação do jogador",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.HINT": "Se desmarcado, os usuários não-GM não poderão alternar ou excluir efeitos diretamente no painel."
 }
