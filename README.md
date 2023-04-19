@@ -20,11 +20,12 @@ Visual Active Effects supports adding your own buttons into the descriptions. Yo
 ```js
 Hooks.on("visual-active-effects.createEffectButtons", function(eff, buttons){
   if (eff.label === "Steve") {
-  buttons.push({
-    label: "Toggle",
-    callback: function(){
-      eff.update({disabled: !eff.disabled});
-    }
-  });
+    buttons.push({
+      label: "Toggle",
+      callback: function(){
+        eff.update({disabled: !eff.disabled});
+      }
+    });
+  }
 });
 ```
