@@ -16,7 +16,7 @@ You can edit all the text properties, and more, in the header of an ActiveEffect
 None.
 
 ## For Module Developers
-Visual Active Effects supports adding your own buttons into the descriptions. You can hook into the template data creation using the hook `"visual-active-effects.createEffectByttons"` and push your button to the array. Example that creates a toggle button in a description, only if the effect is labeled 'Steve':
+Visual Active Effects supports adding your own buttons into the descriptions. You can hook into the template data creation using the hook `"visual-active-effects.createEffectButtons"` and push your button to the array. Example that creates a toggle button in a description, only if the effect is labeled 'Steve':
 ```js
 Hooks.on("visual-active-effects.createEffectButtons", function(eff, buttons){
   if (eff.label === "Steve") {
