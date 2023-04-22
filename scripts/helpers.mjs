@@ -101,19 +101,11 @@ export function _renderEditor(effect) {
  * Refreshes the style sheet when a user changes the various css-related module settings.
  */
 export function applyStyleSettings() {
-  const iconSize = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) ?? 50));
-  const fontSize = Math.max(6, Math.round(game.settings.get(MODULE, FONT_SIZE) ?? 16));
-  const maxWidth = Math.round(350 * fontSize / 16);
-  const topOffset = Math.max(0, Math.round(game.settings.get(MODULE, TOP_OFFSET) ?? 25));
-
-  const root = document.querySelector(":root")
-  const cssSheet = Object.values(root.parentNode.styleSheets).find(s => {
-    return s.href?.endsWith("styles/visual-active-effects.css");
-  });
-  const map = Object.values(cssSheet.rules).find(r => r.selectorText === ":root").styleMap;
-
-  map.set(`--${MODULE}-icon-size`, iconSize + "px");
-  map.set(`--${MODULE}-font-size`, fontSize + "px");
-  map.set(`--${MODULE}-max-width`, maxWidth + "px");
-  map.set(`--${MODULE}-top-offset`, topOffset + "px");
+  const data = {};
+  data["icon-size"] = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) || 50));
+  data["font-size"] = Math.max(6, Math.round(game.settings.get(MODULE, FONT_SIZE) || 16));
+  data["max-width"] = Math.round(350 * data["font-size"] / 16);
+  data["top-offset"] = Math.max(0, Math.round(game.settings.get(MODULE, TOP_OFFSET) || 25));
+  const root = document.querySelector(":root");
+  Object.entries(data).forEach(([key, val]) => root.style.setProperty(`--${MODULE}-${key}`, `${val}px`));
 }
