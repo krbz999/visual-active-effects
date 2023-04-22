@@ -39,6 +39,11 @@
       "name": "Deutsch",
       "path": "lang/de.json",
       "flags": {}
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt_BR.json"
     }
   ],
   "url": "https://github.com/krbz999/visual-active-effects",
