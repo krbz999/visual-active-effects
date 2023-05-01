@@ -37,12 +37,12 @@ export class VisualActiveEffects extends Application {
       const {intro, header, content, forceInclude = false} = eff.getFlag(MODULE, "data") ?? {};
 
       const {
-        _id, icon, label, uuid, isTemporary, isExpired,
+        _id, icon, name, uuid, isTemporary, isExpired,
         remainingSeconds, turns, disabled, infinite, src
       } = eff;
 
       const effect = {
-        _id, icon, label, uuid, isTemporary, isExpired,
+        _id, icon, name, uuid, isTemporary, isExpired,
         remainingSeconds, turns, infinite, src,
         strings: {intro: "", content: ""}
       };
@@ -93,9 +93,8 @@ export class VisualActiveEffects extends Application {
       const buttons = [];
 
       /**
-       * A hook that is called such that other modules can add buttons to the description
-       * of an effect on the panel. Each object pushed into the array must have 'label' and
-       * a function 'callback'.
+       * A hook that is called such that other modules can add buttons to the description of an effect
+       * on the panel. Each object pushed into the array must have 'label' and a function 'callback'.
        * @param {ActiveEffect} effect     The original effect.
        * @param {Array} buttons           An array of buttons.
        */
@@ -189,7 +188,7 @@ export class VisualActiveEffects extends Application {
     const effect = await fromUuid(event.currentTarget.closest(".effect-item").dataset.effectUuid);
     if (event.shiftKey && game.user.isGM) return effect.delete();
     const stringA = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_ME";
-    const content = game.i18n.format(stringA, {label: effect.label});
+    const content = game.i18n.format(stringA, {name: effect.name});
     const stringB = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_EFFECT";
     const title = game.i18n.localize(stringB);
     const yes = () => effect.delete();

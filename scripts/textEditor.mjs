@@ -33,10 +33,10 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     const flag = this.effect.getFlag(MODULE, "data") ?? {};
 
     foundry.utils.mergeObject(data, {
-      statusId: this.effect.flags.core?.statusId ?? "",
+      statuses: this.effect.statuses.size ? this.effect.statuses : [""],
       forceInclude: flag.forceInclude === true,
       content: await TextEditor.enrichHTML(flag.content ?? "", {async: true, relativeTo: this.effect}),
-      intro: await TextEditor.enrichHTML(flag.intro ?? "", {async: true, relativeTo: this.effect}),
+      intro: await TextEditor.enrichHTML(this.effect.description || flag.intro || "", {async: true, relativeTo: this.effect}),
       editable: this.isEditable,
       ICON: ICON
     });
@@ -45,11 +45,38 @@ export default class VisualActiveEffectsEditor extends FormApplication {
   }
 
   /** @override */
+  activateListeners(html) {
+    super.activateListeners(html);
+    html[0].querySelector("[data-action='add-status']").addEventListener("click", this._onAddStatus.bind(this));
+  }
+
+  /**
+   * Handle adding a new row for a status.
+   * @param {PointerEvent} event      The initiating click event.
+   */
+  _onAddStatus(event) {
+    const stats = event.currentTarget.closest(".config").querySelectorAll(".form-group.status");
+    const lastStat = stats[stats.length - 1];
+    const div = document.createElement("DIV");
+    div.innerHTML = `
+    <div class="form-group status">
+      <label>${game.i18n.localize("VISUAL_ACTIVE_EFFECTS.STATUS_ID")}</label>
+      <div class="form-fields">
+        <input type="text" name="statuses">
+      </div>
+    </div>`;
+    lastStat.after(div.firstElementChild);
+  }
+
+  /** @override */
   async _updateObject(event, formData) {
-    for (const [key, val] of Object.entries(formData)) {
-      if (formData[key]?.trim) formData[key] = formData[key].trim();
-      if (val === "<p></p>") formData[key] = "";
-    }
+    if (typeof formData.statuses === "string") formData.statuses = [formData.statuses];
+    formData.statuses = formData.statuses.reduce((acc, s) => {
+      s = s.trim();
+      if (s) acc.push(s);
+      return acc;
+    }, []);
+    formData.description = formData["flags.visual-active-effects.data.intro"];
     ui.notifications.info("VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED", {localize: true});
     if (event.submitter) this.close();
     await this.effect.sheet?.submit({preventClose: true, preventRender: true});

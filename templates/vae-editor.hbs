@@ -1,11 +1,23 @@
 <form class="visual-active-effects" autocomplete="off">
   <div class="inputs">
-    <div class="form-group">
-      <div class="form-fields">
+    <div class="config">
+      <div class="status-header">
+        {{localize "VISUAL_ACTIVE_EFFECTS.Statuses"}}
+        <a data-action="add-status"><i class="fa-solid fa-plus-square"></i></a>
+      </div>
+      {{#each statuses}}
+      <div class="form-group status">
         <label>{{localize "VISUAL_ACTIVE_EFFECTS.STATUS_ID"}}</label>
-        <input type="text" name="flags.core.statusId" value="{{statusId}}">
+        <div class="form-fields">
+          <input type="text" name="statuses" value="{{this}}">
+        </div>
+      </div>
+      {{/each}}
+      <div class="form-group">
         <label>{{localize "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE"}}</label>
-        <input type="checkbox" name="flags.visual-active-effects.data.forceInclude" {{checked forceInclude}}>
+        <div class="form-fields">
+          <input type="checkbox" name="flags.visual-active-effects.data.forceInclude" {{checked forceInclude}}>
+        </div>
       </div>
     </div>
 
@@ -22,10 +34,12 @@
 
     <div class="sections">
       <div class="tab flexrow" data-tab="intro">
-        {{editor intro target="flags.visual-active-effects.data.intro" button=true editable=editable engine="prosemirror" collaborate=false}}
+        {{editor intro target="flags.visual-active-effects.data.intro" button=true editable=editable
+        engine="prosemirror" collaborate=false}}
       </div>
       <div class="tab flexrow" data-tab="content">
-        {{editor content target="flags.visual-active-effects.data.content" button=true editable=editable engine="prosemirror" collaborate=false}}
+        {{editor content target="flags.visual-active-effects.data.content" button=true editable=editable
+        engine="prosemirror" collaborate=false}}
       </div>
     </div>
   </div>

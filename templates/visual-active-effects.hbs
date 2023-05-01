@@ -3,7 +3,7 @@
   {{#each enabledEffects as |effect|}}
   <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
     <div class="effect-info">
-      <h1 class="effect-info-header">{{effect.label}}</h1>
+      <h1 class="effect-info-header">{{effect.name}}</h1>
       <div class="effect-info-details">
         {{#if effect.strings.intro}}
         <div class="effect-intro">{{{effect.strings.intro}}}</div>
@@ -52,7 +52,7 @@
   {{#each passiveEffects as |effect|}}
   <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
     <div class="effect-info">
-      <h1 class="effect-info-header">{{effect.label}}</h1>
+      <h1 class="effect-info-header">{{effect.name}}</h1>
       <div class="effect-info-details">
         {{#if effect.strings.intro}}
         <div class="effect-intro">{{{effect.strings.intro}}}</div>
@@ -93,7 +93,7 @@
   {{#each disabledEffects as |effect|}}
   <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
     <div class="effect-info">
-      <h1 class="effect-info-header">{{effect.label}}</h1>
+      <h1 class="effect-info-header">{{effect.name}}</h1>
       <div class="effect-info-details">
         {{#if effect.strings.intro}}
         <div class="effect-intro">{{{effect.strings.intro}}}</div>

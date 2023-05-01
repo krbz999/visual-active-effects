@@ -109,3 +109,39 @@ export function applyStyleSettings() {
   const root = document.querySelector(":root");
   Object.entries(data).forEach(([key, val]) => root.style.setProperty(`--${MODULE}-${key}`, `${val}px`));
 }
+
+/**
+ * Register API functions.
+ */
+export function registerAPI() {
+  game.modules.get(MODULE).api = {
+    migrateWorldDescriptions: async function() {
+      for (const item of game.items) await _migrateDocumentWithEffects(item);
+      for (const actor of game.actors) await _migrateActor(actor);
+    },
+    migratePackDescriptions: async function(pack) {
+      const isActor = pack.metadata.type === "Actor";
+      const isItem = pack.metadata.type === "Item";
+      if (!(isActor || isItem)) return;
+      const docs = await pack.getDocuments();
+      const mig = isActor ? _migrateActor : _migrateDocumentWithEffects;
+      for (const doc of docs) await mig(doc);
+    }
+  };
+}
+
+async function _migrateActor(actor) {
+  await _migrateDocumentWithEffects(actor);
+  for (const item of actor.items) {
+    await _migrateDocumentWithEffects(item);
+  }
+}
+
+async function _migrateDocumentWithEffects(doc) {
+  const updates = [];
+  for (const effect of doc.effects) {
+    const data = effect.flags[MODULE]?.data?.intro;
+    if (data) updates.push({_id: effect.id, description: data});
+  }
+  return doc.updateEmbeddedDocuments("ActiveEffect", updates);
+}
