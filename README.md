@@ -15,6 +15,11 @@ You can edit all the text properties, and more, in the header of an ActiveEffect
 ## Module and System Requirements
 None.
 
+## Updating from v10 to v11
+Since v11 introduced a core description field (`ActiveEffect#description`), the module has received two API methods that will move the 'intro' into this core field. Use these methods with caution, as this action cannot be reverted:
+* `game.modules.get("visual-active-effects").api.migrateWorldDescriptions()` will move all intros into the description field for all effects found on items, actors, and actors' items.
+* `game.modules.get("visual-active-effects").api.migratePackDescriptions(pack)` accepts an actor or item compendium as its argument and will move all intros into the description field for all effects on items found in the pack, or all actor's effects and actors' items' effects found in the pack.
+
 ## For Module Developers
 Visual Active Effects supports adding your own buttons into the descriptions. You can hook into the template data creation using the hook `"visual-active-effects.createEffectButtons"` and push your button to the array. Example that creates a toggle button in a description, only if the effect is named 'Steve':
 ```js
