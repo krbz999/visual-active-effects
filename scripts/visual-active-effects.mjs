@@ -8,7 +8,8 @@ export class VisualActiveEffects extends Application {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: MODULE,
       popOut: false,
-      template: `modules/${MODULE}/templates/${MODULE}.hbs`
+      template: `modules/${MODULE}/templates/${MODULE}.hbs`,
+      minimizable: false
     });
   }
 
@@ -100,7 +101,9 @@ export class VisualActiveEffects extends Application {
        */
       Hooks.callAll("visual-active-effects.createEffectButtons", effect, buttons);
 
-      effectData.buttons = buttons;
+      effectData.buttons = buttons.filter(b => {
+        return (typeof b.label === "string") && (b.callback instanceof Function);
+      });
       return effectData;
     }).filter(effectData => {
       return !effectData.supp;
@@ -141,7 +144,12 @@ export class VisualActiveEffects extends Application {
 
   /** @override */
   async _render(force = false, options = {}) {
+    if (!force && this.element[0].closest(".panel").classList.contains("hovered")) {
+      this._needsRefresh = true;
+      return;
+    }
     await super._render(force, options);
+    this._needsRefresh = false;
     if (ui.sidebar._collapsed) this.element.css("right", "50px");
     else this.element.css("right", `${this._initialSidebarWidth + 18}px`);
   }
@@ -154,6 +162,30 @@ export class VisualActiveEffects extends Application {
     }
     html[0].querySelectorAll(".collapsible-header").forEach(n => n.addEventListener("click", this.onCollapsibleClick.bind(this)));
     html[0].querySelectorAll("[data-action='custom-button']").forEach(n => n.addEventListener("click", this.onClickCustomButton.bind(this)));
+    html[0].addEventListener("mouseover", this._onMouseOver.bind(this));
+    html[0].addEventListener("mouseout", this._onMouseOver.bind(this));
+    html[0].addEventListener("mouseover", this.bringToTop.bind(this));
+  }
+
+  /** @override */
+  bringToTop(event) {
+    const element = event.currentTarget;
+    const z = document.defaultView.getComputedStyle(element).zIndex;
+    if (z < _maxZ) {
+      element.style.zIndex = Math.min(++_maxZ, 99999);
+      ui.activeWindow = this;
+    }
+  }
+
+  /**
+   * Save whether the application is being moused over.
+   * @param {PointerEvent} event      The initiating mouseover or mouseout event.
+   */
+  async _onMouseOver(event) {
+    const state = event.type === "mouseover";
+    const target = event.currentTarget;
+    target.classList.toggle("hovered", state);
+    if (!state && (this._needsRefresh === true)) return this.render();
   }
 
   /**
@@ -201,13 +233,11 @@ export class VisualActiveEffects extends Application {
    * @returns {ActiveEffect|ActiveEffectConfig}     The updated effect or its sheet.
    */
   async onIconDoubleClick(event) {
-    if (!event.ctrlKey) {
-      const effect = await fromUuid(event.currentTarget.closest(".effect-item").dataset.effectUuid);
-      return effect.update({disabled: !effect.disabled});
-    } else {
-      const effect = await fromUuid(event.currentTarget.closest(".effect-item").dataset.effectUuid);
-      return effect.sheet.render(true);
-    }
+    const ctrl = event.ctrlKey;
+    const uuid = event.currentTarget.closest(".effect-item").dataset.effectUuid;
+    const effect = await fromUuid(uuid);
+    if (ctrl) return effect.sheet.render(true);
+    else return effect.update({disabled: !effect.disabled});
   }
 
   /**

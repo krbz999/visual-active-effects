@@ -11,11 +11,11 @@ Hooks.once("ready", async function() {
   const panel = new VisualActiveEffects();
   await panel.render(true);
   Hooks.on("collapseSidebar", panel.handleExpand.bind(panel));
-  Hooks.on("updateWorldTime", () => panel.refresh());
-  Hooks.on("controlToken", () => panel.refresh());
+  Hooks.on("updateWorldTime", () => panel.refresh(false));
+  Hooks.on("controlToken", () => panel.refresh(true));
   for (const hook of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
     Hooks.on(hook, function(effect) {
-      if (effect.parent === panel.actor) panel.refresh();
+      if (effect.parent === panel.actor) panel.refresh(true);
     });
   }
 });
