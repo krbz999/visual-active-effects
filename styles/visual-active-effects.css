@@ -1,4 +1,4 @@
-.app.window-app.visual-active-effects.sheet {
+.visual-active-effects.sheet {
   min-width: 450px;
   min-height: 400px;
 }
@@ -11,6 +11,11 @@ form.visual-active-effects {
 form.visual-active-effects .inputs {
   display: grid;
   grid-template-rows: 0fr 0fr 1fr;
+}
+
+.visual-active-effects.sheet [data-action="delete-status"] {
+  flex: 0;
+  padding-right: 8px;
 }
 
 form.visual-active-effects .sections {

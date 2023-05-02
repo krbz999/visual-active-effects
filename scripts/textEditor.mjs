@@ -48,6 +48,15 @@ export default class VisualActiveEffectsEditor extends FormApplication {
   activateListeners(html) {
     super.activateListeners(html);
     html[0].querySelector("[data-action='add-status']").addEventListener("click", this._onAddStatus.bind(this));
+    html[0].querySelectorAll("[data-action='delete-status']").forEach(n => n.addEventListener("click", this._onDeleteStatus.bind(this)));
+  }
+
+  /**
+   * Handle removing an old row for a status.
+   * @param {PointerEvent} event      The initiating click event.
+   */
+  _onDeleteStatus(event) {
+    event.currentTarget.closest(".form-group").remove();
   }
 
   /**
@@ -55,22 +64,24 @@ export default class VisualActiveEffectsEditor extends FormApplication {
    * @param {PointerEvent} event      The initiating click event.
    */
   _onAddStatus(event) {
-    const stats = event.currentTarget.closest(".config").querySelectorAll(".form-group.status");
-    const lastStat = stats[stats.length - 1];
+    const force = event.currentTarget.closest(".config").querySelector(".form-group:last-child");
     const div = document.createElement("DIV");
     div.innerHTML = `
     <div class="form-group status">
       <label>${game.i18n.localize("VISUAL_ACTIVE_EFFECTS.STATUS_ID")}</label>
       <div class="form-fields">
         <input type="text" name="statuses">
+        <a data-action="delete-status"><i class="fa-solid fa-trash"></i></a>
       </div>
     </div>`;
-    lastStat.after(div.firstElementChild);
+    div.querySelector("[data-action='delete-status']").addEventListener("click", this._onDeleteStatus.bind(this));
+    force.before(div.firstElementChild);
   }
 
   /** @override */
   async _updateObject(event, formData) {
-    if (typeof formData.statuses === "string") formData.statuses = [formData.statuses];
+    if (!formData.statuses) formData.statuses = [];
+    else if (typeof formData.statuses === "string") formData.statuses = [formData.statuses];
     formData.statuses = formData.statuses.reduce((acc, s) => {
       s = s.trim();
       if (s) acc.push(s);
