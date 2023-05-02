@@ -48,8 +48,8 @@ export class VisualActiveEffects extends Application {
         strings: {intro: "", content: ""}
       };
 
-      if (intro?.length || desc?.length) {
-        effect.strings.intro = await TextEditor.enrichHTML(intro ?? desc, {async: true});
+      if (eff.description || intro?.length || desc?.length) {
+        effect.strings.intro = await TextEditor.enrichHTML(eff.description || intro || desc, {async: true});
       }
       if (eff.buttons.length) {
         effect.buttons = eff.buttons;
