@@ -30,7 +30,7 @@ export function registerHelpers() {
         IN_TWO_HOURS: 7200,
         IN_ONE_DAY: 86400,
         IN_TWO_DAYS: 172800
-      }
+      };
 
       const daysPerWeek = game.settings.get(MODULE, DAYS_PER_WEEK) ?? 9;
       const weeksPerMonth = game.settings.get(MODULE, WEEKS_PER_MONTH) ?? 3;
