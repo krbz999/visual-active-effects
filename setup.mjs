@@ -1,5 +1,5 @@
 import {ICON, MODULE} from "./scripts/constants.mjs";
-import {registerHelpers, _renderEditor, applyStyleSettings} from "./scripts/helpers.mjs";
+import {registerHelpers, _renderEditor, applyStyleSettings, registerAPI} from "./scripts/helpers.mjs";
 import {registerSettings} from "./scripts/settings.mjs";
 import {VisualActiveEffects} from "./scripts/visual-active-effects.mjs";
 
@@ -8,6 +8,7 @@ Hooks.once("setup", registerSettings);
 Hooks.once("ready", async function() {
   await loadTemplates(["modules/visual-active-effects/templates/effect.hbs"]);
   registerHelpers();
+  registerAPI();
   applyStyleSettings();
   const panel = new VisualActiveEffects();
   await panel.render(true);
