@@ -66,10 +66,14 @@ export function registerHelpers() {
         string = "WEEK";
       } else if (remainingSeconds >= SECONDS.IN_TWO_DAYS) {
         qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_DAY);
+        string = "DAYS";
+      } else if (remainingSeconds >= SECONDS.IN_ONE_DAY) {
         string = "DAY";
       } else if (remainingSeconds >= SECONDS.IN_TWO_HOURS) {
         qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_HOUR);
         string = "HOURS";
+      } else if (remainingSeconds >= SECONDS.IN_ONE_HOUR) {
+        string = "HOUR";
       } else if (remainingSeconds >= SECONDS.IN_TWO_MINUTES) {
         qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_MINUTE);
         string = "MINUTES";
