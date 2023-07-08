@@ -1,143 +1,23 @@
-<section id="visual-active-effects" class="visual-active-effects">
+<section id="visual-active-effects" class="panel visual-active-effects">
 
-  {{#each enabledEffects as |effect|}}
-  <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
-    <div class="effect-info">
-      <h1 class="effect-info-header">{{effect.label}}</h1>
-      <div class="effect-info-details">
-        {{#if effect.strings.intro}}
-        <div class="effect-intro">{{{effect.strings.intro}}}</div>
-        {{/if}}
-        {{#if effect.buttons.length}}
-        <div class="vae-buttons">
-          {{#each effect.buttons as |button|}}
-          <a class="vae-button" data-action="custom-button" data-id="{{button.id}}">{{button.label}}</a>
-          {{/each}}
-        </div>
-        {{/if}}
-        {{#if effect.strings.content}}
-        <section class="collapsible-section">
-          <header class="collapsible-header">{{effect.strings.header}}</header>
-          <div class="collapsible-content">{{{effect.strings.content}}}</div>
-        </section>
-        {{/if}}
-      </div>
-      <div class="effect-tags">
-        <div class="effect-tag temporary">
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{"VAE.remainingTimeLabel" effect}})
-        </div>
-        {{#if effect.src}}
-        <div class="effect-tag source">
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.SOURCE"}}: {{effect.src}}
-        </div>
-        {{/if}}
-      </div>
-    </div>
-    <div class="effect-icon" style="background-image: url({{effect.icon}})">
-      {{#if effect.isExpired}}
-      <i class="expired badge fa-solid fa-clock"></i>
-      {{else if effect.infinite}}
-      <i class="unlimited badge fa-solid fa-infinity"></i>
-      {{else}}
-      <i class="badge fa-solid fa-clock"></i>
-      {{/if}}
-    </div>
-  </div>
+  {{#each enabledEffects}}
+  {{> "modules/visual-active-effects/templates/effect.hbs"}}
   {{/each}}
 
   {{#if (and passiveEffects.length enabledEffects.length)}}
   <hr>
   {{/if}}
 
-  {{#each passiveEffects as |effect|}}
-  <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
-    <div class="effect-info">
-      <h1 class="effect-info-header">{{effect.label}}</h1>
-      <div class="effect-info-details">
-        {{#if effect.strings.intro}}
-        <div class="effect-intro">{{{effect.strings.intro}}}</div>
-        {{/if}}
-        {{#if effect.buttons.length}}
-        <div class="vae-buttons">
-          {{#each effect.buttons as |button|}}
-          <a class="vae-button" data-action="custom-button" data-id="{{button.id}}">{{button.label}}</a>
-          {{/each}}
-        </div>
-        {{/if}}
-        {{#if effect.strings.content}}
-        <section class="collapsible-section">
-          <header class="collapsible-header">{{effect.strings.header}}</header>
-          <div class="collapsible-content">{{{effect.strings.content}}}</div>
-        </section>
-        {{/if}}
-      </div>
-      <div class="effect-tags">
-        <div class="effect-tag temporary">
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
-        </div>
-        {{#if effect.src}}
-        <div class="effect-tag source">
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.SOURCE"}}: {{effect.src}}
-        </div>
-        {{/if}}
-      </div>
-    </div>
-    <div class="effect-icon" style="background-image: url({{effect.icon}});"></div>
-  </div>
+  {{#each passiveEffects}}
+  {{> "modules/visual-active-effects/templates/effect.hbs"}}
   {{/each}}
 
   {{#if (and disabledEffects.length (or enabledEffects.length passiveEffects.length))}}
   <hr>
   {{/if}}
 
-  {{#each disabledEffects as |effect|}}
-  <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
-    <div class="effect-info">
-      <h1 class="effect-info-header">{{effect.label}}</h1>
-      <div class="effect-info-details">
-        {{#if effect.strings.intro}}
-        <div class="effect-intro">{{{effect.strings.intro}}}</div>
-        {{/if}}
-        {{#if effect.buttons.length}}
-        <div class="vae-buttons">
-          {{#each effect.buttons as |button|}}
-          <a class="vae-button" data-action="custom-button" data-id="{{button.id}}">{{button.label}}</a>
-          {{/each}}
-        </div>
-        {{/if}}
-        {{#if effect.strings.content}}
-        <section class="collapsible-section">
-          <header class="collapsible-header">{{effect.strings.header}}</header>
-          <div class="collapsible-content">{{{effect.strings.content}}}</div>
-        </section>
-        {{/if}}
-      </div>
-      <div class="effect-tags">
-        <div class="effect-tag temporary">
-          {{#if effect.isTemporary}}
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{"VAE.remainingTimeLabel" effect}})
-          {{else}}
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
-          {{/if}}
-        </div>
-        <div class="effect-tag disabled">{{localize "VISUAL_ACTIVE_EFFECTS.LABELS.DISABLED"}}</div>
-        {{#if effect.src}}
-        <div class="effect-tag source">
-          {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.SOURCE"}}: {{effect.src}}
-        </div>
-        {{/if}}
-      </div>
-    </div>
-    <div class="effect-icon disabled" style="background-image: url({{effect.icon}});">
-      {{#if effect.isExpired}}
-      <i class="expired badge fa-solid fa-clock"></i>
-      {{else if effect.infinite}}
-      <i class="unlimited badge fa-solid fa-infinity"></i>
-      {{else}}
-      <i class="badge fa-solid fa-clock"></i>
-      {{/if}}
-    </div>
-  </div>
+  {{#each disabledEffects}}
+  {{> "modules/visual-active-effects/templates/effect.hbs"}}
   {{/each}}
 
 </section>

@@ -1,0 +1,58 @@
+<div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
+  <div class="effect-info">
+    <h1 class="effect-info-header">{{effect.name}}</h1>
+
+    <div class="effect-info-details">
+      {{#if context.strings.intro}}
+      <div class="effect-intro">{{{context.strings.intro}}}</div>
+      {{/if}}
+
+      {{#if context.buttons.length}}
+      <div class="vae-buttons">
+        {{#each context.buttons}}
+        <a class="vae-button" data-action="custom-button" data-id="{{id}}">{{label}}</a>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      {{#if context.strings.content}}
+      <section class="collapsible-section">
+        <header class="collapsible-header">{{context.strings.header}}</header>
+        <div class="collapsible-content">{{{context.strings.content}}}</div>
+      </section>
+      {{/if}}
+    </div>
+
+    <div class="effect-tags">
+      <div class="effect-tag temporary">
+        {{#if effect.isTemporary}}
+        {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.TEMPORARY"}} ({{"VAE.remainingTimeLabel" effect}})
+        {{else}}
+        {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
+        {{/if}}
+      </div>
+
+      {{#if effect.disabled}}
+      <div class="effect-tag disabled">{{localize "VISUAL_ACTIVE_EFFECTS.LABELS.DISABLED"}}</div>
+      {{/if}}
+
+      {{#if effect.sourceName}}
+      <div class="effect-tag source">
+        {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.SOURCE"}}: {{effect.sourceName}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="effect-icon {{#if effect.disabled}}disabled{{/if}}" style="background-image: url({{effect.icon}})">
+    {{#if effect.isTemporary}}
+    {{#if context.isExpired}}
+    <i class="expired badge fa-solid fa-clock"></i>
+    {{else if context.isInfinite}}
+    <i class="unlimited badge fa-solid fa-infinity"></i>
+    {{else}}
+    <i class="badge fa-solid fa-clock"></i>
+    {{/if}}
+    {{/if}}
+  </div>
+</div>

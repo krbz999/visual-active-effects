@@ -8,13 +8,13 @@ export class VisualActiveEffects extends Application {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: MODULE,
       popOut: false,
-      template: `modules/${MODULE}/templates/${MODULE}.hbs`
+      template: `modules/${MODULE}/templates/${MODULE}.hbs`,
+      minimizable: false
     });
   }
 
   constructor() {
     super();
-    this.refresh = foundry.utils.debounce(this.render.bind(this), 100);
     this._initialSidebarWidth = ui.sidebar.element.outerWidth();
     this._playerClicks = game.settings.get(MODULE, PLAYER_CLICKS);
   }
@@ -25,100 +25,77 @@ export class VisualActiveEffects extends Application {
     const disabledEffects = [];
     const passiveEffects = [];
 
-    const effects = this._getEffectsFromActor();
-    if (!effects) return {};
+    const fromActor = this._getEffectsFromActor();
+    if (!fromActor) return {};
     const hideDisabled = game.settings.get(MODULE, HIDE_DISABLED);
     const hidePassive = game.settings.get(MODULE, HIDE_PASSIVE);
-    const locale = game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
 
-    // set up enabled effects.
-    for (const eff of effects) {
-      const desc = eff.flags["dfreds-convenient-effects"]?.description;
-      const {intro, header, content, forceInclude = false} = eff.getFlag(MODULE, "data") ?? {};
+    // Set up effects.
+    for (const entry of fromActor) {
 
-      const {
-        _id, icon, label, uuid, isTemporary, isExpired,
-        remainingSeconds, turns, disabled, infinite, src
-      } = eff;
+      // Set up the various text (intro and content).
+      const desc = entry.effect.flags["dfreds-convenient-effects"]?.description;
+      const data = entry.effect.flags[MODULE]?.data ?? {};
 
-      const effect = {
-        _id, icon, label, uuid, isTemporary, isExpired,
-        remainingSeconds, turns, infinite, src,
-        strings: {intro: "", content: ""}
-      };
+      // Set up intro if it exists.
+      const intro = entry.effect.description || data.intro || desc;
+      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {async: true});
 
-      if (intro?.length || desc?.length) {
-        effect.strings.intro = await TextEditor.enrichHTML(intro ?? desc, {async: true});
-      }
-      if (eff.buttons.length) {
-        effect.buttons = eff.buttons;
-        for (const button of eff.buttons) {
-          const id = foundry.utils.randomID();
-          this.buttons.push({id, callback: button.callback});
-          button.id = id;
-        }
-      }
-      if (content?.length) {
-        if (header?.length) effect.strings.header = header;
-        else effect.strings.header = locale;
-        effect.strings.content = await TextEditor.enrichHTML(content, {async: true});
+      // Set up content if it exists.
+      if (data.content?.length) {
+        // The 'header' for the collapsible's header with default 'Details'.
+        entry.context.strings.header = data.header || game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
+        // The collapsible content.
+        entry.context.strings.content = await TextEditor.enrichHTML(data.content, {async: true});
       }
 
-      if (disabled) {
-        if (!hideDisabled || forceInclude) disabledEffects.push(effect);
+      // Add to either disabled array, enabled array, or passive array.
+      if (entry.effect.disabled) {
+        if (!hideDisabled || data.forceInclude) disabledEffects.push(entry);
       }
-      else if (isTemporary) enabledEffects.push(effect);
-      else if (!hidePassive || forceInclude) passiveEffects.push(effect);
+      else if (entry.effect.isTemporary) enabledEffects.push(entry);
+      else if (!hidePassive || data.forceInclude) passiveEffects.push(entry);
     }
     return {enabledEffects, disabledEffects, passiveEffects};
   }
 
   /**
-   * Helper method for getData.
-   * @returns {array}     An array of effect data.
+   * Helper method for getData, extracting each effect, filtering the suppressed, and returning it with additional context.
+   * @returns {object[]}      An array with 'effect' and 'context'.
    */
   _getEffectsFromActor() {
     if (!this.actor) return;
-    return this.actor.effects.map((effect) => {
-      const src = this._getSourceName(effect);
-      const effectData = effect.clone({}, {keepId: true});
-      if (effectData.isTemporary) {
-        effectData.remainingSeconds = this._getSecondsRemaining(effectData.duration);
-        effectData.turns = effectData.duration.turns;
-        effectData.isExpired = effectData.remainingSeconds <= 0;
-        effectData.infinite = effectData.remainingSeconds === Infinity;
+    const data = [];
+    const effects = this.actor.allApplicableEffects();
+    for (const effect of effects) {
+      if (effect.isSuppressed) continue;
+      const context = {strings: {intro: "", content: ""}};
+      if (effect.isTemporary) {
+        context.isExpired = effect.duration.remaining === 0;
+        context.isInfinite = effect.duration.remaining === null;
       }
-      effectData.supp = effect.isSuppressed;
-      effectData.src = src;
       const buttons = [];
 
       /**
-       * A hook that is called such that other modules can add buttons to the description
-       * of an effect on the panel. Each object pushed into the array must have 'label' and
-       * a function 'callback'.
+       * A hook that is called such that other modules can add buttons to the description of an effect
+       * on the panel. Each object pushed into the array must have 'label' and a function 'callback'.
        * @param {ActiveEffect} effect     The original effect.
        * @param {Array} buttons           An array of buttons.
        */
       Hooks.callAll("visual-active-effects.createEffectButtons", effect, buttons);
 
-      effectData.buttons = buttons;
-      return effectData;
-    }).filter(effectData => {
-      return !effectData.supp;
-    });
-  }
+      // Filter out invalid buttons and push valid ones into this.buttons in one go.
+      context.buttons = buttons.reduce((acc, b) => {
+        if (!(typeof b.label === "string") || !(b.callback instanceof Function)) return acc;
+        b.id = foundry.utils.randomID();
+        this.buttons.push(b);
+        acc.push(b);
+        return acc;
+      }, []);
 
-  /**
-   * Helper method for getData.
-   * @returns {boolean|string}    The label to use for the effect.
-   */
-  _getSourceName(effect) {
-    if (!effect.origin) return false;
-    try {
-      return fromUuidSync(effect.origin).name;
-    } catch {
-      return false;
+      data.push({effect, context});
     }
+    return data;
   }
 
   /**
@@ -142,9 +119,23 @@ export class VisualActiveEffects extends Application {
 
   /** @override */
   async _render(force = false, options = {}) {
+    if (!force && this.element[0].closest(".panel").classList.contains("hovered")) {
+      this._needsRefresh = true;
+      return;
+    }
     await super._render(force, options);
+    this._needsRefresh = false;
     if (ui.sidebar._collapsed) this.element.css("right", "50px");
     else this.element.css("right", `${this._initialSidebarWidth + 18}px`);
+  }
+
+  /**
+   * Debounce rendering of the app.
+   * @param {boolean} force             Whether to force the rendering of the app.
+   * @returns {VisualActiveEffects}     This application.
+   */
+  async refresh(force) {
+    return foundry.utils.debounce(this.render.bind(this, force), 100)();
   }
 
   /** @override */
@@ -155,6 +146,30 @@ export class VisualActiveEffects extends Application {
     }
     html[0].querySelectorAll(".collapsible-header").forEach(n => n.addEventListener("click", this.onCollapsibleClick.bind(this)));
     html[0].querySelectorAll("[data-action='custom-button']").forEach(n => n.addEventListener("click", this.onClickCustomButton.bind(this)));
+    html[0].addEventListener("mouseover", this._onMouseOver.bind(this));
+    html[0].addEventListener("mouseout", this._onMouseOver.bind(this));
+    html[0].addEventListener("mouseover", this.bringToTop.bind(this));
+  }
+
+  /** @override */
+  bringToTop(event) {
+    const element = event.currentTarget;
+    const z = document.defaultView.getComputedStyle(element).zIndex;
+    if (z < _maxZ) {
+      element.style.zIndex = Math.min(++_maxZ, 99999);
+      ui.activeWindow = this;
+    }
+  }
+
+  /**
+   * Save whether the application is being moused over.
+   * @param {PointerEvent} event      The initiating mouseover or mouseout event.
+   */
+  async _onMouseOver(event) {
+    const state = event.type === "mouseover";
+    const target = event.currentTarget;
+    target.classList.toggle("hovered", state);
+    if (!state && (this._needsRefresh === true)) return this.render();
   }
 
   /**
@@ -186,14 +201,9 @@ export class VisualActiveEffects extends Application {
    * @returns {ActiveEffect|Promise<boolean>}       Either the deleted effect, or the result of the prompt.
    */
   async onIconRightClick(event) {
-    const effect = await fromUuid(event.currentTarget.closest(".effect-item").dataset.effectUuid);
+    const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
     if (event.shiftKey && game.user.isGM) return effect.delete();
-    const stringA = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_ME";
-    const content = game.i18n.format(stringA, {label: effect.label});
-    const stringB = "VISUAL_ACTIVE_EFFECTS.MISC.DELETE_EFFECT";
-    const title = game.i18n.localize(stringB);
-    const yes = () => effect.delete();
-    return Dialog.confirm({title, content, yes});
+    return effect.deleteDialog();
   }
 
   /**
@@ -202,13 +212,11 @@ export class VisualActiveEffects extends Application {
    * @returns {ActiveEffect|ActiveEffectConfig}     The updated effect or its sheet.
    */
   async onIconDoubleClick(event) {
-    if (!event.ctrlKey) {
-      const effect = await fromUuid(event.currentTarget.closest(".effect-item").dataset.effectUuid);
-      return effect.update({disabled: !effect.disabled});
-    } else {
-      const effect = await fromUuid(event.currentTarget.closest(".effect-item").dataset.effectUuid);
-      return effect.sheet.render(true);
-    }
+    const ctrl = event.ctrlKey;
+    const uuid = event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid;
+    const effect = await fromUuid(uuid);
+    if (ctrl) return effect.sheet.render(true);
+    else return effect.update({disabled: !effect.disabled});
   }
 
   /**
