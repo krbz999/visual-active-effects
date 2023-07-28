@@ -63,17 +63,10 @@ export default class VisualActiveEffectsEditor extends FormApplication {
    * Handle adding a new row for a status.
    * @param {PointerEvent} event      The initiating click event.
    */
-  _onAddStatus(event) {
+  async _onAddStatus(event) {
     const force = event.currentTarget.closest(".config").querySelector(".form-group:last-child");
     const div = document.createElement("DIV");
-    div.innerHTML = `
-    <div class="form-group status">
-      <label>${game.i18n.localize("VISUAL_ACTIVE_EFFECTS.STATUS_ID")}</label>
-      <div class="form-fields">
-        <input type="text" name="statuses">
-        <a data-action="delete-status"><i class="fa-solid fa-trash"></i></a>
-      </div>
-    </div>`;
+    div.innerHTML = await renderTemplate("modules/visual-active-effects/templates/status.hbs", []);
     div.querySelector("[data-action='delete-status']").addEventListener("click", this._onDeleteStatus.bind(this));
     force.before(div.firstElementChild);
   }

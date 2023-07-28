@@ -6,13 +6,9 @@
         <a data-action="add-status"><i class="fa-solid fa-plus-square"></i></a>
       </div>
       {{#each statuses}}
-      <div class="form-group status">
-        <label>{{localize "VISUAL_ACTIVE_EFFECTS.STATUS_ID"}}</label>
-        <div class="form-fields">
-          <input type="text" name="statuses" value="{{this}}">
-          <a data-action="delete-status"><i class="fa-solid fa-trash"></i></a>
-        </div>
-      </div>
+
+      {{> "modules/visual-active-effects/templates/status.hbs"}}
+
       {{/each}}
       <div class="form-group">
         <label>{{localize "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE"}}</label>

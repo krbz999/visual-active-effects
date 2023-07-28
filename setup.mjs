@@ -6,7 +6,10 @@ import {VisualActiveEffects} from "./scripts/visual-active-effects.mjs";
 Hooks.once("init", () => console.log("ZHELL | Initializing Visual Active Effects"));
 Hooks.once("setup", registerSettings);
 Hooks.once("ready", async function() {
-  await loadTemplates(["modules/visual-active-effects/templates/effect.hbs"]);
+  await loadTemplates([
+    "modules/visual-active-effects/templates/effect.hbs",
+    "modules/visual-active-effects/templates/status.hbs"
+  ]);
   registerHelpers();
   registerAPI();
   applyStyleSettings();
@@ -27,9 +30,5 @@ Hooks.once("ready", async function() {
   });
 });
 Hooks.on("getActiveEffectConfigHeaderButtons", function(app, array) {
-  array.unshift({
-    class: MODULE,
-    icon: ICON,
-    onclick: _renderEditor.bind(app.document)
-  });
+  array.unshift({class: MODULE, icon: ICON, onclick: _renderEditor.bind(app.document)});
 });

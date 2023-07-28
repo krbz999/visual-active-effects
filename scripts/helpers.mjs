@@ -10,7 +10,7 @@ import {
 } from "./constants.mjs";
 import VisualActiveEffectsEditor from "./textEditor.mjs";
 
-// Registers the handlebar helpers
+/** Register the handlebar helpers. */
 export function registerHelpers() {
   Handlebars.registerHelper("VAE.remainingTimeLabel", (effect) => {
     // Case 1: Duration measured in rounds and turns.
@@ -37,12 +37,12 @@ export function registerHelpers() {
       const monthsPerYear = game.settings.get(MODULE, MONTHS_PER_YEAR) ?? 12;
       const extraDaysPerYear = game.settings.get(MODULE, EXTRA_DAYS_PER_YEAR) ?? 1;
 
-      SECONDS["IN_ONE_WEEK"] = SECONDS.IN_ONE_DAY * daysPerWeek;
-      SECONDS["IN_TWO_WEEKS"] = SECONDS.IN_ONE_WEEK * 2;
-      SECONDS["IN_ONE_MONTH"] = SECONDS.IN_ONE_WEEK * weeksPerMonth;
-      SECONDS["IN_TWO_MONTHS"] = SECONDS.IN_ONE_MONTH * 2;
-      SECONDS["IN_ONE_YEAR"] = SECONDS.IN_ONE_MONTH * monthsPerYear + SECONDS.IN_ONE_DAY * extraDaysPerYear;
-      SECONDS["IN_TWO_YEARS"] = SECONDS.IN_ONE_YEAR * 2;
+      SECONDS.IN_ONE_WEEK = SECONDS.IN_ONE_DAY * daysPerWeek;
+      SECONDS.IN_TWO_WEEKS = SECONDS.IN_ONE_WEEK * 2;
+      SECONDS.IN_ONE_MONTH = SECONDS.IN_ONE_WEEK * weeksPerMonth;
+      SECONDS.IN_TWO_MONTHS = SECONDS.IN_ONE_MONTH * 2;
+      SECONDS.IN_ONE_YEAR = SECONDS.IN_ONE_MONTH * monthsPerYear + SECONDS.IN_ONE_DAY * extraDaysPerYear;
+      SECONDS.IN_TWO_YEARS = SECONDS.IN_ONE_YEAR * 2;
 
       const remainingSeconds = effect.duration.remaining;
 
@@ -96,6 +96,7 @@ export function registerHelpers() {
   });
 }
 
+/** Render the editor. */
 export function _renderEditor() {
   const editor = Object.values(this.apps).find(e => e instanceof VisualActiveEffectsEditor);
   if (editor) return editor.render();
@@ -104,9 +105,7 @@ export function _renderEditor() {
   }).render(true);
 }
 
-/**
- * Refreshes the style sheet when a user changes the various css-related module settings.
- */
+/** Refreshes the style sheet when a user changes the various css-related module settings. */
 export function applyStyleSettings() {
   const data = {};
   data["icon-size"] = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) || 50));
@@ -117,9 +116,7 @@ export function applyStyleSettings() {
   Object.entries(data).forEach(([key, val]) => root.style.setProperty(`--${MODULE}-${key}`, `${val}px`));
 }
 
-/**
- * Register API functions.
- */
+/** Register API functions. */
 export function registerAPI() {
   game.modules.get(MODULE).api = {
     migrateWorldDescriptions: async function() {

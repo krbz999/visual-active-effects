@@ -71,8 +71,9 @@ export class VisualActiveEffects extends Application {
       if (effect.isSuppressed) continue;
       const context = {strings: {intro: "", content: ""}};
       if (effect.isTemporary) {
-        context.isExpired = effect.duration.remaining === 0;
-        context.isInfinite = effect.duration.remaining === null;
+        const rem = effect.duration.remaining;
+        context.isExpired = Number.isNumeric(rem) && (rem <= 0);
+        context.isInfinite = rem === null;
       }
       const buttons = [];
 
@@ -201,9 +202,9 @@ export class VisualActiveEffects extends Application {
    * @returns {ActiveEffect|Promise<boolean>}       Either the deleted effect, or the result of the prompt.
    */
   async onIconRightClick(event) {
+    const alt = event.shiftKey;
     const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
-    if (event.shiftKey && game.user.isGM) return effect.delete();
-    return effect.deleteDialog();
+    return (alt && game.user.isGM) ? effect.delete() : effect.deleteDialog();
   }
 
   /**
@@ -212,11 +213,9 @@ export class VisualActiveEffects extends Application {
    * @returns {ActiveEffect|ActiveEffectConfig}     The updated effect or its sheet.
    */
   async onIconDoubleClick(event) {
-    const ctrl = event.ctrlKey;
-    const uuid = event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid;
-    const effect = await fromUuid(uuid);
-    if (ctrl) return effect.sheet.render(true);
-    else return effect.update({disabled: !effect.disabled});
+    const alt = event.ctrlKey;
+    const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
+    return alt ? effect.sheet.render(true) : effect.update({disabled: !effect.disabled});
   }
 
   /**
