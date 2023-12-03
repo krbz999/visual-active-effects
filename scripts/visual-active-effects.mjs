@@ -38,15 +38,15 @@ export class VisualActiveEffects extends Application {
       const data = entry.effect.flags[MODULE]?.data ?? {};
 
       // Set up intro if it exists.
-      const intro = entry.effect.description || data.intro || desc;
-      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {async: true});
+      const intro = entry.effect.description || desc;
+      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro);
 
       // Set up content if it exists.
       if (data.content?.length) {
         // The 'header' for the collapsible's header with default 'Details'.
         entry.context.strings.header = data.header || game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
         // The collapsible content.
-        entry.context.strings.content = await TextEditor.enrichHTML(data.content, {async: true});
+        entry.context.strings.content = await TextEditor.enrichHTML(data.content);
       }
 
       // Add to either disabled array, enabled array, or passive array.

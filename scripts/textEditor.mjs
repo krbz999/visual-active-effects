@@ -19,6 +19,10 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     });
   }
 
+  get title() {
+    return game.i18n.format("VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE", {name: this.effect.name});
+  }
+
   get template() {
     return `modules/${MODULE}/templates/vae-editor.hbs`;
   }
@@ -33,10 +37,10 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     const flag = this.effect.getFlag(MODULE, "data") ?? {};
 
     foundry.utils.mergeObject(data, {
-      statuses: this.effect.statuses.size ? this.effect.statuses : [""],
+      statuses: this.effect.statuses.size ? this.effect.statuses.toObject() : [""],
       forceInclude: flag.forceInclude === true,
-      content: await TextEditor.enrichHTML(flag.content ?? "", {async: true, relativeTo: this.effect}),
-      intro: await TextEditor.enrichHTML(this.effect.description || flag.intro || "", {async: true, relativeTo: this.effect}),
+      content: await TextEditor.enrichHTML(flag.content || ""),
+      intro: await TextEditor.enrichHTML(this.effect.description || ""),
       editable: this.isEditable,
       ICON: ICON
     });
@@ -80,10 +84,10 @@ export default class VisualActiveEffectsEditor extends FormApplication {
       if (s) acc.push(s);
       return acc;
     }, []);
-    formData.description = formData["flags.visual-active-effects.data.intro"];
     ui.notifications.info("VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED", {localize: true});
     if (event.submitter) this.close();
-    await this.effect.sheet?.submit({preventClose: true, preventRender: true});
+    const sheet = this.effect.sheet;
+    if (sheet) formData = sheet._getSubmitData(formData);
     return this.effect.update(formData);
   }
 

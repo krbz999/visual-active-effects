@@ -1,7 +1,7 @@
 {
   "VISUAL_ACTIVE_EFFECTS.CONTENT": "Content",
   "VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED": "Text contents have been saved.",
-  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Visual Active Effects Editor: {id}",
+  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Visual Active Effects Editor: {name}",
   "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE": "Always show this effect:",
   "VISUAL_ACTIVE_EFFECTS.INTRO": "Intro",
   "VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS": "Details",

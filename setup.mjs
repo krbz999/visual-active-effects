@@ -3,8 +3,7 @@ import {registerHelpers, _renderEditor, applyStyleSettings, registerAPI} from ".
 import {registerSettings} from "./scripts/settings.mjs";
 import {VisualActiveEffects} from "./scripts/visual-active-effects.mjs";
 
-Hooks.once("init", () => console.log("ZHELL | Initializing Visual Active Effects"));
-Hooks.once("setup", registerSettings);
+Hooks.once("init", registerSettings);
 Hooks.once("ready", async function() {
   await loadTemplates([
     "modules/visual-active-effects/templates/effect.hbs",

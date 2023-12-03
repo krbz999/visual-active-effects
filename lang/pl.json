@@ -1,7 +1,7 @@
 {
   "VISUAL_ACTIVE_EFFECTS.CONTENT": "Zawartość",
   "VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED": "Zawartość została zaktualizowana.",
-  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Autor Visual Active Effects: {id}",
+  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Autor Visual Active Effects: {name}",
   "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE": "Zawsze pokazuj ten efektt:",
   "VISUAL_ACTIVE_EFFECTS.INTRO": "Wprowadzenie",
   "VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS": "Szczegóły",

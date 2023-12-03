@@ -100,9 +100,7 @@ export function registerHelpers() {
 export function _renderEditor() {
   const editor = Object.values(this.apps).find(e => e instanceof VisualActiveEffectsEditor);
   if (editor) return editor.render();
-  return new VisualActiveEffectsEditor(this, {
-    title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE", {id: this.id})
-  }).render(true);
+  return new VisualActiveEffectsEditor(this).render(true);
 }
 
 /** Refreshes the style sheet when a user changes the various css-related module settings. */

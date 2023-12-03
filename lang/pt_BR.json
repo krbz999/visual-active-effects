@@ -1,7 +1,7 @@
 {
   "VISUAL_ACTIVE_EFFECTS.CONTENT": "Conteúdo",
   "VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED": "O conteúdo do texto foi salvo.",
-  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Editor de efeitos visuais ativos: {id}",
+  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Editor de efeitos visuais ativos: {name}",
   "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE": "Sempre mostre este efeito:",
   "VISUAL_ACTIVE_EFFECTS.INTRO": "Introdução",
   "VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS": "Detalhes",
