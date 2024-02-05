@@ -36,17 +36,18 @@ export class VisualActiveEffects extends Application {
       // Set up the various text (intro and content).
       const desc = entry.effect.flags["dfreds-convenient-effects"]?.description;
       const data = entry.effect.flags[MODULE]?.data ?? {};
+      const rollData = (await fromUuid(entry.effect.origin))?.getRollData() || {};
 
       // Set up intro if it exists.
       const intro = entry.effect.description || desc;
-      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro);
+      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {rollData});
 
       // Set up content if it exists.
       if (data.content?.length) {
         // The 'header' for the collapsible's header with default 'Details'.
         entry.context.strings.header = data.header || game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
         // The collapsible content.
-        entry.context.strings.content = await TextEditor.enrichHTML(data.content);
+        entry.context.strings.content = await TextEditor.enrichHTML(data.content, {rollData});
       }
 
       // Add to either disabled array, enabled array, or passive array.
