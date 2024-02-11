@@ -36,7 +36,21 @@ export class VisualActiveEffects extends Application {
       // Set up the various text (intro and content).
       const desc = entry.effect.flags["dfreds-convenient-effects"]?.description;
       const data = entry.effect.flags[MODULE]?.data ?? {};
-      const rollData = (await fromUuid(entry.effect.origin))?.getRollData() || {};
+      
+      // Get the effect rollData to populate enrichers within the descriptions.
+      let rollData = {};
+      if (entry.effect.origin) {
+        const origin = await fromUuid(entry.effect.origin);
+        if (origin && typeof origin.getRollData === 'function') {
+          rollData = origin.getRollData();
+        }
+      }
+      // Fallback to the parent if there's no rollData.
+      if (!Object.keys(rollData).length) {
+        if (typeof entry.effect.parent?.getRollData === 'function') {
+          rollData = entry.parent.getRollData();
+        }
+      }
 
       // Set up intro if it exists.
       const intro = entry.effect.description || desc;
