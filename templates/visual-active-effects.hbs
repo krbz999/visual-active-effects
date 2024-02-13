@@ -1,23 +1,23 @@
 <section id="visual-active-effects" class="panel visual-active-effects">
 
   {{#each enabledEffects}}
-  {{> "modules/visual-active-effects/templates/effect.hbs"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="temporary"}}
   {{/each}}
 
   {{#if (and passiveEffects.length enabledEffects.length)}}
-  <hr>
+  <hr class="divider">
   {{/if}}
 
   {{#each passiveEffects}}
-  {{> "modules/visual-active-effects/templates/effect.hbs"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="passive"}}
   {{/each}}
 
   {{#if (and disabledEffects.length (or enabledEffects.length passiveEffects.length))}}
-  <hr>
+  <hr class="divider">
   {{/if}}
 
   {{#each disabledEffects}}
-  {{> "modules/visual-active-effects/templates/effect.hbs"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="disabled"}}
   {{/each}}
 
 </section>

@@ -10,90 +10,93 @@ import {
 } from "./constants.mjs";
 import VisualActiveEffectsEditor from "./textEditor.mjs";
 
-/** Register the handlebar helpers. */
-export function registerHelpers() {
-  Handlebars.registerHelper("VAE.remainingTimeLabel", (effect) => {
-    // Case 1: Duration measured in rounds and turns.
-    if (effect.duration.type === "turns") {
-      if (effect.duration.remaining === null) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
-      else if (effect.duration.remaining === 0) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED");
-      return effect.duration.label;
+/**
+ * Helper function to get remaining duration.
+ * @param {ActiveEffect} effect
+ * @returns {string|null}
+ */
+export function remainingTimeLabel(effect) {
+
+  // Case 1: Duration measured in rounds and turns.
+  if (effect.duration.type === "turns") {
+    if (effect.duration.remaining === null) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
+    else if (effect.duration.remaining === 0) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED");
+    return effect.duration.label;
+  }
+
+  // Case 2: Duration measured in seconds.
+  else if (effect.duration.type === "seconds") {
+    const SECONDS = {
+      IN_ONE_ROUND: 6,
+      IN_ONE_MINUTE: 60,
+      IN_TWO_MINUTES: 120,
+      IN_ONE_HOUR: 3600,
+      IN_TWO_HOURS: 7200,
+      IN_ONE_DAY: 86400,
+      IN_TWO_DAYS: 172800
+    };
+
+    const daysPerWeek = game.settings.get(MODULE, DAYS_PER_WEEK) ?? 9;
+    const weeksPerMonth = game.settings.get(MODULE, WEEKS_PER_MONTH) ?? 3;
+    const monthsPerYear = game.settings.get(MODULE, MONTHS_PER_YEAR) ?? 12;
+    const extraDaysPerYear = game.settings.get(MODULE, EXTRA_DAYS_PER_YEAR) ?? 1;
+
+    SECONDS.IN_ONE_WEEK = SECONDS.IN_ONE_DAY * daysPerWeek;
+    SECONDS.IN_TWO_WEEKS = SECONDS.IN_ONE_WEEK * 2;
+    SECONDS.IN_ONE_MONTH = SECONDS.IN_ONE_WEEK * weeksPerMonth;
+    SECONDS.IN_TWO_MONTHS = SECONDS.IN_ONE_MONTH * 2;
+    SECONDS.IN_ONE_YEAR = SECONDS.IN_ONE_MONTH * monthsPerYear + SECONDS.IN_ONE_DAY * extraDaysPerYear;
+    SECONDS.IN_TWO_YEARS = SECONDS.IN_ONE_YEAR * 2;
+
+    const remainingSeconds = effect.duration.remaining;
+
+    let string = "";
+    let qty = 1;
+
+    if (remainingSeconds >= SECONDS.IN_TWO_YEARS) {
+      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_YEAR);
+      string = "YEARS";
+    } else if (remainingSeconds >= SECONDS.IN_ONE_YEAR) {
+      string = "YEAR";
+    } else if (remainingSeconds >= SECONDS.IN_TWO_MONTHS) {
+      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_MONTH);
+      string = "MONTHS";
+    } else if (remainingSeconds >= SECONDS.IN_ONE_MONTH) {
+      string = "MONTH";
+    } else if (remainingSeconds >= SECONDS.IN_TWO_WEEKS) {
+      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_WEEK);
+      string = "WEEKS";
+    } else if (remainingSeconds >= SECONDS.IN_ONE_WEEK) {
+      string = "WEEK";
+    } else if (remainingSeconds >= SECONDS.IN_TWO_DAYS) {
+      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_DAY);
+      string = "DAYS";
+    } else if (remainingSeconds >= SECONDS.IN_ONE_DAY) {
+      string = "DAY";
+    } else if (remainingSeconds >= SECONDS.IN_TWO_HOURS) {
+      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_HOUR);
+      string = "HOURS";
+    } else if (remainingSeconds >= SECONDS.IN_ONE_HOUR) {
+      string = "HOUR";
+    } else if (remainingSeconds >= SECONDS.IN_TWO_MINUTES) {
+      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_MINUTE);
+      string = "MINUTES";
+    } else if (remainingSeconds >= SECONDS.IN_ONE_MINUTE) {
+      string = "MINUTE";
+    } else if (remainingSeconds >= 2) {
+      qty = remainingSeconds;
+      string = "SECONDS";
+    } else if (remainingSeconds === 1) {
+      string = "SECOND";
+    } else {
+      string = "EXPIRED";
     }
 
-    // Case 2: Duration measured in seconds.
-    else if (effect.duration.type === "seconds") {
-      const SECONDS = {
-        IN_ONE_ROUND: 6,
-        IN_ONE_MINUTE: 60,
-        IN_TWO_MINUTES: 120,
-        IN_ONE_HOUR: 3600,
-        IN_TWO_HOURS: 7200,
-        IN_ONE_DAY: 86400,
-        IN_TWO_DAYS: 172800
-      };
+    return game.i18n.format(`VISUAL_ACTIVE_EFFECTS.TIME.${string}`, {qty});
+  }
 
-      const daysPerWeek = game.settings.get(MODULE, DAYS_PER_WEEK) ?? 9;
-      const weeksPerMonth = game.settings.get(MODULE, WEEKS_PER_MONTH) ?? 3;
-      const monthsPerYear = game.settings.get(MODULE, MONTHS_PER_YEAR) ?? 12;
-      const extraDaysPerYear = game.settings.get(MODULE, EXTRA_DAYS_PER_YEAR) ?? 1;
-
-      SECONDS.IN_ONE_WEEK = SECONDS.IN_ONE_DAY * daysPerWeek;
-      SECONDS.IN_TWO_WEEKS = SECONDS.IN_ONE_WEEK * 2;
-      SECONDS.IN_ONE_MONTH = SECONDS.IN_ONE_WEEK * weeksPerMonth;
-      SECONDS.IN_TWO_MONTHS = SECONDS.IN_ONE_MONTH * 2;
-      SECONDS.IN_ONE_YEAR = SECONDS.IN_ONE_MONTH * monthsPerYear + SECONDS.IN_ONE_DAY * extraDaysPerYear;
-      SECONDS.IN_TWO_YEARS = SECONDS.IN_ONE_YEAR * 2;
-
-      const remainingSeconds = effect.duration.remaining;
-
-      let string = "";
-      let qty = 1;
-
-      if (remainingSeconds >= SECONDS.IN_TWO_YEARS) {
-        qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_YEAR);
-        string = "YEARS";
-      } else if (remainingSeconds >= SECONDS.IN_ONE_YEAR) {
-        string = "YEAR";
-      } else if (remainingSeconds >= SECONDS.IN_TWO_MONTHS) {
-        qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_MONTH);
-        string = "MONTHS";
-      } else if (remainingSeconds >= SECONDS.IN_ONE_MONTH) {
-        string = "MONTH";
-      } else if (remainingSeconds >= SECONDS.IN_TWO_WEEKS) {
-        qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_WEEK);
-        string = "WEEKS";
-      } else if (remainingSeconds >= SECONDS.IN_ONE_WEEK) {
-        string = "WEEK";
-      } else if (remainingSeconds >= SECONDS.IN_TWO_DAYS) {
-        qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_DAY);
-        string = "DAYS";
-      } else if (remainingSeconds >= SECONDS.IN_ONE_DAY) {
-        string = "DAY";
-      } else if (remainingSeconds >= SECONDS.IN_TWO_HOURS) {
-        qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_HOUR);
-        string = "HOURS";
-      } else if (remainingSeconds >= SECONDS.IN_ONE_HOUR) {
-        string = "HOUR";
-      } else if (remainingSeconds >= SECONDS.IN_TWO_MINUTES) {
-        qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_MINUTE);
-        string = "MINUTES";
-      } else if (remainingSeconds >= SECONDS.IN_ONE_MINUTE) {
-        string = "MINUTE";
-      } else if (remainingSeconds >= 2) {
-        qty = remainingSeconds;
-        string = "SECONDS";
-      } else if (remainingSeconds === 1) {
-        string = "SECOND";
-      } else {
-        string = "EXPIRED";
-      }
-
-      return game.i18n.format(`VISUAL_ACTIVE_EFFECTS.TIME.${string}`, {qty});
-    }
-
-    // Case 3: Neither rounds, turns, or seconds, so just return unlimited.
-    return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
-  });
+  // Case 3: Neither rounds, turns, or seconds, so just return unlimited.
+  return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
 }
 
 /** Render the editor. */
@@ -108,7 +111,7 @@ export function applyStyleSettings() {
   const data = {};
   data["icon-size"] = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) || 50));
   data["font-size"] = Math.max(6, Math.round(game.settings.get(MODULE, FONT_SIZE) || 16));
-  data["max-width"] = Math.round(350 * data["font-size"] / 16);
+  data["max-width"] = Math.round(300 * data["font-size"] / 16);
   data["top-offset"] = Math.max(0, Math.round(game.settings.get(MODULE, TOP_OFFSET) || 25));
   const root = document.querySelector(":root");
   Object.entries(data).forEach(([key, val]) => root.style.setProperty(`--${MODULE}-${key}`, `${val}px`));

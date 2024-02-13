@@ -1,4 +1,5 @@
 import {HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS} from "./constants.mjs";
+import {remainingTimeLabel} from "./helpers.mjs";
 
 export class VisualActiveEffects extends Application {
   // Array of buttons for other modules.
@@ -37,6 +38,15 @@ export class VisualActiveEffects extends Application {
       const desc = entry.effect.flags["dfreds-convenient-effects"]?.description;
       const data = entry.effect.flags[MODULE]?.data ?? {};
 
+      // Backwards compatibility.
+      let inclusion = 0;
+      if ("inclusion" in data) inclusion = data.inclusion;
+      else if (data.forceInclude) inclusion = 1;
+
+      // Always exclude?
+      const forceExclude = data.inclusion === -1;
+      if (forceExclude) continue;
+
       // Set up intro if it exists.
       const intro = entry.effect.description || desc;
       if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro);
@@ -49,12 +59,14 @@ export class VisualActiveEffects extends Application {
         entry.context.strings.content = await TextEditor.enrichHTML(data.content);
       }
 
+      entry.context.hasText = !!intro || !!data.content?.length || !!entry.context.buttons.length;
+
       // Add to either disabled array, enabled array, or passive array.
       if (entry.effect.disabled) {
-        if (!hideDisabled || data.forceInclude) disabledEffects.push(entry);
+        if (!hideDisabled || (inclusion === 1)) disabledEffects.push(entry);
       }
       else if (entry.effect.isTemporary) enabledEffects.push(entry);
-      else if (!hidePassive || data.forceInclude) passiveEffects.push(entry);
+      else if (!hidePassive || (inclusion === 1)) passiveEffects.push(entry);
     }
     return {enabledEffects, disabledEffects, passiveEffects};
   }
@@ -74,6 +86,7 @@ export class VisualActiveEffects extends Application {
         const rem = effect.duration.remaining;
         context.isExpired = Number.isNumeric(rem) && (rem <= 0);
         context.isInfinite = rem === null;
+        context.durationLabel = remainingTimeLabel(effect);
       }
       const buttons = [];
 
@@ -150,6 +163,14 @@ export class VisualActiveEffects extends Application {
     html[0].addEventListener("mouseover", this._onMouseOver.bind(this));
     html[0].addEventListener("mouseout", this._onMouseOver.bind(this));
     html[0].addEventListener("mouseover", this.bringToTop.bind(this));
+    html[0].querySelectorAll(".effect-item").forEach(n => n.addEventListener("mouseenter", this._onMouseEnter.bind(this)));
+  }
+
+  _onMouseEnter(event) {
+    const info = event.currentTarget.querySelector(".effect-intro");
+    if (!info) return;
+    const win = window.innerHeight;
+    info.style.maxHeight = `${win - info.getBoundingClientRect().top - 350}px`;
   }
 
   /** @override */
@@ -227,8 +248,7 @@ export class VisualActiveEffects extends Application {
     section.classList.toggle("active");
     const div = section.querySelector(".collapsible-content");
     const header = event.currentTarget;
-    const tags = event.currentTarget.closest(".effect-item").querySelector(".effect-tags");
     const win = window.innerHeight;
-    div.style.maxHeight = `${win - (50 + header.getBoundingClientRect().bottom + tags.getBoundingClientRect().height)}px`;
+    div.style.maxHeight = `${win - (150 + header.getBoundingClientRect().bottom)}px`;
   }
 }

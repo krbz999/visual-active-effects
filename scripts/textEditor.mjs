@@ -9,7 +9,7 @@ export default class VisualActiveEffectsEditor extends FormApplication {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       width: 450,
-      height: 800,
+      height: 500,
       classes: [MODULE, "sheet"],
       resizable: true,
       scrollY: [],
@@ -36,9 +36,15 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     const data = await super.getData();
     const flag = this.effect.getFlag(MODULE, "data") ?? {};
 
+    // Backwards compatibility.
+    let inclusion;
+    if ("inclusion" in flag) inclusion = flag.inclusion;
+    else if (data.forceInclude === true) inclusion = 1;
+    else inclusion = 0;
+
     foundry.utils.mergeObject(data, {
       statuses: this.effect.statuses.size ? this.effect.statuses.toObject() : [""],
-      forceInclude: flag.forceInclude === true,
+      inclusion: inclusion,
       content: await TextEditor.enrichHTML(flag.content || ""),
       intro: await TextEditor.enrichHTML(this.effect.description || ""),
       editable: this.isEditable,

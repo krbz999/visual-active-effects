@@ -11,9 +11,15 @@
 
       {{/each}}
       <div class="form-group">
-        <label>{{localize "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE"}}</label>
-        <div class="form-fields">
-          <input type="checkbox" name="flags.visual-active-effects.data.forceInclude" {{checked forceInclude}}>
+        <label>{{localize "VISUAL_ACTIVE_EFFECTS.INCLUSION"}}</label>
+        <div class="form-fields inclusion">
+          <select data-dtype="Number" name="flags.visual-active-effects.data.inclusion">
+            {{#select inclusion}}
+            <option value="0">&mdash;</option>
+            <option value="1">{{localize "VISUAL_ACTIVE_EFFECTS.INCLUSION_INCLUDE"}}</option>
+            <option value="-1">{{localize "VISUAL_ACTIVE_EFFECTS.INCLUSION_EXCLUDE"}}</option>
+            {{/select}}
+          </select>
         </div>
       </div>
     </div>
