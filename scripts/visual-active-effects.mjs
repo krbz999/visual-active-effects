@@ -39,17 +39,31 @@ export class VisualActiveEffects extends Application {
       
       // Get the effect rollData to populate enrichers within the descriptions.
       let rollData = {};
-      if (entry.effect.origin) {
-        const origin = await fromUuid(entry.effect.origin);
-        if (origin && typeof origin.getRollData === 'function') {
-          rollData = origin.getRollData();
+      try {
+        if (entry.effect.origin) {
+          let origin = await fromUuid(entry.effect.origin);
+          if (origin?.documentName === ActiveEffect.documentName) {
+            // Change the origin to the parent of the ActiveEffect - the originating item or actor.
+            origin = origin.parent;
+          }
+          if (origin?.pack) {
+            // Origin references a compendium, change the origin to the effect's parent - the local item or actor.
+            origin = entry.effect.parent;
+          }
+          if (typeof origin?.getRollData === "function") {
+            rollData = origin.getRollData();
+          }
         }
-      }
-      // Fallback to the parent if there's no rollData.
-      if (!Object.keys(rollData).length) {
-        if (typeof entry.effect.parent?.getRollData === 'function') {
-          rollData = entry.parent.getRollData();
+
+        // Fallback to the parent if there's no rollData.
+        if (!rollData || !Object.keys(rollData).length) {
+          if (typeof entry.effect.parent?.getRollData === "function") {
+            rollData = entry.effect.parent.getRollData();
+          }
         }
+      } catch (_) {
+        // Fallback to just an empty object - enrichers will show empty values in this case.
+        rollData = {};
       }
 
       // Set up intro if it exists.
