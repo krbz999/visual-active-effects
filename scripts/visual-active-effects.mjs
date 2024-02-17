@@ -2,9 +2,13 @@ import {HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS} from "./constants.mj
 import {remainingTimeLabel} from "./helpers.mjs";
 
 export class VisualActiveEffects extends Application {
-  // Array of buttons for other modules.
+  /**
+   * Array of buttons for other modules.
+   * @type {object[]}
+   */
   buttons = [];
 
+  /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: MODULE,
@@ -14,6 +18,7 @@ export class VisualActiveEffects extends Application {
     });
   }
 
+  /** @constructor */
   constructor() {
     super();
     this._initialSidebarWidth = ui.sidebar.element.outerWidth();
@@ -37,7 +42,7 @@ export class VisualActiveEffects extends Application {
       // Set up the various text (intro and content).
       const desc = entry.effect.flags["dfreds-convenient-effects"]?.description;
       const data = entry.effect.flags[MODULE]?.data ?? {};
-      
+
       // Get the effect rollData to populate enrichers within the descriptions.
       let rollData;
       try {
@@ -151,6 +156,7 @@ export class VisualActiveEffects extends Application {
 
   /**
    * The currently selected token's actor, otherwise the user's assigned actor.
+   * @type {Actor|null}
    */
   get actor() {
     return canvas.tokens.controlled[0]?.actor ?? game.user.character;
@@ -170,8 +176,8 @@ export class VisualActiveEffects extends Application {
 
   /**
    * Debounce rendering of the app.
-   * @param {boolean} force             Whether to force the rendering of the app.
-   * @returns {VisualActiveEffects}     This application.
+   * @param {boolean} force                       Whether to force the rendering of the app.
+   * @returns {Promise<VisualActiveEffects>}      This application.
    */
   async refresh(force) {
     return foundry.utils.debounce(this.render.bind(this, force), 100)();
@@ -191,6 +197,10 @@ export class VisualActiveEffects extends Application {
     html[0].querySelectorAll(".effect-item").forEach(n => n.addEventListener("mouseenter", this._onMouseEnter.bind(this)));
   }
 
+  /**
+   * Set the maximum height of effect descriptions.
+   * @param {Event} event     Initiating hover event.
+   */
   _onMouseEnter(event) {
     const info = event.currentTarget.querySelector(".effect-intro");
     if (!info) return;
@@ -210,9 +220,10 @@ export class VisualActiveEffects extends Application {
 
   /**
    * Save whether the application is being moused over.
-   * @param {PointerEvent} event      The initiating mouseover or mouseout event.
+   * @param {Event} event     The initiating mouseover or mouseout event.
+   * @returns {Promise<void|VisualActiveEffects>}
    */
-  async _onMouseOver(event) {
+  _onMouseOver(event) {
     const state = event.type === "mouseover";
     const target = event.currentTarget;
     target.classList.toggle("hovered", state);
@@ -221,8 +232,8 @@ export class VisualActiveEffects extends Application {
 
   /**
    * When a button on the panel is clicked.
-   * @param {PointerEvent} event      The initiating click event.
-   * @returns {function}              The callback function.
+   * @param {Event} event     The initiating click event.
+   * @returns {Promise}       Result of the callback function.
    */
   async onClickCustomButton(event) {
     const id = event.currentTarget.dataset.id;
@@ -244,8 +255,8 @@ export class VisualActiveEffects extends Application {
 
   /**
    * Handle deleting an effect when right-clicked.
-   * @param {PointerEvent} event                    The initiating click event.
-   * @returns {ActiveEffect|Promise<boolean>}       Either the deleted effect, or the result of the prompt.
+   * @param {Event} event                           The initiating click event.
+   * @returns {Promise<ActiveEffect|boolean>}       Either the deleted effect, or the result of the prompt.
    */
   async onIconRightClick(event) {
     const alt = event.shiftKey;
@@ -255,8 +266,8 @@ export class VisualActiveEffects extends Application {
 
   /**
    * Handle enabling/disabling an effect when double-clicked, or showing its sheet.
-   * @param {PointerEvent} event                    The initiating click event.
-   * @returns {ActiveEffect|ActiveEffectConfig}     The updated effect or its sheet.
+   * @param {Event} event                                     The initiating click event.
+   * @returns {Promise<ActiveEffect|ActiveEffectConfig>}      The updated effect or its sheet.
    */
   async onIconDoubleClick(event) {
     const alt = event.ctrlKey;
@@ -266,7 +277,7 @@ export class VisualActiveEffects extends Application {
 
   /**
    * Handle collapsing the description of an effect.
-   * @param {PointerEvent} event      The initiating click event.
+   * @param {Event} event     The initiating click event.
    */
   onCollapsibleClick(event) {
     const section = event.currentTarget.closest(".collapsible-section");
