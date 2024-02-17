@@ -37,6 +37,31 @@ export class VisualActiveEffects extends Application {
       // Set up the various text (intro and content).
       const desc = entry.effect.flags["dfreds-convenient-effects"]?.description;
       const data = entry.effect.flags[MODULE]?.data ?? {};
+      
+      // Get the effect rollData to populate enrichers within the descriptions.
+      let rollData;
+      try {
+        if (entry.effect.origin) {
+          let origin = fromUuidSync(entry.effect.origin);
+          if (origin?.documentName === ActiveEffect.documentName) {
+            // Change the origin to the parent of the ActiveEffect - the originating item or actor.
+            origin = origin.parent;
+          }
+          if (origin?.pack) {
+            // Origin references a compendium, change the origin to the effect's parent - the local item or actor.
+            origin = entry.effect.parent;
+          }
+          if (typeof origin?.getRollData === "function") {
+            rollData = origin.getRollData();
+          }
+        }
+
+        // Fallback to the parent if there's no rollData.
+        if (!rollData) rollData = entry.effect.parent.getRollData();
+      } catch (_) {
+        // Fallback to just an empty object - enrichers will show empty values in this case.
+        rollData = {};
+      }
 
       // Backwards compatibility.
       let inclusion = 0;
@@ -49,14 +74,14 @@ export class VisualActiveEffects extends Application {
 
       // Set up intro if it exists.
       const intro = entry.effect.description || desc;
-      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro);
+      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {rollData});
 
       // Set up content if it exists.
       if (data.content?.length) {
         // The 'header' for the collapsible's header with default 'Details'.
         entry.context.strings.header = data.header || game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
         // The collapsible content.
-        entry.context.strings.content = await TextEditor.enrichHTML(data.content);
+        entry.context.strings.content = await TextEditor.enrichHTML(data.content, {rollData});
       }
 
       entry.context.hasText = !!intro || !!data.content?.length || !!entry.context.buttons.length;
