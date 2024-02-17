@@ -38,10 +38,10 @@ export class VisualActiveEffects extends Application {
       const data = entry.effect.flags[MODULE]?.data ?? {};
       
       // Get the effect rollData to populate enrichers within the descriptions.
-      let rollData = {};
+      let rollData;
       try {
         if (entry.effect.origin) {
-          let origin = await fromUuid(entry.effect.origin);
+          let origin = fromUuidSync(entry.effect.origin);
           if (origin?.documentName === ActiveEffect.documentName) {
             // Change the origin to the parent of the ActiveEffect - the originating item or actor.
             origin = origin.parent;
@@ -56,11 +56,7 @@ export class VisualActiveEffects extends Application {
         }
 
         // Fallback to the parent if there's no rollData.
-        if (!rollData || !Object.keys(rollData).length) {
-          if (typeof entry.effect.parent?.getRollData === "function") {
-            rollData = entry.effect.parent.getRollData();
-          }
-        }
+        if (!rollData) rollData = entry.effect.parent.getRollData();
       } catch (_) {
         // Fallback to just an empty object - enrichers will show empty values in this case.
         rollData = {};
