@@ -90,7 +90,7 @@
   align-items: flex-end;
   gap: calc(var(--visual-active-effects-icon-size)/5);
   overflow: visible;
-  height: calc(100% - 50px);
+  max-height: calc(100% - 50px);
 
   .effect-item {
     display: flex;

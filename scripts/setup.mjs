@@ -18,7 +18,7 @@ Hooks.once("ready", async function() {
   Hooks.on("controlToken", panel.refresh.bind(panel, true));
   for (const hook of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
     Hooks.on(hook, function(effect) {
-      if (effect.parent === panel.actor) panel.refresh(true);
+      if (effect.target === panel.actor) panel.refresh(true);
     });
   }
   Hooks.on("updateCombat", function(combat, update, context) {
