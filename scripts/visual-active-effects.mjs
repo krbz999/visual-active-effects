@@ -159,7 +159,9 @@ export class VisualActiveEffects extends Application {
    * @type {Actor|null}
    */
   get actor() {
-    return canvas.tokens.controlled[0]?.actor ?? game.user.character;
+    let actor;
+    if (canvas.ready) actor = canvas.tokens.controlled[0]?.actor;
+    return actor ?? game.user.character;
   }
 
   /** @override */
