@@ -272,7 +272,7 @@ export class VisualActiveEffects extends Application {
    * @returns {Promise<ActiveEffect|ActiveEffectConfig>}      The updated effect or its sheet.
    */
   async onIconDoubleClick(event) {
-    const alt = event.ctrlKey;
+    const alt = event.ctrlKey || event.metaKey;
     const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
     return alt ? effect.sheet.render(true) : effect.update({disabled: !effect.disabled});
   }
