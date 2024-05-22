@@ -40,7 +40,6 @@ export class VisualActiveEffects extends Application {
     for (const entry of fromActor) {
 
       // Set up the various text (intro and content).
-      const desc = entry.effect.flags["dfreds-convenient-effects"]?.description;
       const data = entry.effect.flags[MODULE]?.data ?? {};
 
       // Get the effect rollData to populate enrichers within the descriptions.
@@ -78,7 +77,7 @@ export class VisualActiveEffects extends Application {
       if (forceExclude) continue;
 
       // Set up intro if it exists.
-      const intro = entry.effect.description || desc;
+      const intro = entry.effect.description;
       if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {rollData});
 
       // Set up content if it exists.
@@ -207,7 +206,7 @@ export class VisualActiveEffects extends Application {
     const info = event.currentTarget.querySelector(".effect-intro");
     if (!info) return;
     const win = window.innerHeight;
-    info.style.maxHeight = `${win - info.getBoundingClientRect().top - 350}px`;
+    info.style.maxHeight = `${win - (50 + info.getBoundingClientRect().top)}px`;
   }
 
   /** @override */

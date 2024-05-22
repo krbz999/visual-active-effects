@@ -6,8 +6,7 @@ import {VisualActiveEffects} from "./visual-active-effects.mjs";
 Hooks.once("init", registerSettings);
 Hooks.once("ready", async function() {
   await loadTemplates([
-    "modules/visual-active-effects/templates/effect.hbs",
-    "modules/visual-active-effects/templates/status.hbs"
+    "modules/visual-active-effects/templates/effect.hbs"
   ]);
   registerAPI();
   applyStyleSettings();

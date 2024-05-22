@@ -11,7 +11,7 @@
       "patreon": "https://patreon.com/zhell"
     }
   ],
-  "compatibility": {"minimum": "11", "maximum": "12", "verified": "11"},
+  "compatibility": {"minimum": "12", "maximum": "12", "verified": "12"},
   "esmodules": ["scripts/setup.mjs"],
   "styles": ["styles/visual-active-effects.css"],
   "languages": [

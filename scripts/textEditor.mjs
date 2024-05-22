@@ -43,7 +43,6 @@ export default class VisualActiveEffectsEditor extends FormApplication {
     else inclusion = 0;
 
     foundry.utils.mergeObject(data, {
-      statuses: this.effect.statuses.size ? this.effect.statuses.toObject() : [""],
       inclusion: inclusion,
       content: await TextEditor.enrichHTML(flag.content || ""),
       intro: await TextEditor.enrichHTML(this.effect.description || ""),
@@ -55,41 +54,7 @@ export default class VisualActiveEffectsEditor extends FormApplication {
   }
 
   /** @override */
-  activateListeners(html) {
-    super.activateListeners(html);
-    html[0].querySelector("[data-action='add-status']").addEventListener("click", this._onAddStatus.bind(this));
-    html[0].querySelectorAll("[data-action='delete-status']").forEach(n => n.addEventListener("click", this._onDeleteStatus.bind(this)));
-  }
-
-  /**
-   * Handle removing an old row for a status.
-   * @param {PointerEvent} event      The initiating click event.
-   */
-  _onDeleteStatus(event) {
-    event.currentTarget.closest(".form-group").remove();
-  }
-
-  /**
-   * Handle adding a new row for a status.
-   * @param {PointerEvent} event      The initiating click event.
-   */
-  async _onAddStatus(event) {
-    const force = event.currentTarget.closest(".config").querySelector(".form-group:last-child");
-    const div = document.createElement("DIV");
-    div.innerHTML = await renderTemplate("modules/visual-active-effects/templates/status.hbs", []);
-    div.querySelector("[data-action='delete-status']").addEventListener("click", this._onDeleteStatus.bind(this));
-    force.before(div.firstElementChild);
-  }
-
-  /** @override */
   async _updateObject(event, formData) {
-    if (!formData.statuses) formData.statuses = [];
-    else if (typeof formData.statuses === "string") formData.statuses = [formData.statuses];
-    formData.statuses = formData.statuses.reduce((acc, s) => {
-      s = s.trim();
-      if (s) acc.push(s);
-      return acc;
-    }, []);
     ui.notifications.info("VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED", {localize: true});
     if (event.submitter) this.close();
     const sheet = this.effect.sheet;
@@ -111,14 +76,14 @@ export default class VisualActiveEffectsEditor extends FormApplication {
   }
 
   /** @override */
-  _render(...T) {
-    this.effect.apps[this.appId] = this;
-    return super._render(...T);
+  render(...T) {
+    this.effect.apps[this.id] = this;
+    return super.render(...T);
   }
 
   /** @override */
   close(...T) {
-    delete this.effect.apps[this.appId];
+    delete this.effect.apps[this.id];
     return super.close(...T);
   }
 }
