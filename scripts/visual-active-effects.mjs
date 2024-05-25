@@ -180,12 +180,11 @@ export class VisualActiveEffects extends Application {
       html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("contextmenu", this.onIconRightClick.bind(this)));
       html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("dblclick", this.onIconDoubleClick.bind(this)));
     }
-    html[0].querySelectorAll(".collapsible-header").forEach(n => n.addEventListener("click", this.onCollapsibleClick.bind(this)));
     html[0].querySelectorAll("[data-action='custom-button']").forEach(n => n.addEventListener("click", this.onClickCustomButton.bind(this)));
-    html[0].addEventListener("mouseover", this._onMouseOver.bind(this));
-    html[0].addEventListener("mouseout", this._onMouseOver.bind(this));
-    html[0].addEventListener("mouseover", this.bringToTop.bind(this));
-    html[0].querySelectorAll(".effect-item").forEach(n => n.addEventListener("mouseenter", this._onMouseEnter.bind(this)));
+    html[0].addEventListener("pointerover", this._onMouseOver.bind(this));
+    html[0].addEventListener("pointerout", this._onMouseOver.bind(this));
+    html[0].addEventListener("pointerover", this.bringToTop.bind(this));
+    html[0].querySelectorAll(".effect-item").forEach(n => n.addEventListener("pointerenter", this._onMouseEnter.bind(this)));
   }
 
   /**
@@ -215,7 +214,7 @@ export class VisualActiveEffects extends Application {
    * @returns {Promise<void|VisualActiveEffects>}
    */
   _onMouseOver(event) {
-    const state = event.type === "mouseover";
+    const state = event.type === "pointerover";
     const target = event.currentTarget;
     target.classList.toggle("hovered", state);
     if (!state && (this._needsRefresh === true)) return this.render();
@@ -264,18 +263,5 @@ export class VisualActiveEffects extends Application {
     const alt = event.ctrlKey || event.metaKey;
     const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
     return alt ? effect.sheet.render(true) : effect.update({disabled: !effect.disabled});
-  }
-
-  /**
-   * Handle collapsing the description of an effect.
-   * @param {Event} event     The initiating click event.
-   */
-  onCollapsibleClick(event) {
-    const section = event.currentTarget.closest(".collapsible-section");
-    section.classList.toggle("active");
-    const div = section.querySelector(".collapsible-content");
-    const header = event.currentTarget;
-    const win = window.innerHeight;
-    div.style.maxHeight = `${win - (150 + header.getBoundingClientRect().bottom)}px`;
   }
 }
