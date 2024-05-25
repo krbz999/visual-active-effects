@@ -74,7 +74,7 @@ export class VisualActiveEffects extends Application {
       // Set up intro if it exists.
       const intro = entry.effect.description;
       if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {
-        rollData,
+        rollData: rollData,
         relativeTo: entry.effect
       });
 
