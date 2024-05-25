@@ -1,12 +1,4 @@
 {
-  "VISUAL_ACTIVE_EFFECTS.CONTENT": "Content",
-  "VISUAL_ACTIVE_EFFECTS.EDITOR_SAVED": "Text contents have been saved.",
-  "VISUAL_ACTIVE_EFFECTS.EDITOR_TITLE": "Visual Active Effects Editor: {name}",
-  "VISUAL_ACTIVE_EFFECTS.FORCE_INCLUDE": "Always show this effect:",
-  "VISUAL_ACTIVE_EFFECTS.INCLUSION": "Always include or exclude this effect:",
-  "VISUAL_ACTIVE_EFFECTS.INCLUSION_INCLUDE": "Always Include",
-  "VISUAL_ACTIVE_EFFECTS.INCLUSION_EXCLUDE": "Always Exclude",
-  "VISUAL_ACTIVE_EFFECTS.INTRO": "Intro",
   "VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS": "Details",
   "VISUAL_ACTIVE_EFFECTS.LABELS.DISABLED": "Disabled",
   "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE": "Passive",
@@ -32,8 +24,6 @@
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.NAME": "Top Offset",
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.HINT": "The number of weeks in a month.",
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.NAME": "Weeks per Month",
-  "VISUAL_ACTIVE_EFFECTS.STATUS_ID": "Status:",
-  "VISUAL_ACTIVE_EFFECTS.Statuses": "Statuses",
   "VISUAL_ACTIVE_EFFECTS.TIME.DAY": "1 day",
   "VISUAL_ACTIVE_EFFECTS.TIME.DAYS": "{qty} days",
   "VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED": "Expired",
@@ -51,5 +41,13 @@
   "VISUAL_ACTIVE_EFFECTS.TIME.WEEK": "1 week",
   "VISUAL_ACTIVE_EFFECTS.TIME.WEEKS": "{qty} weeks",
   "VISUAL_ACTIVE_EFFECTS.TIME.YEAR": "1 year",
-  "VISUAL_ACTIVE_EFFECTS.TIME.YEARS": "{qty} years"
+  "VISUAL_ACTIVE_EFFECTS.TIME.YEARS": "{qty} years",
+  "VISUAL_ACTIVE_EFFECTS.Inclusion": {
+    "Title": "Inclusion: {name}",
+    "Label": "Inclusion",
+    "Default": "Default",
+    "Include": "Always Include",
+    "Exclude": "Always Exclude",
+    "Hint": "Select whether to force include or exclude this effect from the top-right effects panel."
+  }
 }

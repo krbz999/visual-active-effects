@@ -1,0 +1,25 @@
+{
+  "name": "visual-active-effects",
+  "version": "1.0.0",
+  "description": "Visual Active Effects",
+  "scripts": {
+    "build": "rollup -c rollup.config.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krbz999/visual-active-effects.git"
+  },
+  "keywords": [
+    "fvtt",
+    "module"
+  ],
+  "author": "Zhell",
+  "bugs": {
+    "url": "https://github.com/krbz999/visual-active-effects"
+  },
+  "homepage": "https://github.com/krbz999/visual-active-effects",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "rollup": "^4.17.2"
+  }
+}

@@ -67,35 +67,25 @@ export class VisualActiveEffects extends Application {
         rollData = {};
       }
 
-      // Backwards compatibility.
-      let inclusion = 0;
-      if ("inclusion" in data) inclusion = data.inclusion;
-      else if (data.forceInclude) inclusion = 1;
-
       // Always exclude?
       const forceExclude = data.inclusion === -1;
       if (forceExclude) continue;
 
       // Set up intro if it exists.
       const intro = entry.effect.description;
-      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {rollData});
+      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {
+        rollData,
+        relativeTo: entry.effect
+      });
 
-      // Set up content if it exists.
-      if (data.content?.length) {
-        // The 'header' for the collapsible's header with default 'Details'.
-        entry.context.strings.header = data.header || game.i18n.localize("VISUAL_ACTIVE_EFFECTS.LABELS.DETAILS");
-        // The collapsible content.
-        entry.context.strings.content = await TextEditor.enrichHTML(data.content, {rollData});
-      }
-
-      entry.context.hasText = !!intro || !!data.content?.length || !!entry.context.buttons.length;
+      entry.context.hasText = !!intro;
 
       // Add to either disabled array, enabled array, or passive array.
       if (entry.effect.disabled) {
-        if (!hideDisabled || (inclusion === 1)) disabledEffects.push(entry);
+        if (!hideDisabled || (data.inclusion === 1)) disabledEffects.push(entry);
       }
       else if (entry.effect.isTemporary) enabledEffects.push(entry);
-      else if (!hidePassive || (inclusion === 1)) passiveEffects.push(entry);
+      else if (!hidePassive || (data.inclusion === 1)) passiveEffects.push(entry);
     }
     return {enabledEffects, disabledEffects, passiveEffects};
   }

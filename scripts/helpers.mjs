@@ -8,7 +8,6 @@ import {
   TOP_OFFSET,
   WEEKS_PER_MONTH
 } from "./constants.mjs";
-import VisualActiveEffectsEditor from "./textEditor.mjs";
 
 /**
  * Helper function to get remaining duration.
@@ -97,13 +96,6 @@ export function remainingTimeLabel(effect) {
 
   // Case 3: Neither rounds, turns, or seconds, so just return unlimited.
   return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
-}
-
-/** Render the editor. */
-export function _renderEditor() {
-  const editor = Object.values(this.apps).find(e => e instanceof VisualActiveEffectsEditor);
-  if (editor) return editor.render();
-  return new VisualActiveEffectsEditor(this).render(true);
 }
 
 /** Refreshes the style sheet when a user changes the various css-related module settings. */

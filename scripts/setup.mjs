@@ -1,5 +1,4 @@
-import {ICON, MODULE} from "./constants.mjs";
-import {_renderEditor, applyStyleSettings, registerAPI} from "./helpers.mjs";
+import {applyStyleSettings, registerAPI} from "./helpers.mjs";
 import {registerSettings} from "./settings.mjs";
 import {VisualActiveEffects} from "./visual-active-effects.mjs";
 
@@ -26,6 +25,47 @@ Hooks.once("ready", async function() {
     panel.refresh(false);
   });
 });
-Hooks.on("getActiveEffectConfigHeaderButtons", function(app, array) {
-  array.unshift({class: MODULE, icon: ICON, onclick: _renderEditor.bind(app.document)});
+
+// Add a prompt to the effect config header.
+Hooks.on("getActiveEffectConfigHeaderButtons", function(config, array) {
+  array.unshift({
+    class: "visual-active-effects",
+    icon: "fa-solid fa-pen-fancy",
+    onclick: async () => {
+      const content = HandlebarsHelpers.formGroup(new foundry.data.fields.NumberField({
+        choices: {
+          0: "VISUAL_ACTIVE_EFFECTS.Inclusion.Default",
+          1: "VISUAL_ACTIVE_EFFECTS.Inclusion.Include",
+          "-1": "VISUAL_ACTIVE_EFFECTS.Inclusion.Exclude"
+        },
+        initial: 0,
+        label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Label",
+        hint: "VISUAL_ACTIVE_EFFECTS.Inclusion.Hint"
+      }), {hash: {
+        name: "inclusion",
+        localize: true,
+        sort: false,
+        blank: false,
+        value: config.document.flags["visual-active-effects"]?.data?.inclusion ?? 0
+      }});
+      const value = await foundry.applications.api.DialogV2.prompt({
+        content: content,
+        rejectClose: false,
+        modal: true,
+        window: {
+          icon: "fa-solid fa-pen-fancy",
+          title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.Inclusion.Title", {name: config.document.name})
+        },
+        position: {
+          width: 300
+        },
+        ok: {
+          icon: "fa-solid fa-pen-fancy",
+          label: "Confirm",
+          callback: (e, b, d) => b.form.elements.inclusion.value
+        }
+      });
+      if (Number.isNumeric(value)) config.document.setFlag("visual-active-effects", "data.inclusion", parseInt(value));
+    }
+  });
 });

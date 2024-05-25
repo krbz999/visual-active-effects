@@ -29,18 +29,9 @@
       </div>
     </h1>
 
-    {{#if (or context.strings.intro context.strings.content)}}
+    {{#if context.strings.intro}}
     <div class="effect-info-details">
-      {{#if context.strings.intro}}
       <div class="effect-intro">{{{context.strings.intro}}}</div>
-      {{/if}}
-
-      {{#if context.strings.content}}
-      <section class="collapsible-section">
-        <header class="collapsible-header">{{context.strings.header}}</header>
-        <div class="collapsible-content">{{{context.strings.content}}}</div>
-      </section>
-      {{/if}}
     </div>
     {{/if}}
 
