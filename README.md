@@ -10,8 +10,6 @@ While the module is enabled, all temporary effects (including status conditions)
 
 ![Visual Active Effects Example](https://i.imgur.com/s3S9AHM.png)
 
-You can edit all the text properties, and more, in the header of an ActiveEffect (click the Pen icon).
-
 ## Module and System Requirements
 None.
 
