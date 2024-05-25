@@ -1,5 +1,5 @@
 export default {
-  input: "scripts/hooks.mjs",
+  input: "scripts/setup.mjs",
   output: {
     file: "module.mjs",
     format: "esm"
