@@ -2,11 +2,29 @@ import {HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS} from "./constants.mj
 import {remainingTimeLabel} from "./helpers.mjs";
 
 export class VisualActiveEffects extends Application {
+  /* -------------------------------------------------- */
+  /*   Properties                                       */
+  /* -------------------------------------------------- */
+
   /**
    * Array of buttons for other modules.
    * @type {object[]}
    */
   buttons = [];
+
+  /* -------------------------------------------------- */
+
+  /**
+   * The currently selected token's actor, otherwise the user's assigned actor.
+   * @type {Actor|null}
+   */
+  get actor() {
+    let actor;
+    if (canvas.ready) actor = canvas.tokens.controlled[0]?.actor;
+    return actor ?? game.user.character;
+  }
+
+  /* -------------------------------------------------- */
 
   /** @override */
   static get defaultOptions() {
@@ -18,12 +36,18 @@ export class VisualActiveEffects extends Application {
     });
   }
 
+  /* -------------------------------------------------- */
+  /*   Rendering                                        */
+  /* -------------------------------------------------- */
+
   /** @constructor */
   constructor() {
     super();
     this._initialSidebarWidth = ui.sidebar.element.outerWidth();
     this._playerClicks = game.settings.get(MODULE, PLAYER_CLICKS);
   }
+
+  /* -------------------------------------------------- */
 
   /** @override */
   async getData() {
@@ -90,6 +114,8 @@ export class VisualActiveEffects extends Application {
     return {enabledEffects, disabledEffects, passiveEffects};
   }
 
+  /* -------------------------------------------------- */
+
   /**
    * Helper method for getData, extracting each effect, filtering the suppressed, and returning it with additional context.
    * @returns {object[]}      An array with 'effect' and 'context'.
@@ -126,10 +152,14 @@ export class VisualActiveEffects extends Application {
         return acc;
       }, []);
 
+      context.buttonHeight = buttons.length * 32 + (buttons.length - 1) * 3;
+
       data.push({effect, context});
     }
     return data;
   }
+
+  /* -------------------------------------------------- */
 
   /**
    * Helper method for getData.
@@ -143,15 +173,7 @@ export class VisualActiveEffects extends Application {
     } else return Infinity;
   }
 
-  /**
-   * The currently selected token's actor, otherwise the user's assigned actor.
-   * @type {Actor|null}
-   */
-  get actor() {
-    let actor;
-    if (canvas.ready) actor = canvas.tokens.controlled[0]?.actor;
-    return actor ?? game.user.character;
-  }
+  /* -------------------------------------------------- */
 
   /** @override */
   async _render(force = false, options = {}) {
@@ -165,6 +187,10 @@ export class VisualActiveEffects extends Application {
     else this.element.css("right", `${this._initialSidebarWidth + 18}px`);
   }
 
+  /* -------------------------------------------------- */
+  /*   Instance methods                                 */
+  /* -------------------------------------------------- */
+
   /**
    * Debounce rendering of the app.
    * @param {boolean} force                       Whether to force the rendering of the app.
@@ -173,6 +199,36 @@ export class VisualActiveEffects extends Application {
   async refresh(force) {
     return foundry.utils.debounce(this.render.bind(this, force), 100)();
   }
+
+  /* -------------------------------------------------- */
+
+  /** @override */
+  bringToTop(event) {
+    const element = event.currentTarget;
+    const z = document.defaultView.getComputedStyle(element).zIndex;
+    if (z < _maxZ) {
+      element.style.zIndex = Math.min(++_maxZ, 99999);
+      ui.activeWindow = this;
+    }
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Helper method to move the panel when the sidebar is collapsed or expanded.
+   * @param {Sidebar} _         The sidebar.
+   * @param {boolean} bool      Whether it was collapsed.
+   */
+  handleExpand(_, bool) {
+    if (!bool) {
+      const right = `${this._initialSidebarWidth + 18}px`;
+      this.element.css("right", right);
+    } else this.element.delay(50).animate({right: "50px"}, 500);
+  }
+
+  /* -------------------------------------------------- */
+  /*   Event handlers                                   */
+  /* -------------------------------------------------- */
 
   /** @override */
   activateListeners(html) {
@@ -187,6 +243,8 @@ export class VisualActiveEffects extends Application {
     html[0].querySelectorAll(".effect-item").forEach(n => n.addEventListener("pointerenter", this._onMouseEnter.bind(this)));
   }
 
+  /* -------------------------------------------------- */
+
   /**
    * Set the maximum height of effect descriptions.
    * @param {Event} event     Initiating hover event.
@@ -198,15 +256,7 @@ export class VisualActiveEffects extends Application {
     info.style.maxHeight = `${win - (50 + info.getBoundingClientRect().top)}px`;
   }
 
-  /** @override */
-  bringToTop(event) {
-    const element = event.currentTarget;
-    const z = document.defaultView.getComputedStyle(element).zIndex;
-    if (z < _maxZ) {
-      element.style.zIndex = Math.min(++_maxZ, 99999);
-      ui.activeWindow = this;
-    }
-  }
+  /* -------------------------------------------------- */
 
   /**
    * Save whether the application is being moused over.
@@ -220,6 +270,8 @@ export class VisualActiveEffects extends Application {
     if (!state && (this._needsRefresh === true)) return this.render();
   }
 
+  /* -------------------------------------------------- */
+
   /**
    * When a button on the panel is clicked.
    * @param {Event} event     The initiating click event.
@@ -231,17 +283,7 @@ export class VisualActiveEffects extends Application {
     return button.callback(event);
   }
 
-  /**
-   * Helper method to move the panel when the sidebar is collapsed or expanded.
-   * @param {Sidebar} _         The sidebar.
-   * @param {boolean} bool      Whether it was collapsed.
-   */
-  handleExpand(_, bool) {
-    if (!bool) {
-      const right = `${this._initialSidebarWidth + 18}px`;
-      this.element.css("right", right);
-    } else this.element.delay(50).animate({right: "50px"}, 500);
-  }
+  /* -------------------------------------------------- */
 
   /**
    * Handle deleting an effect when right-clicked.
@@ -253,6 +295,8 @@ export class VisualActiveEffects extends Application {
     const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
     return (alt && game.user.isGM) ? effect.delete() : effect.deleteDialog();
   }
+
+  /* -------------------------------------------------- */
 
   /**
    * Handle enabling/disabling an effect when double-clicked, or showing its sheet.
