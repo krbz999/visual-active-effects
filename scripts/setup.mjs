@@ -1,71 +1,112 @@
+import {MODULE} from "./constants.mjs";
 import {applyStyleSettings, registerAPI} from "./helpers.mjs";
 import {registerSettings} from "./settings.mjs";
-import {VisualActiveEffects} from "./visual-active-effects.mjs";
+import VisualActiveEffects from "./visual-active-effects.mjs";
+
+let panel;
+
+/* -------------------------------------------------- */
 
 Hooks.once("init", registerSettings);
-Hooks.once("ready", async function() {
-  await loadTemplates([
-    "modules/visual-active-effects/templates/effect.hbs"
-  ]);
+
+/* -------------------------------------------------- */
+
+Hooks.once("ready", function() {
+  loadTemplates([`modules/${MODULE}/templates/effect.hbs`]);
+});
+
+/* -------------------------------------------------- */
+
+Hooks.once("ready", function() {
   registerAPI();
   applyStyleSettings();
-  const panel = new VisualActiveEffects();
-  await panel.render(true);
+  panel = new VisualActiveEffects();
+  panel.render(true);
+
   Hooks.on("collapseSidebar", panel.handleExpand.bind(panel));
   Hooks.on("updateWorldTime", panel.refresh.bind(panel, false));
   Hooks.on("controlToken", panel.refresh.bind(panel, true));
-  for (const hook of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
-    Hooks.on(hook, function(effect) {
-      if (effect.target === panel.actor) panel.refresh(true);
-    });
-  }
-  Hooks.on("updateCombat", function(combat, update, context) {
-    if (context.advanceTime !== 0) return;
-    if (!context.direction) return;
-    panel.refresh(false);
-  });
 });
 
-// Add a prompt to the effect config header.
+/* -------------------------------------------------- */
+
+for (const prefix of ["create", "update", "delete"]) {
+  for (const documentName of ["ActiveEffect", "Item"]) {
+    Hooks.on(`${prefix}${documentName}`, function(document) {
+      let actor;
+      switch (document.documentName) {
+        case "Item":
+          actor = document.parent;
+          break;
+        case "ActiveEffect":
+          actor = document.parent;
+          if (actor?.documentName === "Item") actor = actor.parent;
+          break;
+      }
+      if (actor && (actor.uuid === panel.actor.uuid)) panel.refresh(true);
+    });
+  }
+}
+
+/* -------------------------------------------------- */
+
+Hooks.on("updateCombat", function(combat, update, context) {
+  if (context.advanceTime !== 0) return;
+  if (!context.direction) return;
+  panel.refresh(false);
+});
+
+/* -------------------------------------------------- */
+
 Hooks.on("getActiveEffectConfigHeaderButtons", function(config, array) {
+  const icon = "fa-solid fa-pen-fancy";
+
   array.unshift({
-    class: "visual-active-effects",
-    icon: "fa-solid fa-pen-fancy",
-    onclick: async () => {
-      const content = HandlebarsHelpers.formGroup(new foundry.data.fields.NumberField({
-        choices: {
-          0: "VISUAL_ACTIVE_EFFECTS.Inclusion.Default",
-          1: "VISUAL_ACTIVE_EFFECTS.Inclusion.Include",
-          "-1": "VISUAL_ACTIVE_EFFECTS.Inclusion.Exclude"
-        },
-        initial: 0,
-        label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Label",
-        hint: "VISUAL_ACTIVE_EFFECTS.Inclusion.Hint"
-      }), {hash: {
+    class: MODULE,
+    icon: icon,
+    onclick: () => {
+      const input = foundry.applications.fields.createSelectInput({
         name: "inclusion",
-        localize: true,
         sort: false,
-        blank: false,
-        value: config.document.flags["visual-active-effects"]?.data?.inclusion ?? 0
-      }});
-      const value = await foundry.applications.api.DialogV2.prompt({
-        content: content,
+        required: true,
+        value: config.document.getFlag(MODULE, "data.inclusion"),
+        initial: 0,
+        localize: true,
+        options: [
+          {value: 0, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Default"},
+          {value: 1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Include"},
+          {value: -1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Exclude"}
+        ]
+      });
+
+      const formGroup = foundry.applications.fields.createFormGroup({
+        input: input,
+        label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Label",
+        hint: "VISUAL_ACTIVE_EFFECTS.Inclusion.Hint",
+        localize: true
+      });
+
+      foundry.applications.api.DialogV2.prompt({
+        content: `<fieldset>${formGroup.outerHTML}</fieldset>`,
         rejectClose: false,
         modal: true,
         window: {
-          icon: "fa-solid fa-pen-fancy",
+          icon: icon,
           title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.Inclusion.Title", {name: config.document.name})
         },
         position: {
-          width: 300
+          width: 300,
+          height: "auto"
         },
         ok: {
-          icon: "fa-solid fa-pen-fancy",
+          icon: icon,
           label: "Confirm",
-          callback: (e, b, d) => b.form.elements.inclusion.value
+          callback: (event, button) => {
+            const value = button.form.elements.inclusion.value;
+            config.document.setFlag(MODULE, "data.inclusion", Number(value));
+          }
         }
       });
-      if (Number.isNumeric(value)) config.document.setFlag("visual-active-effects", "data.inclusion", parseInt(value));
     }
   });
 });

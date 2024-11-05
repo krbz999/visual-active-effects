@@ -20,4 +20,12 @@
   {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="disabled"}}
   {{/each}}
 
+  {{#if (and enchantments.length (or enabledEffects.length passiveEffects.length disabledEffects.length))}}
+  <hr class="divider">
+  {{/if}}
+
+  {{#each enchantments}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="enchantments"}}
+  {{/each}}
+
 </section>

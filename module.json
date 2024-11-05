@@ -11,9 +11,17 @@
       "patreon": "https://patreon.com/zhell"
     }
   ],
-  "compatibility": {"minimum": "12", "maximum": "12", "verified": "12"},
-  "esmodules": ["scripts/setup.mjs"],
-  "styles": ["styles/visual-active-effects.css"],
+  "compatibility": {
+    "minimum": "12",
+    "maximum": "12",
+    "verified": "12"
+  },
+  "esmodules": [
+    "scripts/setup.mjs"
+  ],
+  "styles": [
+    "styles/visual-active-effects.css"
+  ],
   "languages": [
     {
       "lang": "en",
@@ -49,7 +57,16 @@
       "path": "lang/pl.json"
     }
   ],
-  "flags": {"hotReload": {"extensions": ["css"], "paths": ["styles/visual-active-effects.css"]}},
+  "flags": {
+    "hotReload": {
+      "extensions": [
+        "css"
+      ],
+      "paths": [
+        "styles/visual-active-effects.css"
+      ]
+    }
+  },
   "url": "https://github.com/krbz999/visual-active-effects",
   "manifest": "https://github.com/krbz999/visual-active-effects/releases/latest/download/module.json",
   "download": "AUTOMATIC"

@@ -1,7 +1,7 @@
 import {HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS} from "./constants.mjs";
 import {remainingTimeLabel} from "./helpers.mjs";
 
-export class VisualActiveEffects extends Application {
+export default class VisualActiveEffects extends Application {
   /* -------------------------------------------------- */
   /*   Properties                                       */
   /* -------------------------------------------------- */
@@ -54,6 +54,7 @@ export class VisualActiveEffects extends Application {
     const enabledEffects = [];
     const disabledEffects = [];
     const passiveEffects = [];
+    const enchantments = [];
 
     const fromActor = this._getEffectsFromActor();
     if (!fromActor) return {};
@@ -105,20 +106,20 @@ export class VisualActiveEffects extends Application {
       entry.context.hasText = !!intro;
 
       // Add to either disabled array, enabled array, or passive array.
-      if (entry.effect.disabled) {
+      if ((game.system.id === "dnd5e") && (entry.effect.type === "enchantment")) enchantments.push(entry);
+      else if (entry.effect.disabled) {
         if (!hideDisabled || (data.inclusion === 1)) disabledEffects.push(entry);
-      }
-      else if (entry.effect.isTemporary) enabledEffects.push(entry);
+      } else if (entry.effect.isTemporary) enabledEffects.push(entry);
       else if (!hidePassive || (data.inclusion === 1)) passiveEffects.push(entry);
     }
-    return {enabledEffects, disabledEffects, passiveEffects};
+    return {enabledEffects, disabledEffects, passiveEffects, enchantments};
   }
 
   /* -------------------------------------------------- */
 
   /**
    * Helper method for getData, extracting each effect, filtering the suppressed, and returning it with additional context.
-   * @returns {object[]}      An array with 'effect' and 'context'.
+   * @returns {object[]|void}      An array with 'effect' and 'context'.
    */
   _getEffectsFromActor() {
     if (!this.actor) return;
@@ -156,6 +157,23 @@ export class VisualActiveEffects extends Application {
 
       data.push({effect, context});
     }
+
+    // Add enchantments in dnd5e.
+    if (game.system.id === "dnd5e") {
+      for (const item of this.actor.items) {
+        for (const effect of item.allApplicableEffects()) {
+          if (!effect.active) continue;
+          const context = {strings: {intro: "", content: ""}};
+          if (effect.isTemporary) {
+            context.isExpired = Number.isNumeric(effect.duration.remaining) && (effect.duration.remaining <= 0);
+            context.isInfinite = effect.duration.remaining === null;
+            context.durationLabel = remainingTimeLabel(effect);
+          }
+          data.push({effect, context});
+        }
+      }
+    }
+
     return data;
   }
 
