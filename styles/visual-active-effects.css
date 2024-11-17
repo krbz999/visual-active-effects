@@ -203,8 +203,8 @@
   }
 
   /* Hide some dividers */
-  & hr.divider:first-child,
-  & hr.divider:not(:has(+ .effect-item)) {
+  :not(.effect-item) + hr.divider,
+  & hr.divider:not(:has( ~ .effect-item)) {
     display: none;
   }
 
