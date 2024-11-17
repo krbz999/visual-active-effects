@@ -68,14 +68,16 @@ export default class VisualActiveEffects extends Application {
     const hideDisabled = game.settings.get(MODULE, HIDE_DISABLED);
     const hidePassive = game.settings.get(MODULE, HIDE_PASSIVE);
 
-    const skipping = effect => {
-      if (effect.isSuppressed) return false;
+    const skipping = (effect, isSecondary = false) => {
+      if (effect.isSuppressed) return true;
       const data = effect.flags[MODULE]?.data ?? {};
-      if (data.inclusion === 1) return true;
-      if (data.inclusion === -1) return false;
+      if (data.inclusion === 1) return false;
+      if (data.inclusion === -1) return true;
 
       if (effect.disabled) return hideDisabled;
       if (effect.isTemporary) return false;
+
+      if (isSecondary) return true;
       return hidePassive;
     };
 
@@ -94,8 +96,7 @@ export default class VisualActiveEffects extends Application {
     if (game.system.id !== "dnd5e") return effects;
     for (const item of this.actor.items) {
       for (const effect of item.allApplicableEffects()) {
-        if (!effect.isTemporary) continue;
-        if (skipping(effect)) continue;
+        if (skipping(effect, true)) continue;
 
         const context = await this.#prepareEffect(effect);
         if (effect.disabled) effects.secondary.disabled.push(context);
