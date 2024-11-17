@@ -1,12 +1,12 @@
 <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
-  <div class="effect-info {{cssClass}} {{#unless context.hasText}} simple {{/unless}}">
+  <div class="effect-info {{cssClass}} {{#unless hasText}} simple {{/unless}}">
     <h1 class="effect-info-header">
       <span class="name">{{effect.name}}</span>
       <div class="effect-tags">
         <div class="effect-tag temporary">
-          {{#if context.durationLabel}}
+          {{#if durationLabel}}
           <i class="fa-solid fa-hourglass"></i>
-          {{context.durationLabel}}
+          {{durationLabel}}
           {{else}}
           <i class="fa-solid fa-feather"></i>
           {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
@@ -29,15 +29,15 @@
       </div>
     </h1>
 
-    {{#if context.strings.intro}}
+    {{#if strings.intro}}
     <div class="effect-info-details">
-      <div class="effect-intro">{{{context.strings.intro}}}</div>
+      <div class="effect-intro">{{{strings.intro}}}</div>
     </div>
     {{/if}}
 
-    {{#if context.buttons.length}}
+    {{#if buttons.length}}
     <div class="vae-buttons">
-      {{#each context.buttons}}
+      {{#each buttons}}
       <button type="button" class="vae-button" data-action="custom-button" data-id="{{id}}">{{label}}</button>
       {{/each}}
     </div>
@@ -47,9 +47,9 @@
 
   <div class="effect-icon {{#if effect.disabled}}disabled{{/if}}" style="background-image: url({{effect.img}})">
     {{#if effect.isTemporary}}
-    {{#if context.isExpired}}
+    {{#if isExpired}}
     <i class="expired badge fa-solid fa-clock"></i>
-    {{else if context.isInfinite}}
+    {{else if isInfinite}}
     <i class="unlimited badge fa-solid fa-infinity"></i>
     {{else}}
     <i class="badge fa-solid fa-clock"></i>

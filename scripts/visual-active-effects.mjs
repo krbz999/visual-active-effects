@@ -51,130 +51,121 @@ export default class VisualActiveEffects extends Application {
 
   /** @override */
   async getData() {
-    const enabledEffects = [];
-    const disabledEffects = [];
-    const passiveEffects = [];
-    const enchantments = [];
+    if (!this.actor) return {};
 
-    const fromActor = this._getEffectsFromActor();
-    if (!fromActor) return {};
+    const effects = {
+      primary: {
+        enabled: [],
+        disabled: [],
+        passive: []
+      },
+      secondary: {
+        enabled: [],
+        disabled: []
+      }
+    };
+
     const hideDisabled = game.settings.get(MODULE, HIDE_DISABLED);
     const hidePassive = game.settings.get(MODULE, HIDE_PASSIVE);
 
-    // Set up effects.
-    for (const entry of fromActor) {
+    const skipping = effect => {
+      if (effect.isSuppressed) return false;
+      const data = effect.flags[MODULE]?.data ?? {};
+      if (data.inclusion === 1) return true;
+      if (data.inclusion === -1) return false;
 
-      // Set up the various text (intro and content).
-      const data = entry.effect.flags[MODULE]?.data ?? {};
+      if (effect.disabled) return hideDisabled;
+      if (effect.isTemporary) return false;
+      return hidePassive;
+    };
 
-      // Get the effect rollData to populate enrichers within the descriptions.
-      let rollData;
-      try {
-        if (entry.effect.origin) {
-          let origin = fromUuidSync(entry.effect.origin);
-          if (origin?.documentName === ActiveEffect.documentName) {
-            // Change the origin to the parent of the ActiveEffect - the originating item or actor.
-            origin = origin.parent;
-          }
-          if (origin?.pack) {
-            // Origin references a compendium, change the origin to the effect's parent - the local item or actor.
-            origin = entry.effect.parent;
-          }
-          if (typeof origin?.getRollData === "function") {
-            rollData = origin.getRollData();
-          }
-        }
+    // Set up primary effects.
+    for (const effect of this.actor.allApplicableEffects()) {
+      if (skipping(effect)) continue;
 
-        // Fallback to the parent if there's no rollData.
-        if (!rollData) rollData = entry.effect.parent.getRollData();
-      } catch (_) {
-        // Fallback to just an empty object - enrichers will show empty values in this case.
-        rollData = {};
-      }
+      const context = await this.#prepareEffect(effect);
 
-      // Always exclude?
-      const forceExclude = data.inclusion === -1;
-      if (forceExclude) continue;
-
-      // Set up intro if it exists.
-      const intro = entry.effect.description;
-      if (intro) entry.context.strings.intro = await TextEditor.enrichHTML(intro, {
-        rollData: rollData,
-        relativeTo: entry.effect
-      });
-
-      entry.context.hasText = !!intro;
-
-      // Add to either disabled array, enabled array, or passive array.
-      if ((game.system.id === "dnd5e") && (entry.effect.type === "enchantment")) enchantments.push(entry);
-      else if (entry.effect.disabled) {
-        if (!hideDisabled || (data.inclusion === 1)) disabledEffects.push(entry);
-      } else if (entry.effect.isTemporary) enabledEffects.push(entry);
-      else if (!hidePassive || (data.inclusion === 1)) passiveEffects.push(entry);
+      if (effect.disabled) effects.primary.disabled.push(context);
+      else if (effect.isTemporary) effects.primary.enabled.push(context);
+      else effects.primary.passive.push(context);
     }
-    return {enabledEffects, disabledEffects, passiveEffects, enchantments};
+
+    // Set up secondary effects.
+    if (game.system.id !== "dnd5e") return effects;
+    for (const item of this.actor.items) {
+      for (const effect of item.allApplicableEffects()) {
+        if (!effect.isTemporary) continue;
+        if (skipping(effect)) continue;
+
+        const context = await this.#prepareEffect(effect);
+        if (effect.disabled) effects.secondary.disabled.push(context);
+        else effects.secondary.enabled.push(context);
+      }
+    }
+
+    return effects;
   }
 
   /* -------------------------------------------------- */
 
-  /**
-   * Helper method for getData, extracting each effect, filtering the suppressed, and returning it with additional context.
-   * @returns {object[]|void}      An array with 'effect' and 'context'.
-   */
-  _getEffectsFromActor() {
-    if (!this.actor) return;
-    const data = [];
-    const effects = this.actor.allApplicableEffects();
-    for (const effect of effects) {
-      if (effect.isSuppressed) continue;
-      const context = {strings: {intro: "", content: ""}};
-      if (effect.isTemporary) {
-        const rem = effect.duration.remaining;
-        context.isExpired = Number.isNumeric(rem) && (rem <= 0);
-        context.isInfinite = rem === null;
-        context.durationLabel = remainingTimeLabel(effect);
+  async #prepareEffect(effect) {
+    const context = {
+      strings: {
+        intro: "",
+        content: ""
       }
-      const buttons = [];
+    };
 
-      /**
-       * A hook that is called such that other modules can add buttons to the description of an effect
-       * on the panel. Each object pushed into the array must have 'label' and a function 'callback'.
-       * @param {ActiveEffect} effect     The original effect.
-       * @param {Array} buttons           An array of buttons.
-       */
-      Hooks.callAll("visual-active-effects.createEffectButtons", effect, buttons);
-
-      // Filter out invalid buttons and push valid ones into this.buttons in one go.
-      context.buttons = buttons.reduce((acc, b) => {
-        if (!(typeof b.label === "string") || !(b.callback instanceof Function)) return acc;
-        b.id = foundry.utils.randomID();
-        this.buttons.push(b);
-        acc.push(b);
-        return acc;
-      }, []);
-
-      context.buttonHeight = buttons.length * 32 + (buttons.length - 1) * 3;
-
-      data.push({effect, context});
+    if (effect.isTemporary) {
+      const rem = effect.duration.remaining;
+      context.isExpired = Number.isNumeric(rem) && (rem <= 0);
+      context.isInfinite = rem === null;
+      context.durationLabel = remainingTimeLabel(effect);
     }
 
-    // Add enchantments in dnd5e.
-    if (game.system.id === "dnd5e") {
-      for (const item of this.actor.items) {
-        for (const effect of item.allApplicableEffects()) {
-          if (!effect.active) continue;
-          const context = {strings: {intro: "", content: ""}};
-          if (effect.isTemporary) {
-            context.isExpired = Number.isNumeric(effect.duration.remaining) && (effect.duration.remaining <= 0);
-            context.isInfinite = effect.duration.remaining === null;
-            context.durationLabel = remainingTimeLabel(effect);
-          }
-          data.push({effect, context});
-        }
+    const buttons = [];
+
+    /**
+     * A hook that is called for other modules to add buttons to the pannel.
+     * Each button must have `label` and a `callback` function.
+     * @param {ActiveEffect} effect     The effect.
+     * @param {object[]} buttons        The button.
+     */
+    Hooks.callAll("visual-active-effects.createEffectButtons", effect, buttons);
+
+    context.buttons = buttons.filter(button => {
+      if (!(typeof button.label === "string") || !(button.callback instanceof Function)) return false;
+
+      button.id = foundry.utils.randomID();
+      this.buttons.push(button);
+
+      return true;
+    });
+
+    context.buttonHeight = buttons.length * 32 + (buttons.length - 1) * 3;
+
+    // Get roll data.
+    let rollData;
+    try {
+      if (effect.origin) {
+        let origin = fromUuidSync(effect.origin);
+        if (origin?.documentName === "ActiveEffect") origin = origin.parent;
+        if (origin?.pack) origin = effect.parent;
+        if (typeof origin?.getRollData === "function") rollData = origin.getRollData();
       }
+      if (!rollData) rollData = effect.parent.getRollData();
+    } catch (err) {
+      rollData = {};
     }
 
-    return data;
+    const intro = effect.description;
+    if (intro) context.strings.intro = await TextEditor.enrichHTML(intro, {
+      rollData: rollData, relativeTo: effect
+    });
+    context.hasText = !!intro;
+    context.effect = effect;
+
+    return context;
   }
 
   /* -------------------------------------------------- */
