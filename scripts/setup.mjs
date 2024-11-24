@@ -43,7 +43,7 @@ for (const prefix of ["create", "update", "delete"]) {
           if (actor?.documentName === "Item") actor = actor.parent;
           break;
       }
-      if (actor && (actor.uuid === panel.actor.uuid)) panel.refresh(true);
+      if (actor && (actor.uuid === panel.actor?.uuid)) panel.refresh(true);
     });
   }
 }
