@@ -1,9 +1,39 @@
 import {HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS} from "./constants.mjs";
 import {remainingTimeLabel} from "./helpers.mjs";
 
-export default class VisualActiveEffects extends Application {
+export default class VisualActiveEffects extends foundry.applications.api.HandlebarsApplicationMixin(
+  foundry.applications.api.ApplicationV2
+) {
+  /** @inheritdoc */
+  static DEFAULT_OPTIONS = {
+    actions: {
+      customButton: VisualActiveEffects.#customButton,
+      deleteEffect: {
+        handler: VisualActiveEffects.#deleteEffect,
+        buttons: [2]
+      }
+    },
+    classes: [MODULE, "panel"],
+    form: {},
+    id: MODULE,
+    window: {
+      frame: false,
+      minimizable: false,
+      positioned: false,
+      resizable: false
+    }
+  };
+
   /* -------------------------------------------------- */
-  /*   Properties                                       */
+
+  /** @inheritdoc */
+  static PARTS = {
+    main: {
+      template: `modules/${MODULE}/templates/${MODULE}.hbs`,
+      root: true
+    }
+  };
+
   /* -------------------------------------------------- */
 
   /**
@@ -26,31 +56,8 @@ export default class VisualActiveEffects extends Application {
 
   /* -------------------------------------------------- */
 
-  /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      id: MODULE,
-      popOut: false,
-      template: `modules/${MODULE}/templates/${MODULE}.hbs`,
-      minimizable: false
-    });
-  }
-
-  /* -------------------------------------------------- */
-  /*   Rendering                                        */
-  /* -------------------------------------------------- */
-
-  /** @constructor */
-  constructor() {
-    super();
-    this._initialSidebarWidth = ui.sidebar.element.outerWidth();
-    this._playerClicks = game.settings.get(MODULE, PLAYER_CLICKS);
-  }
-
-  /* -------------------------------------------------- */
-
-  /** @override */
-  async getData() {
+  /** @inheritdoc */
+  async _prepareContext(options) {
     if (!this.actor) return {};
 
     const effects = {
@@ -109,6 +116,11 @@ export default class VisualActiveEffects extends Application {
 
   /* -------------------------------------------------- */
 
+  /**
+   * Prepare context for an effect.
+   * @param {ActiveEffect} effect
+   * @returns {Promise<object>}
+   */
   async #prepareEffect(effect) {
     const context = {
       strings: {
@@ -185,81 +197,97 @@ export default class VisualActiveEffects extends Application {
 
   /* -------------------------------------------------- */
 
-  /** @override */
-  async _render(force = false, options = {}) {
-    if (!force && this.element[0].closest(".panel").classList.contains("hovered")) {
+  /** @inheritdoc */
+  async render(options = {}) {
+    if (!options.force && this.element.closest(".panel").classList.contains("hovered")) {
       this._needsRefresh = true;
       return;
     }
-    await super._render(force, options);
+    const result = await super.render(options);
     this._needsRefresh = false;
-    if (ui.sidebar._collapsed) this.element.css("right", "50px");
-    else this.element.css("right", `${this._initialSidebarWidth + 18}px`);
-  }
-
-  /* -------------------------------------------------- */
-  /*   Instance methods                                 */
-  /* -------------------------------------------------- */
-
-  /**
-   * Debounce rendering of the app.
-   * @param {boolean} force                       Whether to force the rendering of the app.
-   * @returns {Promise<VisualActiveEffects>}      This application.
-   */
-  async refresh(force) {
-    return foundry.utils.debounce(this.render.bind(this, force), 100)();
+    return result;
   }
 
   /* -------------------------------------------------- */
 
-  /** @override */
-  bringToTop(event) {
-    const element = event.currentTarget;
-    const z = document.defaultView.getComputedStyle(element).zIndex;
-    if (z < _maxZ) {
-      element.style.zIndex = Math.min(++_maxZ, 99999);
-      ui.activeWindow = this;
+  /** @inheritdoc */
+  _insertElement(element) {
+    const existing = document.getElementById(element.id);
+    if (existing) existing.replaceWith(element);
+    else document.querySelector("#interface").insertAdjacentElement("afterbegin", element);
+  }
+
+  /* -------------------------------------------------- */
+
+  /** @inheritdoc */
+  _onRender(...args) {
+    super._onRender(...args);
+
+    const playerInteraction = game.settings.get(MODULE, PLAYER_CLICKS);
+
+    if (playerInteraction) {
+      for (const element of this.element.querySelectorAll(".effect-icon")) {
+        element.addEventListener("dblclick", VisualActiveEffects.#toggleEffect.bind(this));
+      }
     }
-  }
 
-  /* -------------------------------------------------- */
+    this.element.addEventListener("pointerover", VisualActiveEffects.#pointerOver.bind(this));
+    this.element.addEventListener("pointerout", VisualActiveEffects.#pointerOut.bind(this));
 
-  /**
-   * Helper method to move the panel when the sidebar is collapsed or expanded.
-   * @param {Sidebar} _         The sidebar.
-   * @param {boolean} bool      Whether it was collapsed.
-   */
-  handleExpand(_, bool) {
-    if (!bool) {
-      const right = `${this._initialSidebarWidth + 18}px`;
-      this.element.css("right", right);
-    } else this.element.delay(50).animate({right: "50px"}, 500);
+    for (const element of this.element.querySelectorAll(".effect-item")) {
+      element.addEventListener("pointerenter", VisualActiveEffects.#pointerEnter.bind(this));
+    }
   }
 
   /* -------------------------------------------------- */
   /*   Event handlers                                   */
   /* -------------------------------------------------- */
 
-  /** @override */
-  activateListeners(html) {
-    if (this._playerClicks || game.user.isGM) {
-      html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("contextmenu", this.onIconRightClick.bind(this)));
-      html[0].querySelectorAll(".effect-icon").forEach(n => n.addEventListener("dblclick", this.onIconDoubleClick.bind(this)));
-    }
-    html[0].querySelectorAll("[data-action='custom-button']").forEach(n => n.addEventListener("click", this.onClickCustomButton.bind(this)));
-    html[0].addEventListener("pointerover", this._onMouseOver.bind(this));
-    html[0].addEventListener("pointerout", this._onMouseOver.bind(this));
-    html[0].addEventListener("pointerover", this.bringToTop.bind(this));
-    html[0].querySelectorAll(".effect-item").forEach(n => n.addEventListener("pointerenter", this._onMouseEnter.bind(this)));
+  /**
+   * Execute the function of a custom button.
+   * @param {PointerEvent} event      The initiating click event.
+   * @param {HTMLElement} target      The element that defined the [data-action].
+   */
+  static #customButton(event, target) {
+    const id = target.dataset.id;
+    const button = this.buttons.find(b => b.id === id);
+    button.callback(event);
   }
 
   /* -------------------------------------------------- */
 
   /**
-   * Set the maximum height of effect descriptions.
-   * @param {Event} event     Initiating hover event.
+   * Delete an effect.
+   * @param {PointerEvent} event      The initiating click event.
+   * @param {HTMLElement} target      The element that defined the [data-action].
    */
-  _onMouseEnter(event) {
+  static async #deleteEffect(event, target) {
+    const alt = event.shiftKey;
+    const effect = await fromUuid(target.closest("[data-effect-uuid]").dataset.effectUuid);
+    if (alt && game.user.isGM) effect.delete();
+    else effect.deleteDialog();
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Toggle an effect.
+   * @param {PointerEvent} event      The initiating double-click event.
+   */
+  static async #toggleEffect(event) {
+    const alt = event.ctrlKey || event.metaKey;
+    const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
+    if (alt) effect.sheet.render({force: true});
+    else effect.update({disabled: !effect.disabled});
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Set the max height of effect description to prevent window overflow.
+   * @param {PointerEvent} event      The inititing pointer event.
+   */
+  static #pointerEnter(event) {
     const info = event.currentTarget.querySelector(".effect-intro");
     if (!info) return;
     const win = window.innerHeight;
@@ -269,53 +297,23 @@ export default class VisualActiveEffects extends Application {
   /* -------------------------------------------------- */
 
   /**
-   * Save whether the application is being moused over.
-   * @param {Event} event     The initiating mouseover or mouseout event.
-   * @returns {Promise<void|VisualActiveEffects>}
+   * Add the `hovered` class to an element.
+   * @param {PointerEvent} event      The initiating pointer event.
    */
-  _onMouseOver(event) {
-    const state = event.type === "pointerover";
+  static #pointerOver(event) {
     const target = event.currentTarget;
-    target.classList.toggle("hovered", state);
-    if (!state && (this._needsRefresh === true)) return this.render();
+    target.classList.add("hovered");
   }
 
   /* -------------------------------------------------- */
 
   /**
-   * When a button on the panel is clicked.
-   * @param {Event} event     The initiating click event.
-   * @returns {Promise}       Result of the callback function.
+   * Remove the `hovered` class and optionally refresh the application.
+   * @param {PointerEvent} event      The initiating pointer event.
    */
-  async onClickCustomButton(event) {
-    const id = event.currentTarget.dataset.id;
-    const button = this.buttons.find(b => b.id === id);
-    return button.callback(event);
-  }
-
-  /* -------------------------------------------------- */
-
-  /**
-   * Handle deleting an effect when right-clicked.
-   * @param {Event} event                           The initiating click event.
-   * @returns {Promise<ActiveEffect|boolean>}       Either the deleted effect, or the result of the prompt.
-   */
-  async onIconRightClick(event) {
-    const alt = event.shiftKey;
-    const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
-    return (alt && game.user.isGM) ? effect.delete() : effect.deleteDialog();
-  }
-
-  /* -------------------------------------------------- */
-
-  /**
-   * Handle enabling/disabling an effect when double-clicked, or showing its sheet.
-   * @param {Event} event                                     The initiating click event.
-   * @returns {Promise<ActiveEffect|ActiveEffectConfig>}      The updated effect or its sheet.
-   */
-  async onIconDoubleClick(event) {
-    const alt = event.ctrlKey || event.metaKey;
-    const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
-    return alt ? effect.sheet.render(true) : effect.update({disabled: !effect.disabled});
+  static #pointerOut(event) {
+    const target = event.currentTarget;
+    target.classList.remove("hovered");
+    if (this._needsRefresh === true) this.render();
   }
 }

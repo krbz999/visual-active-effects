@@ -21,11 +21,10 @@ Hooks.once("ready", function() {
   registerAPI();
   applyStyleSettings();
   panel = new VisualActiveEffects();
-  panel.render(true);
+  panel.render({force: true});
 
-  Hooks.on("collapseSidebar", panel.handleExpand.bind(panel));
-  Hooks.on("updateWorldTime", panel.refresh.bind(panel, false));
-  Hooks.on("controlToken", panel.refresh.bind(panel, true));
+  Hooks.on("updateWorldTime", () => panel.render());
+  Hooks.on("controlToken", () => panel.render({force: true}));
 });
 
 /* -------------------------------------------------- */
@@ -43,7 +42,7 @@ for (const prefix of ["create", "update", "delete"]) {
           if (actor?.documentName === "Item") actor = actor.parent;
           break;
       }
-      if (actor && (actor.uuid === panel.actor?.uuid)) panel.refresh(true);
+      if (actor && (actor.uuid === panel.actor?.uuid)) panel.render({force: true});
     });
   }
 }

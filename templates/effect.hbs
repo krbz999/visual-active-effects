@@ -38,14 +38,14 @@
     {{#if buttons.length}}
     <div class="vae-buttons">
       {{#each buttons}}
-      <button type="button" class="vae-button" data-action="custom-button" data-id="{{id}}">{{label}}</button>
+      <button type="button" class="vae-button" data-action="customButton" data-id="{{id}}">{{label}}</button>
       {{/each}}
     </div>
     {{/if}}
 
   </div>
 
-  <div class="effect-icon {{#if effect.disabled}}disabled{{/if}}" style="background-image: url({{effect.img}})">
+  <div class="effect-icon {{#if effect.disabled}}inactive{{/if}}" style="background-image: url({{effect.img}})" data-action="deleteEffect">
     {{#if effect.isTemporary}}
     {{#if isExpired}}
     <i class="expired badge fa-solid fa-clock"></i>

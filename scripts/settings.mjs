@@ -13,14 +13,21 @@ import {
 } from "./constants.mjs";
 import {applyStyleSettings} from "./helpers.mjs";
 
+const {BooleanField, NumberField} = foundry.data.fields;
+
 export function registerSettings() {
   game.settings.register(MODULE, ICON_SIZE, {
     name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.NAME",
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.ICON_SIZE.HINT",
     scope: "client",
     config: true,
-    type: Number,
-    default: 50,
+    type: new NumberField({
+      initial: 50,
+      integer: true,
+      max: 100,
+      min: 10,
+      nullable: false
+    }),
     requiresReload: false,
     onChange: applyStyleSettings
   });
@@ -30,8 +37,13 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.FONT_SIZE.HINT",
     scope: "client",
     config: true,
-    type: Number,
-    default: 16,
+    type: new NumberField({
+      initial: 16,
+      integer: true,
+      max: 50,
+      min: 4,
+      nullable: false
+    }),
     requiresReload: false,
     onChange: applyStyleSettings
   });
@@ -41,8 +53,13 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.HINT",
     scope: "client",
     config: true,
-    type: Number,
-    default: 25,
+    type: new NumberField({
+      initial: 16,
+      integer: true,
+      max: 200,
+      min: 0,
+      nullable: false
+    }),
     requiresReload: false,
     onChange: applyStyleSettings
   });
@@ -52,8 +69,7 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.HINT",
     scope: "world",
     config: true,
-    type: Boolean,
-    default: false,
+    type: new BooleanField(),
     requiresReload: true
   });
 
@@ -62,8 +78,7 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_PASSIVE.HINT",
     scope: "world",
     config: true,
-    type: Boolean,
-    default: true,
+    type: new BooleanField({initial: true}),
     requiresReload: true
   });
 
@@ -72,8 +87,7 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.HINT",
     scope: "world",
     config: true,
-    type: Boolean,
-    default: true,
+    type: new BooleanField({initial: true}),
     requiresReload: true
   });
 
@@ -82,8 +96,13 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.DAYS_PER_WEEK.HINT",
     scope: "world",
     config: true,
-    type: Number,
-    default: 9,
+    type: new NumberField({
+      initial: 7,
+      integer: true,
+      max: 50,
+      min: 1,
+      nullable: false
+    }),
     requiresReload: true
   });
 
@@ -92,8 +111,13 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.WEEKS_PER_MONTH.HINT",
     scope: "world",
     config: true,
-    type: Number,
-    default: 3,
+    type: new NumberField({
+      initial: 4,
+      integer: true,
+      max: 50,
+      min: 1,
+      nullable: false
+    }),
     requiresReload: true
   });
 
@@ -102,8 +126,13 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.MONTHS_PER_YEAR.HINT",
     scope: "world",
     config: true,
-    type: Number,
-    default: 12,
+    type: new NumberField({
+      initial: 12,
+      integer: true,
+      max: 50,
+      min: 1,
+      nullable: false
+    }),
     requiresReload: true
   });
 
@@ -112,8 +141,11 @@ export function registerSettings() {
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.EXTRA_DAYS_PER_YEAR.HINT",
     scope: "world",
     config: true,
-    type: Number,
-    default: 1,
+    type: new NumberField({
+      initial: 0,
+      integer: true,
+      min: 0
+    }),
     requiresReload: true
   });
 }
