@@ -46,7 +46,7 @@
   </div>
 
   <div class="effect-icon {{#if effect.disabled}}inactive{{/if}}" data-action="deleteEffect">
-    <div class="effect-icon-img" style="background-image: url({{effect.img}}); mask-image: url({{effect.img}}); {{#unless effect.disabled}}background-color: {{effect.tint.css}};{{/unless}}"></div>
+    <div class="effect-icon-img" style="background-image: url('{{effect.img}}'); mask-image: url('{{effect.img}}'); {{#unless effect.disabled}}background-color: {{effect.tint.css}};{{/unless}}"></div>
     {{#if effect.isTemporary}}
     {{#if isExpired}}
     <i class="expired badge fa-solid fa-clock"></i>
