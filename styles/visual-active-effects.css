@@ -125,6 +125,14 @@
         filter: brightness(0.25) grayscale(1);
       }
 
+      .effect-icon-img {
+        height: inherit;
+        width: inherit;
+        background-size: inherit;
+        background-blend-mode: multiply;
+        mask-size: contain; 
+      }
+
       .badge {
         bottom: 5%;
         color: white;
