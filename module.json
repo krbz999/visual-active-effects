@@ -12,9 +12,9 @@
     }
   ],
   "compatibility": {
-    "minimum": "12",
-    "maximum": "12",
-    "verified": "12"
+    "minimum": "13",
+    "maximum": "13",
+    "verified": "13"
   },
   "esmodules": [
     "scripts/setup.mjs"
@@ -60,10 +60,12 @@
   "flags": {
     "hotReload": {
       "extensions": [
-        "css"
+        "css",
+        "hbs"
       ],
       "paths": [
-        "styles/visual-active-effects.css"
+        "styles",
+        "templates"
       ]
     }
   },

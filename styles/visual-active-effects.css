@@ -20,17 +20,22 @@
 /*        EFFECTS PANEL      */
 /*                           */
 /* ------------------------- */
+#interface:has(#sidebar-content.expanded) .visual-active-effects.panel {
+  right: calc(50px + 16px + 300px); /* hard coded because the variables are in the #sidebar element */
+}
 .visual-active-effects.panel {
-  position: fixed;
   z-index: 100;
-  top: var(--visual-active-effects-top-offset);
   filter: var(--vae-dropshadow);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: calc(var(--visual-active-effects-icon-size)/5);
+  gap: calc(var(--visual-active-effects-icon-size) / 5);
   overflow: visible;
   max-height: calc(100% - 50px);
+  position: absolute;
+  top: var(--visual-active-effects-top-offset);
+  right: calc(50px + 16px);
+  transition: right 250ms ease;
 
   .effect-item {
     display: flex;
@@ -75,7 +80,7 @@
       &.passive {
         border-color: var(--vae-border-color-passive);
       }
-      &.disabled {
+      &.inactive {
         border-color: var(--vae-border-color-disabled);
       }
 
@@ -116,8 +121,16 @@
       position: relative;
       transition: transform 0.15s;
 
-      &.disabled {
+      &.inactive {
         filter: brightness(0.25) grayscale(1);
+      }
+
+      .effect-icon-img {
+        height: inherit;
+        width: inherit;
+        background-size: inherit;
+        background-blend-mode: multiply;
+        mask-size: contain; 
       }
 
       .badge {
@@ -198,16 +211,13 @@
   }
 
   & hr.divider {
-    margin-right: 0;
+    margin: .25em 0;
     width: var(--visual-active-effects-icon-size);
-  }
-
-  /* Hide some dividers */
-  :not(.effect-item) + hr.divider,
-  & hr.divider:not(:has( ~ .effect-item)) {
     display: none;
   }
-
+  .effect-item + hr.divider:has( ~ .effect-item) {
+    display: block;
+  }
 
   .vae-buttons {
     display: flex;

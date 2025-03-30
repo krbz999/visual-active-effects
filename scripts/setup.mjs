@@ -1,38 +1,28 @@
-import {MODULE} from "./constants.mjs";
-import {applyStyleSettings, registerAPI} from "./helpers.mjs";
-import {registerSettings} from "./settings.mjs";
+import { MODULE } from "./constants.mjs";
+import { registerAPI } from "./helpers.mjs";
+import { registerSettings } from "./settings.mjs";
 import VisualActiveEffects from "./visual-active-effects.mjs";
+import SettingsMenu from "./settings-menu.mjs";
 
-let panel;
-
-/* -------------------------------------------------- */
-
-Hooks.once("init", registerSettings);
-
-/* -------------------------------------------------- */
-
-Hooks.once("ready", function() {
-  loadTemplates([`modules/${MODULE}/templates/effect.hbs`]);
+foundry.helpers.Hooks.once("init", () => {
+  registerSettings();
+  CONFIG.ui.visualActiveEffects = VisualActiveEffects;
 });
 
-/* -------------------------------------------------- */
-
-Hooks.once("ready", function() {
+foundry.helpers.Hooks.once("ready", function() {
   registerAPI();
-  applyStyleSettings();
-  panel = new VisualActiveEffects();
-  panel.render(true);
-
-  Hooks.on("collapseSidebar", panel.handleExpand.bind(panel));
-  Hooks.on("updateWorldTime", panel.refresh.bind(panel, false));
-  Hooks.on("controlToken", panel.refresh.bind(panel, true));
+  SettingsMenu.applyDefaults();
+  ui.visualActiveEffects.render({ force: true });
 });
+
+foundry.helpers.Hooks.on("updateWorldTime", () => ui.visualActiveEffects.render());
+foundry.helpers.Hooks.on("controlToken", () => ui.visualActiveEffects.render());
 
 /* -------------------------------------------------- */
 
 for (const prefix of ["create", "update", "delete"]) {
   for (const documentName of ["ActiveEffect", "Item"]) {
-    Hooks.on(`${prefix}${documentName}`, function(document) {
+    foundry.helpers.Hooks.on(`${prefix}${documentName}`, function(document) {
       let actor;
       switch (document.documentName) {
         case "Item":
@@ -43,22 +33,24 @@ for (const prefix of ["create", "update", "delete"]) {
           if (actor?.documentName === "Item") actor = actor.parent;
           break;
       }
-      if (actor && (actor.uuid === panel.actor?.uuid)) panel.refresh(true);
+      if (actor && (actor.uuid === ui.visualActiveEffects.actor?.uuid)) {
+        ui.visualActiveEffects.render({ force: true });
+      }
     });
   }
 }
 
 /* -------------------------------------------------- */
 
-Hooks.on("updateCombat", function(combat, update, context) {
+foundry.helpers.Hooks.on("updateCombat", function(combat, update, context) {
   if (context.advanceTime !== 0) return;
   if (!context.direction) return;
-  panel.refresh(false);
+  ui.visualActiveEffects.refresh(false);
 });
 
 /* -------------------------------------------------- */
 
-Hooks.on("getActiveEffectConfigHeaderButtons", function(config, array) {
+foundry.helpers.Hooks.on("getActiveEffectConfigHeaderButtons", function(config, array) {
   const icon = "fa-solid fa-pen-fancy";
 
   array.unshift({
@@ -73,30 +65,30 @@ Hooks.on("getActiveEffectConfigHeaderButtons", function(config, array) {
         initial: 0,
         localize: true,
         options: [
-          {value: 0, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Default"},
-          {value: 1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Include"},
-          {value: -1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Exclude"}
-        ]
+          { value: 0, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Default" },
+          { value: 1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Include" },
+          { value: -1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Exclude" },
+        ],
       });
 
       const formGroup = foundry.applications.fields.createFormGroup({
         input: input,
         label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Label",
         hint: "VISUAL_ACTIVE_EFFECTS.Inclusion.Hint",
-        localize: true
+        localize: true,
       });
 
-      foundry.applications.api.DialogV2.prompt({
+      foundry.applications.api.Dialog.prompt({
         content: `<fieldset>${formGroup.outerHTML}</fieldset>`,
         rejectClose: false,
         modal: true,
         window: {
           icon: icon,
-          title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.Inclusion.Title", {name: config.document.name})
+          title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.Inclusion.Title", { name: config.document.name }),
         },
         position: {
           width: 300,
-          height: "auto"
+          height: "auto",
         },
         ok: {
           icon: icon,
@@ -104,9 +96,9 @@ Hooks.on("getActiveEffectConfigHeaderButtons", function(config, array) {
           callback: (event, button) => {
             const value = button.form.elements.inclusion.value;
             config.document.setFlag(MODULE, "data.inclusion", Number(value));
-          }
-        }
+          },
+        },
       });
-    }
+    },
   });
 });

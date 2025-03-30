@@ -1,11 +1,4 @@
-export const DAYS_PER_WEEK = "daysPerWeek";
-export const EXTRA_DAYS_PER_YEAR = "extraDaysPerYear";
-export const FONT_SIZE = "fontSize";
 export const HIDE_DISABLED = "hideDisabled";
 export const HIDE_PASSIVE = "hidePassive";
 export const PLAYER_CLICKS = "playerClicks";
-export const ICON_SIZE = "iconSize";
 export const MODULE = "visual-active-effects";
-export const MONTHS_PER_YEAR = "monthsPerYear";
-export const TOP_OFFSET = "topOffset";
-export const WEEKS_PER_MONTH = "weeksPerMonth";
