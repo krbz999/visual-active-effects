@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Visual Active Effects",
   "scripts": {
-    "build": "rollup -c rollup.config.mjs"
+    "db:unpack": "node tools/pack-level-db.mjs package unpack",
+    "db:pack": "node tools/pack-level-db.mjs package pack",
+    "build": "rollup -c",
+    "createSymlinks": "node ./tools/create-symlinks.mjs",
+    "postinstall": "npm run createSymlinks"
   },
   "repository": {
     "type": "git",
@@ -19,7 +23,11 @@
   },
   "homepage": "https://github.com/krbz999/visual-active-effects",
   "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^1.0.2",
+    "@html-eslint/eslint-plugin": "^0.26.0",
+    "@html-eslint/parser": "^0.26.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "eslint": "^8.57.0",
-    "rollup": "^4.17.2"
+    "rollup": "^4.9.1"
   }
 }
