@@ -60,10 +60,12 @@
   "flags": {
     "hotReload": {
       "extensions": [
-        "css"
+        "css",
+        "hbs"
       ],
       "paths": [
-        "styles/visual-active-effects.css"
+        "styles",
+        "templates"
       ]
     }
   },
