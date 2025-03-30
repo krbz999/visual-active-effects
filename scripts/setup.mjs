@@ -3,17 +3,10 @@ import { applyStyleSettings, registerAPI } from "./helpers.mjs";
 import { registerSettings } from "./settings.mjs";
 import VisualActiveEffects from "./visual-active-effects.mjs";
 
-foundry.helpers.Hooks.once("init", registerSettings);
-
-Hooks.once("ready", function() {
-  loadTemplates([`modules/${MODULE}/templates/effect.hbs`]);
-});
-
 foundry.helpers.Hooks.once("init", () => {
+  registerSettings();
   CONFIG.ui.visualActiveEffects = VisualActiveEffects;
 });
-
-/* -------------------------------------------------- */
 
 foundry.helpers.Hooks.once("ready", function() {
   registerAPI();
@@ -22,7 +15,7 @@ foundry.helpers.Hooks.once("ready", function() {
 });
 
 foundry.helpers.Hooks.on("updateWorldTime", () => ui.visualActiveEffects.render());
-foundry.helpers.Hooks.on("controlToken", () => ui.visualActiveEffects.render({ force: true }));
+foundry.helpers.Hooks.on("controlToken", () => ui.visualActiveEffects.render());
 
 /* -------------------------------------------------- */
 

@@ -1,5 +1,4 @@
 import { HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS } from "./constants.mjs";
-import { remainingTimeLabel } from "./helpers.mjs";
 
 const { HandlebarsApplicationMixin, Application } = foundry.applications.api;
 
@@ -30,6 +29,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
   static PARTS = {
     main: {
       template: `modules/${MODULE}/templates/${MODULE}.hbs`,
+      templates: [`modules/${MODULE}/templates/effect.hbs`],
       root: true,
     },
   };
@@ -133,7 +133,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
       const rem = effect.duration.remaining;
       context.isExpired = Number.isNumeric(rem) && (rem <= 0);
       context.isInfinite = rem === null;
-      context.durationLabel = remainingTimeLabel(effect);
+      context.durationLabel = VisualActiveEffects.remainingTimeLabel(effect);
     }
 
     const buttons = [];
@@ -464,5 +464,29 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     }
 
     return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED");
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Helper function to get remaining duration.
+   * @param {ActiveEffect} effect   The effect.
+   * @returns {string|null}         Human-readable label describing remaining time.
+   */
+  static remainingTimeLabel(effect) {
+    // Case 1: Duration measured in rounds and turns.
+    if (effect.duration.type === "turns") {
+      if (effect.duration.remaining === null) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
+      else if (effect.duration.remaining === 0) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED");
+      return effect.duration.label;
+    }
+
+    // Case 2: Duration measured in seconds.
+    else if (effect.duration.type === "seconds") {
+      return VisualActiveEffects.convertSecondsToTag(effect.duration.remaining);
+    }
+
+    // Case 3: Neither rounds, turns, or seconds, so just return unlimited.
+    return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
   }
 }

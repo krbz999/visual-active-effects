@@ -4,30 +4,6 @@ import {
   MODULE,
   TOP_OFFSET,
 } from "./constants.mjs";
-import VisualActiveEffects from "./visual-active-effects.mjs";
-
-/**
- * Helper function to get remaining duration.
- * @param {ActiveEffect} effect
- * @returns {string|null}
- */
-export function remainingTimeLabel(effect) {
-
-  // Case 1: Duration measured in rounds and turns.
-  if (effect.duration.type === "turns") {
-    if (effect.duration.remaining === null) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
-    else if (effect.duration.remaining === 0) return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED");
-    return effect.duration.label;
-  }
-
-  // Case 2: Duration measured in seconds.
-  else if (effect.duration.type === "seconds") {
-    return VisualActiveEffects.convertSecondsToTag(effect.duration.remaining);
-  }
-
-  // Case 3: Neither rounds, turns, or seconds, so just return unlimited.
-  return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
-}
 
 /** Refreshes the style sheet when a user changes the various css-related module settings. */
 export function applyStyleSettings() {
