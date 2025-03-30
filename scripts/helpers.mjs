@@ -1,20 +1,4 @@
-import {
-  FONT_SIZE,
-  ICON_SIZE,
-  MODULE,
-  TOP_OFFSET,
-} from "./constants.mjs";
-
-/** Refreshes the style sheet when a user changes the various css-related module settings. */
-export function applyStyleSettings() {
-  const data = {};
-  data["icon-size"] = Math.max(10, Math.round(game.settings.get(MODULE, ICON_SIZE) || 50));
-  data["font-size"] = Math.max(6, Math.round(game.settings.get(MODULE, FONT_SIZE) || 16));
-  data["max-width"] = Math.round(300 * data["font-size"] / 16);
-  data["top-offset"] = Math.max(0, Math.round(game.settings.get(MODULE, TOP_OFFSET) || 25));
-  const root = document.querySelector(":root");
-  Object.entries(data).forEach(([key, val]) => root.style.setProperty(`--${MODULE}-${key}`, `${val}px`));
-}
+import { MODULE } from "./constants.mjs";
 
 /** Register API functions. */
 export function registerAPI() {

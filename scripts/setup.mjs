@@ -1,7 +1,8 @@
 import { MODULE } from "./constants.mjs";
-import { applyStyleSettings, registerAPI } from "./helpers.mjs";
+import { registerAPI } from "./helpers.mjs";
 import { registerSettings } from "./settings.mjs";
 import VisualActiveEffects from "./visual-active-effects.mjs";
+import SettingsMenu from "./settings-menu.mjs";
 
 foundry.helpers.Hooks.once("init", () => {
   registerSettings();
@@ -10,7 +11,7 @@ foundry.helpers.Hooks.once("init", () => {
 
 foundry.helpers.Hooks.once("ready", function() {
   registerAPI();
-  applyStyleSettings();
+  SettingsMenu.applyDefaults();
   ui.visualActiveEffects.render({ force: true });
 });
 
