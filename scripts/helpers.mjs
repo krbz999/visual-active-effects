@@ -1,13 +1,10 @@
 import {
-  DAYS_PER_WEEK,
-  EXTRA_DAYS_PER_YEAR,
   FONT_SIZE,
   ICON_SIZE,
   MODULE,
-  MONTHS_PER_YEAR,
   TOP_OFFSET,
-  WEEKS_PER_MONTH
 } from "./constants.mjs";
+import VisualActiveEffects from "./visual-active-effects.mjs";
 
 /**
  * Helper function to get remaining duration.
@@ -25,73 +22,7 @@ export function remainingTimeLabel(effect) {
 
   // Case 2: Duration measured in seconds.
   else if (effect.duration.type === "seconds") {
-    const SECONDS = {
-      IN_ONE_ROUND: 6,
-      IN_ONE_MINUTE: 60,
-      IN_TWO_MINUTES: 120,
-      IN_ONE_HOUR: 3600,
-      IN_TWO_HOURS: 7200,
-      IN_ONE_DAY: 86400,
-      IN_TWO_DAYS: 172800
-    };
-
-    const daysPerWeek = game.settings.get(MODULE, DAYS_PER_WEEK) ?? 9;
-    const weeksPerMonth = game.settings.get(MODULE, WEEKS_PER_MONTH) ?? 3;
-    const monthsPerYear = game.settings.get(MODULE, MONTHS_PER_YEAR) ?? 12;
-    const extraDaysPerYear = game.settings.get(MODULE, EXTRA_DAYS_PER_YEAR) ?? 1;
-
-    SECONDS.IN_ONE_WEEK = SECONDS.IN_ONE_DAY * daysPerWeek;
-    SECONDS.IN_TWO_WEEKS = SECONDS.IN_ONE_WEEK * 2;
-    SECONDS.IN_ONE_MONTH = SECONDS.IN_ONE_WEEK * weeksPerMonth;
-    SECONDS.IN_TWO_MONTHS = SECONDS.IN_ONE_MONTH * 2;
-    SECONDS.IN_ONE_YEAR = SECONDS.IN_ONE_MONTH * monthsPerYear + SECONDS.IN_ONE_DAY * extraDaysPerYear;
-    SECONDS.IN_TWO_YEARS = SECONDS.IN_ONE_YEAR * 2;
-
-    const remainingSeconds = effect.duration.remaining;
-
-    let string = "";
-    let qty = 1;
-
-    if (remainingSeconds >= SECONDS.IN_TWO_YEARS) {
-      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_YEAR);
-      string = "YEARS";
-    } else if (remainingSeconds >= SECONDS.IN_ONE_YEAR) {
-      string = "YEAR";
-    } else if (remainingSeconds >= SECONDS.IN_TWO_MONTHS) {
-      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_MONTH);
-      string = "MONTHS";
-    } else if (remainingSeconds >= SECONDS.IN_ONE_MONTH) {
-      string = "MONTH";
-    } else if (remainingSeconds >= SECONDS.IN_TWO_WEEKS) {
-      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_WEEK);
-      string = "WEEKS";
-    } else if (remainingSeconds >= SECONDS.IN_ONE_WEEK) {
-      string = "WEEK";
-    } else if (remainingSeconds >= SECONDS.IN_TWO_DAYS) {
-      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_DAY);
-      string = "DAYS";
-    } else if (remainingSeconds >= SECONDS.IN_ONE_DAY) {
-      string = "DAY";
-    } else if (remainingSeconds >= SECONDS.IN_TWO_HOURS) {
-      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_HOUR);
-      string = "HOURS";
-    } else if (remainingSeconds >= SECONDS.IN_ONE_HOUR) {
-      string = "HOUR";
-    } else if (remainingSeconds >= SECONDS.IN_TWO_MINUTES) {
-      qty = Math.floor(remainingSeconds / SECONDS.IN_ONE_MINUTE);
-      string = "MINUTES";
-    } else if (remainingSeconds >= SECONDS.IN_ONE_MINUTE) {
-      string = "MINUTE";
-    } else if (remainingSeconds >= 2) {
-      qty = remainingSeconds;
-      string = "SECONDS";
-    } else if (remainingSeconds === 1) {
-      string = "SECOND";
-    } else {
-      string = "EXPIRED";
-    }
-
-    return game.i18n.format(`VISUAL_ACTIVE_EFFECTS.TIME.${string}`, {qty});
+    return VisualActiveEffects.convertSecondsToTag(effect.duration.remaining);
   }
 
   // Case 3: Neither rounds, turns, or seconds, so just return unlimited.
@@ -130,7 +61,7 @@ export function registerAPI() {
       const mig = isActor ? _migrateActor : _migrateDocumentWithEffects;
       for (const doc of docs) await mig(doc);
       ui.notifications.info(`${MODULE.toUpperCase()} | Finished migrating ${pack.metadata.label} (${pack.metadata.id}).`);
-    }
+    },
   };
 }
 
@@ -145,7 +76,7 @@ async function _migrateDocumentWithEffects(doc) {
   const updates = [];
   for (const effect of doc.effects) {
     const data = effect.flags[MODULE]?.data?.intro;
-    if (data) updates.push({_id: effect.id, description: data});
+    if (data) updates.push({ _id: effect.id, description: data });
   }
   if (updates.length) console.log(`${MODULE.toUpperCase()} | Migrating ${doc.name} (${doc.uuid})`);
   return doc.updateEmbeddedDocuments("ActiveEffect", updates);

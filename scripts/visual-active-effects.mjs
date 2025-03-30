@@ -1,17 +1,17 @@
-import {HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS} from "./constants.mjs";
-import {remainingTimeLabel} from "./helpers.mjs";
+import { HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS } from "./constants.mjs";
+import { remainingTimeLabel } from "./helpers.mjs";
 
-export default class VisualActiveEffects extends foundry.applications.api.HandlebarsApplicationMixin(
-  foundry.applications.api.ApplicationV2
-) {
+const { HandlebarsApplicationMixin, Application } = foundry.applications.api;
+
+export default class VisualActiveEffects extends HandlebarsApplicationMixin(Application) {
   /** @inheritdoc */
   static DEFAULT_OPTIONS = {
     actions: {
       customButton: VisualActiveEffects.#customButton,
       deleteEffect: {
         handler: VisualActiveEffects.#deleteEffect,
-        buttons: [2]
-      }
+        buttons: [2],
+      },
     },
     classes: [MODULE, "panel"],
     form: {},
@@ -20,8 +20,8 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
       frame: false,
       minimizable: false,
       positioned: false,
-      resizable: false
-    }
+      resizable: false,
+    },
   };
 
   /* -------------------------------------------------- */
@@ -30,8 +30,8 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
   static PARTS = {
     main: {
       template: `modules/${MODULE}/templates/${MODULE}.hbs`,
-      root: true
-    }
+      root: true,
+    },
   };
 
   /* -------------------------------------------------- */
@@ -50,7 +50,7 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
    */
   get actor() {
     let actor;
-    if (canvas.ready) actor = canvas.tokens.controlled[0]?.actor;
+    if (game.canvas.ready) actor = canvas.tokens.controlled[0]?.actor;
     return actor ?? game.user.character;
   }
 
@@ -64,12 +64,12 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
       primary: {
         enabled: [],
         disabled: [],
-        passive: []
+        passive: [],
       },
       secondary: {
         enabled: [],
-        disabled: []
-      }
+        disabled: [],
+      },
     };
 
     const hideDisabled = game.settings.get(MODULE, HIDE_DISABLED);
@@ -125,8 +125,8 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
     const context = {
       strings: {
         intro: "",
-        content: ""
-      }
+        content: "",
+      },
     };
 
     if (effect.isTemporary) {
@@ -173,26 +173,12 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
 
     const intro = effect.description;
     if (intro) context.strings.intro = await TextEditor.enrichHTML(intro, {
-      rollData: rollData, relativeTo: effect
+      rollData: rollData, relativeTo: effect,
     });
     context.hasText = !!intro;
     context.effect = effect;
 
     return context;
-  }
-
-  /* -------------------------------------------------- */
-
-  /**
-   * Helper method for getData.
-   * @param {object} duration     An effect's duration object.
-   * @returns {number}            The time remaining.
-   */
-  _getSecondsRemaining(duration) {
-    if (duration.seconds || duration.rounds) {
-      const seconds = duration.seconds ?? duration.rounds * (CONFIG.time.roundTime ?? 6);
-      return duration.startTime + seconds - game.time.worldTime;
-    } else return Infinity;
   }
 
   /* -------------------------------------------------- */
@@ -277,8 +263,8 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
   static async #toggleEffect(event) {
     const alt = event.ctrlKey || event.metaKey;
     const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
-    if (alt) effect.sheet.render({force: true});
-    else effect.update({disabled: !effect.disabled});
+    if (alt) effect.sheet.render({ force: true });
+    else effect.update({ disabled: !effect.disabled });
   }
 
   /* -------------------------------------------------- */
@@ -315,5 +301,168 @@ export default class VisualActiveEffects extends foundry.applications.api.Handle
     const target = event.currentTarget;
     target.classList.remove("hovered");
     if (this._needsRefresh === true) this.render();
+  }
+
+  /* -------------------------------------------------- */
+  /*   Helpers                                          */
+  /* -------------------------------------------------- */
+
+  /**
+   * How many days are there per week?
+   * @type {number}
+   */
+  static get DAYS_PER_WEEK() {
+    return game.time.calendar.days.values.length;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * How many seconds are there in a minute?
+   * @type {number}
+   */
+  static get SECONDS_PER_MINUTE() {
+    return game.time.calendar.days.secondsPerMinute;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * How many seconds are there in an hour?
+   * @type {number}
+   */
+  static get SECONDS_PER_HOUR() {
+    return game.time.calendar.days.minutesPerHour * game.time.calendar.days.secondsPerMinute;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * How many seconds are there in one day?
+   * @type {number}
+   */
+  static get SECONDS_PER_DAY() {
+    const { hoursPerDay, minutesPerHour, secondsPerMinute } = game.time.calendar.days;
+    return hoursPerDay * minutesPerHour * secondsPerMinute;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * How many seconds are there in a week?
+   * @type {number}
+   */
+  static get SECONDS_PER_WEEK() {
+    return VisualActiveEffects.DAYS_PER_WEEK * VisualActiveEffects.SECONDS_PER_DAY;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * How many seconds are there in one year?
+   * @type {number}
+   */
+  static get SECONDS_PER_YEAR() {
+    return VisualActiveEffects.SECONDS_PER_DAY * game.time.calendar.days.daysPerYear;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Convert a number of seconds to minutes (rounded up).
+   * @param {number} seconds    Number of seconds.
+   * @returns {number}          Number of minutes.
+   */
+  static secondsToMinutes(seconds) {
+    return game.time.calendar.timeToComponents(seconds).minute;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Convert a number of seconds to hours (rounded up).
+   * @param {number} seconds    Number of seconds.
+   * @returns {number}          Number of hours.
+   */
+  static secondsToHours(seconds) {
+    return game.time.calendar.timeToComponents(seconds).hour;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Convert a number of seconds to days (rounded up).
+   * @param {number} seconds    Number of seconds.
+   * @returns {number}          Number of days.
+   */
+  static secondsToDays(seconds) {
+    return game.time.calendar.timeToComponents(seconds).day;
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Convert a number of seconds to weeks (rounded up).
+   * @param {number} seconds    Number of seconds.
+   * @returns {number}          Number of weeks.
+   */
+  static secondsToWeeks(seconds) {
+    return Math.ceil(VisualActiveEffects.secondsToDays(seconds) / VisualActiveEffects.DAYS_PER_WEEK);
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Convert a number of seconds to years (rounded up).
+   * @param {number} seconds    Number of seconds.
+   * @returns {number}          Number of years.
+   */
+  static secondsToYears(seconds) {
+    return Math.ceil(seconds / VisualActiveEffects.SECONDS_PER_YEAR);
+  }
+
+  /* -------------------------------------------------- */
+
+  /**
+   * Convert a number of seconds to a proper label.
+   * @param {number} seconds    Number of seconds.
+   * @returns {string}         The contents of a tag.
+   */
+  static convertSecondsToTag(seconds) {
+    if (seconds >= VisualActiveEffects.SECONDS_PER_YEAR) {
+      return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.YEARS", {
+        qty: VisualActiveEffects.secondsToYears(seconds),
+      });
+    }
+
+    if (seconds >= VisualActiveEffects.SECONDS_PER_WEEK) {
+      return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.WEEKS", {
+        qty: VisualActiveEffects.secondsToWeeks(seconds),
+      });
+    }
+
+    if (seconds >= VisualActiveEffects.SECONDS_PER_DAY) {
+      return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.DAYS", {
+        qty: VisualActiveEffects.secondsToDays(seconds),
+      });
+    }
+
+    if (seconds >= VisualActiveEffects.SECONDS_PER_HOUR) {
+      return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.HOURS", {
+        qty: VisualActiveEffects.secondsToHours(seconds),
+      });
+    }
+
+    if (seconds >= VisualActiveEffects.SECONDS_PER_MINUTE) {
+      return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.MINUTES", {
+        qty: VisualActiveEffects.secondsToMinutes(seconds),
+      });
+    }
+
+    if (seconds > 0) {
+      return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.SECONDS", { qty: seconds });
+    }
+
+    return game.i18n.format("VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED");
   }
 }
