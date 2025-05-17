@@ -12,7 +12,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
         buttons: [2],
       },
     },
-    classes: [MODULE, "panel"],
+    classes: [MODULE, "panel", "themed", "theme-light"],
     form: {},
     id: MODULE,
     window: {
