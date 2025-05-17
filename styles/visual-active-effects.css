@@ -26,53 +26,47 @@
 .visual-active-effects.panel {
   z-index: 100;
   filter: var(--vae-dropshadow);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
   gap: calc(var(--visual-active-effects-icon-size) / 5);
-  overflow: visible;
-  max-height: calc(100% - 50px);
   position: absolute;
   top: var(--visual-active-effects-top-offset);
   right: calc(50px + 16px);
   transition: right 250ms ease;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap-reverse;
 
   .effect-item {
-    display: flex;
-    justify-content: flex-end;
-    height: var(--visual-active-effects-icon-size);
-    max-width: var(--visual-active-effects-icon-size);
+    anchor-name: var(--vae-effect-item-anchor);
 
     &:hover {
-      max-width: unset;
-
-      .effect-info {
-        height: fit-content;
-        margin: 0 calc(max(1.5rem, var(--visual-active-effects-icon-size)/5)) 0 0;
-        padding: 8px;
+       .effect-info {
         visibility: visible;
-        opacity: 1;
-        max-width: var(--visual-active-effects-max-width);
-        min-width: var(--visual-active-effects-max-width);
+        pointer-events: unset;
       }
 
       .effect-icon {
         transform: scale(1.2);
-        z-index: 100;
       }
     }
 
     .effect-info {
+      pointer-events: none;
+      position: fixed;
+      position-anchor: var(--vae-effect-item-anchor);
+      position-area: left center;
       visibility: hidden;
-      opacity: 0;
-      max-width: 0;
-      min-width: 0;
+      max-width: var(--visual-active-effects-max-width);
+      min-width: var(--visual-active-effects-max-width);
       filter: var(--vae-dropshadow);
       background-color: var(--vae-backdrop-color);
-      transition: opacity 0.15s linear;
       border-left: 10px solid;
       border-radius: 2px;
       overflow: hidden auto;
+      z-index: 1;
+      padding: 8px;
+      transition: visiblity 100ms ease;
+      /* right: .5rem; */
 
       &.temporary {
         border-color: var(--vae-border-color-temporary);
@@ -99,9 +93,8 @@
         .name {
           color: var(--vae-name-color);
           text-align: center;
-          padding: 0 4px;
-          margin: 0;
-          font-size: 1.6rem;
+          margin: .5rem;
+          font-size: 1.2rem;
           font-family: var(--vae-name-font);
           text-transform: uppercase;
         }
@@ -114,10 +107,7 @@
 
     .effect-icon {
       background-size: contain;
-      box-shadow: 0 0 0 1px silver, 0 0 0 2px gray, inset 0 0 4px rgba(0, 0, 0, 0.5);
-      height: var(--visual-active-effects-icon-size);
-      width: var(--visual-active-effects-icon-size);
-      min-width: var(--visual-active-effects-icon-size);
+      box-shadow: 0 0 0 1px silver;
       position: relative;
       transition: transform 0.15s;
 
@@ -126,11 +116,11 @@
       }
 
       .effect-icon-img {
-        height: inherit;
-        width: inherit;
+        width: var(--visual-active-effects-icon-size);
+        height: var(--visual-active-effects-icon-size);
         background-size: inherit;
-        background-blend-mode: multiply;
-        mask-size: contain; 
+        background-blend-mode: multiply; /* For tinting */
+        mask-size: contain; /* For svgs to fit */
       }
 
       .badge {
@@ -140,11 +130,11 @@
         left: 5%;
         position: absolute;
         text-shadow: 0 0 5px black;
-        font-size: calc(var(--visual-active-effects-icon-size)/3);
+        font-size: calc(var(--visual-active-effects-icon-size) / 3);
         pointer-events: none;
 
         &.unlimited {
-          font-size: calc(var(--visual-active-effects-icon-size)/4);
+          font-size: calc(var(--visual-active-effects-icon-size) / 4);
         }
         &.expired {
           color: orange;
@@ -177,18 +167,19 @@
   .effect-tags {
     display: flex;
     gap: 3px;
-    color: white;
+    color: rgb(230, 230, 230);
     margin-bottom: 1rem;
     flex-wrap: wrap;
     justify-content: center;
+    margin-top: .5rem;
 
     .effect-tag {
-      border-radius: 4px;
-      padding: 5px;
-      text-transform: uppercase;
+      border-radius: 5px;
+      padding: .5rem;
       position: relative;
       white-space: nowrap;
-      font-size: 11px;
+      font-size: .75rem;
+      font-family: Georgia, 'Times New Roman', Times, serif;
 
       &::after {
         content: "";
