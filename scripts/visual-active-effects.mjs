@@ -172,7 +172,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     }
 
     const intro = effect.description;
-    if (intro) context.strings.intro = await TextEditor.enrichHTML(intro, {
+    if (intro) context.strings.intro = await foundry.applications.ux.TextEditor.enrichHTML(intro, {
       rollData: rollData, relativeTo: effect,
     });
     context.hasText = !!intro;
