@@ -3,6 +3,10 @@ import { HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS } from "./constants.
 const { HandlebarsApplicationMixin, Application } = foundry.applications.api;
 
 export default class VisualActiveEffects extends HandlebarsApplicationMixin(Application) {
+  refresh = foundry.utils.debounce(this.render, 100).bind(this);
+
+  /* -------------------------------------------------- */
+
   /** @inheritdoc */
   static DEFAULT_OPTIONS = {
     actions: {
@@ -206,8 +210,8 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
   /* -------------------------------------------------- */
 
   /** @inheritdoc */
-  _onRender(...args) {
-    super._onRender(...args);
+  async _onRender(...args) {
+    await super._onRender(...args);
 
     const playerInteraction = game.settings.get(MODULE, PLAYER_CLICKS);
 
@@ -300,7 +304,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
   static #pointerOut(event) {
     const target = event.currentTarget;
     target.classList.remove("hovered");
-    if (this._needsRefresh === true) this.render();
+    if (this._needsRefresh === true) this.refresh();
   }
 
   /* -------------------------------------------------- */
