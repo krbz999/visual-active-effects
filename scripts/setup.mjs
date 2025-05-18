@@ -15,8 +15,8 @@ foundry.helpers.Hooks.once("ready", function() {
   ui.visualActiveEffects.render({ force: true });
 });
 
-foundry.helpers.Hooks.on("updateWorldTime", () => ui.visualActiveEffects.render());
-foundry.helpers.Hooks.on("controlToken", () => ui.visualActiveEffects.render());
+foundry.helpers.Hooks.on("updateWorldTime", () => ui.visualActiveEffects.refresh());
+foundry.helpers.Hooks.on("controlToken", () => ui.visualActiveEffects.refresh());
 
 /* -------------------------------------------------- */
 
@@ -34,7 +34,7 @@ for (const prefix of ["create", "update", "delete"]) {
           break;
       }
       if (actor && (actor.uuid === ui.visualActiveEffects.actor?.uuid)) {
-        ui.visualActiveEffects.render({ force: true });
+        ui.visualActiveEffects.refresh();
       }
     });
   }

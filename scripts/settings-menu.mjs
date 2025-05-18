@@ -94,8 +94,8 @@ export default class SettingsMenu extends HandlebarsApplicationMixin(Application
   /* -------------------------------------------------- */
 
   /** @inheritdoc */
-  _onRender(context, options) {
-    super._onRender(context, options);
+  async _onRender(context, options) {
+    await super._onRender(context, options);
 
     for (const element of this.element.querySelectorAll("range-picker input")) {
       element.addEventListener("input", SettingsMenu.#onChangeRange.bind(this));
