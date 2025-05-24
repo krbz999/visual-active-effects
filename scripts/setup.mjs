@@ -50,55 +50,56 @@ foundry.helpers.Hooks.on("updateCombat", function(combat, update, context) {
 
 /* -------------------------------------------------- */
 
-foundry.helpers.Hooks.on("getActiveEffectConfigHeaderButtons", function(config, array) {
-  const icon = "fa-solid fa-pen-fancy";
+foundry.helpers.Hooks.on("getHeaderControlsActiveEffectConfig", function(config, array) {
+  const icon = "fa-solid fa-fw fa-pen-fancy";
 
-  array.unshift({
-    class: MODULE,
-    icon: icon,
-    onclick: () => {
-      const input = foundry.applications.fields.createSelectInput({
-        name: "inclusion",
-        sort: false,
-        required: true,
-        value: config.document.getFlag(MODULE, "data.inclusion"),
-        initial: 0,
-        localize: true,
-        options: [
-          { value: 0, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Default" },
-          { value: 1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Include" },
-          { value: -1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Exclude" },
-        ],
-      });
+  const onClick = () => {
+    const input = foundry.applications.fields.createSelectInput({
+      name: "inclusion",
+      sort: false,
+      required: true,
+      value: config.document.getFlag(MODULE, "data.inclusion"),
+      initial: 0,
+      localize: true,
+      options: [
+        { value: 0, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Default" },
+        { value: 1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Include" },
+        { value: -1, label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Exclude" },
+      ],
+    });
 
-      const formGroup = foundry.applications.fields.createFormGroup({
-        input: input,
-        label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Label",
-        hint: "VISUAL_ACTIVE_EFFECTS.Inclusion.Hint",
-        localize: true,
-      });
+    const formGroup = foundry.applications.fields.createFormGroup({
+      input: input,
+      label: "VISUAL_ACTIVE_EFFECTS.Inclusion.Label",
+      hint: "VISUAL_ACTIVE_EFFECTS.Inclusion.Hint",
+      localize: true,
+    });
 
-      foundry.applications.api.Dialog.prompt({
-        content: `<fieldset>${formGroup.outerHTML}</fieldset>`,
-        rejectClose: false,
-        modal: true,
-        window: {
-          icon: icon,
-          title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.Inclusion.Title", { name: config.document.name }),
+    foundry.applications.api.Dialog.prompt({
+      content: `<fieldset>${formGroup.outerHTML}</fieldset>`,
+      window: {
+        icon: icon,
+        title: game.i18n.format("VISUAL_ACTIVE_EFFECTS.Inclusion.Title", { name: config.document.name }),
+      },
+      position: {
+        width: 400,
+        height: "auto",
+      },
+      ok: {
+        icon: icon,
+        label: "Confirm",
+        callback: (event, button) => {
+          const value = button.form.elements.inclusion.value;
+          config.document.setFlag(MODULE, "data.inclusion", Number(value));
         },
-        position: {
-          width: 300,
-          height: "auto",
-        },
-        ok: {
-          icon: icon,
-          label: "Confirm",
-          callback: (event, button) => {
-            const value = button.form.elements.inclusion.value;
-            config.document.setFlag(MODULE, "data.inclusion", Number(value));
-          },
-        },
-      });
-    },
+      },
+    });
+  };
+
+  array.push({
+    icon, onClick,
+    action: "visual-active-effects.configureInclusion",
+    label: "VAE: Configure",
+    visible: () => config.document.isOwner,
   });
 });
