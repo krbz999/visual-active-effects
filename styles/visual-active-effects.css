@@ -21,7 +21,8 @@
 /*                           */
 /* ------------------------- */
 #interface:has(#sidebar-content.expanded) .visual-active-effects.panel {
-  right: calc(50px + 16px + 300px); /* hard coded because the variables are in the #sidebar element */
+  /* hardcoded 300px xbecause the variables are in the #sidebar element */
+  right: calc(var(--visual-active-effects-right-offset) + 316px * var(--ui-scale));
 }
 .visual-active-effects.panel {
   z-index: 100;
@@ -29,7 +30,7 @@
   gap: calc(var(--visual-active-effects-icon-size) / 5);
   position: absolute;
   top: var(--visual-active-effects-top-offset);
-  right: calc(50px + 16px);
+  right: calc(var(--visual-active-effects-right-offset) + 16px * var(--ui-scale));
   transition: right 250ms ease;
   max-height: 100vh;
   display: flex;

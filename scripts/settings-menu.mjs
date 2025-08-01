@@ -26,6 +26,12 @@ export default class SettingsMenu extends HandlebarsApplicationMixin(Application
       default: 16,
       min: 0,
     },
+    RIGHT_OFFSET: {
+      name: "rightOffset",
+      css: "right-offset",
+      default: 50,
+      min: 0,
+    },
   });
 
   /* -------------------------------------------------- */
@@ -120,6 +126,7 @@ export default class SettingsMenu extends HandlebarsApplicationMixin(Application
       iconSize: game.settings.get(MODULE, SettingsMenu.SETTINGS.ICON_SIZE.name),
       fontSize: game.settings.get(MODULE, SettingsMenu.SETTINGS.FONT_SIZE.name),
       topOffset: game.settings.get(MODULE, SettingsMenu.SETTINGS.TOP_OFFSET.name),
+      rightOffset: game.settings.get(MODULE, SettingsMenu.SETTINGS.RIGHT_OFFSET.name),
     });
   }
 
@@ -144,8 +151,9 @@ export default class SettingsMenu extends HandlebarsApplicationMixin(Application
    * @param {number|string} [config.iconSize]     The desired icon size.
    * @param {number|string} [config.fontSize]     The desired font size.
    * @param {number|string} [config.topOffset]    The desired top offset.
+   * @param {number|string} [config.rightOffset]  The desired right offset.
    */
-  static applyStyles({ iconSize, fontSize, topOffset } = {}) {
+  static applyStyles({ iconSize, fontSize, topOffset, rightOffset } = {}) {
     const style = document.querySelector(":root").style;
 
     if (Number.isInteger(iconSize)) {
@@ -182,6 +190,17 @@ export default class SettingsMenu extends HandlebarsApplicationMixin(Application
             || SettingsMenu.SETTINGS.TOP_OFFSET.default,
       );
       style.setProperty(`--${MODULE}-${SettingsMenu.SETTINGS.TOP_OFFSET.css}`, topOffset + "px");
+    }
+
+    if (Number.isInteger(rightOffset)) {
+      rightOffset = Math.max(
+        SettingsMenu.SETTINGS.RIGHT_OFFSET.min,
+        Number.isInteger(rightOffset)
+          ? Number(rightOffset)
+          : game.settings.get(MODULE, SettingsMenu.SETTINGS.RIGHT_OFFSET.name)
+            || SettingsMenu.SETTINGS.RIGHT_OFFSET.default,
+      );
+      style.setProperty(`--${MODULE}-${SettingsMenu.SETTINGS.RIGHT_OFFSET.css}`, rightOffset + "px");
     }
   }
 

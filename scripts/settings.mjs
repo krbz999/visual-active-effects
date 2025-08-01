@@ -55,6 +55,21 @@ export function registerSettings() {
     requiresReload: false,
   });
 
+  game.settings.register(MODULE, SettingsMenu.SETTINGS.RIGHT_OFFSET.name, {
+    scope: "client",
+    config: false,
+    type: new NumberField({
+      initial: 50,
+      integer: true,
+      max: 500,
+      min: 0,
+      step: 5,
+      nullable: false,
+      label: "VISUAL_ACTIVE_EFFECTS.SETTINGS.RIGHT_OFFSET.NAME",
+      hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.RIGHT_OFFSET.HINT",
+    }),
+  });
+
   game.settings.register(MODULE, HIDE_DISABLED, {
     name: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.NAME",
     hint: "VISUAL_ACTIVE_EFFECTS.SETTINGS.HIDE_DISABLED.HINT",

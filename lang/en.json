@@ -19,6 +19,10 @@
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.NAME": "Allow Player Interaction",
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.HINT": "Change the space between the panel of effects and the top of the window. Default: 16.",
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.NAME": "Top Offset",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.RIGHT_OFFSET": {
+    "NAME": "Right Offset",
+    "HINT": "Change the space between the right-side directory and the panel. Default: 50."
+  },
   "VISUAL_ACTIVE_EFFECTS.TIME.DAY": "1 day",
   "VISUAL_ACTIVE_EFFECTS.TIME.DAYS": "{qty} days",
   "VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED": "Expired",
