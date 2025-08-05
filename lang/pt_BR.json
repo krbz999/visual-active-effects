@@ -20,6 +20,9 @@
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.HINT": "Altere o espaço entre o painel de efeitos e o topo da janela. Padrão: 25.",
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.NAME": "Deslocamento Superior",
   "VISUAL_ACTIVE_EFFECTS.TIME.DAY": "1 dia",
+    "NAME": "Deslocamento à Direita",
+    "HINT": "Altere o espaço entre o diretório do lado direito e o painel. Padrão: 50."
+  },
   "VISUAL_ACTIVE_EFFECTS.TIME.DAYS": "{qty} dias",
   "VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED": "Expirado",
   "VISUAL_ACTIVE_EFFECTS.TIME.HOUR": "1 hora",
