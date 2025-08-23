@@ -216,9 +216,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
   async _onRender(...args) {
     await super._onRender(...args);
 
-    const playerInteraction = game.settings.get(MODULE, PLAYER_CLICKS);
-
-    if (playerInteraction) {
+    if (game.user.isGM || game.settings.get(MODULE, PLAYER_CLICKS)) {
       for (const element of this.element.querySelectorAll(".effect-icon")) {
         element.addEventListener("dblclick", VisualActiveEffects.#toggleEffect.bind(this));
       }
