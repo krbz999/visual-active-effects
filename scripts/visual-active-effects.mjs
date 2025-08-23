@@ -88,11 +88,10 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
       if (data.inclusion === 1) return false;
       if (data.inclusion === -1) return true;
 
-      if (effect.disabled) return hideDisabled;
-      if (effect.isTemporary) return false;
+      if (!effect.isTemporary && hidePassive) return true;
+      if (effect.disabled && hideDisabled) return true;
 
-      if (isSecondary) return true;
-      return hidePassive;
+      return false;
     };
 
     // Set up primary effects.
