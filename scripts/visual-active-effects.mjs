@@ -100,6 +100,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
       if (skipping(effect)) continue;
 
       const context = await this.#prepareEffect(effect);
+      if (!context) continue;
 
       if (effect.disabled) effects.primary.disabled.push(context);
       else if (effect.isTemporary) effects.primary.enabled.push(context);
@@ -113,6 +114,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
         if (skipping(effect, true)) continue;
 
         const context = await this.#prepareEffect(effect);
+        if (!context) continue;
         if (effect.disabled) effects.secondary.disabled.push(context);
         else effects.secondary.enabled.push(context);
       }
@@ -126,7 +128,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
   /**
    * Prepare context for an effect.
    * @param {ActiveEffect} effect
-   * @returns {Promise<object>}
+   * @returns {Promise<object|null>}
    */
   async #prepareEffect(effect) {
     const context = {
@@ -184,6 +186,9 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     });
     context.hasText = !!intro;
     context.effect = effect;
+
+    const allowed = Hooks.call(`${MODULE}.prepareActiveEffectContext`, effect, context);
+    if (allowed === false) return null;
 
     return context;
   }
