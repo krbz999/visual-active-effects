@@ -15,8 +15,8 @@ foundry.helpers.Hooks.once("ready", function() {
   ui.visualActiveEffects.render({ force: true });
 });
 
-foundry.helpers.Hooks.on("updateWorldTime", () => ui.visualActiveEffects.refresh(false));
-foundry.helpers.Hooks.on("controlToken", () => ui.visualActiveEffects.refresh(true));
+foundry.helpers.Hooks.on("updateWorldTime", () => ui.visualActiveEffects.render());
+foundry.helpers.Hooks.on("controlToken", () => ui.visualActiveEffects.render());
 
 /* -------------------------------------------------- */
 
@@ -34,7 +34,7 @@ for (const prefix of ["create", "update", "delete"]) {
           break;
       }
       if (actor && (actor.uuid === ui.visualActiveEffects.actor?.uuid)) {
-        ui.visualActiveEffects.refresh(true);
+        ui.visualActiveEffects.render();
       }
     });
   }
@@ -44,7 +44,7 @@ for (const prefix of ["create", "update", "delete"]) {
 
 foundry.helpers.Hooks.on("updateCombat", function(combat, update, context) {
   if (!context.direction) return;
-  ui.visualActiveEffects.refresh(false);
+  ui.visualActiveEffects.render();
 });
 
 /* -------------------------------------------------- */

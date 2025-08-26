@@ -3,17 +3,9 @@ import { HIDE_DISABLED, HIDE_PASSIVE, MODULE, PLAYER_CLICKS } from "./constants.
 const { HandlebarsApplicationMixin, Application } = foundry.applications.api;
 
 export default class VisualActiveEffects extends HandlebarsApplicationMixin(Application) {
-  #refresh = foundry.utils.debounce(this.render, 100).bind(this);
-  refresh(force = false) {
-    return this.#refresh({ force });
-  }
-
-  /* -------------------------------------------------- */
-
   /** @inheritdoc */
   static DEFAULT_OPTIONS = {
     actions: {
-      customButton: VisualActiveEffects.#customButton,
       deleteEffect: {
         handler: VisualActiveEffects.#deleteEffect,
         buttons: [2],
@@ -36,7 +28,10 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
   static PARTS = {
     main: {
       template: `modules/${MODULE}/templates/${MODULE}.hbs`,
-      templates: [`modules/${MODULE}/templates/effect.hbs`],
+      templates: [
+        `modules/${MODULE}/templates/effect.hbs`,
+        `modules/${MODULE}/templates/tooltip.hbs`,
+      ],
       root: true,
     },
   };
@@ -189,20 +184,12 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     const allowed = Hooks.call(`${MODULE}.prepareActiveEffectContext`, effect, context);
     if (allowed === false) return null;
 
+    context.tooltip = await foundry.applications.handlebars.renderTemplate(
+      "modules/visual-active-effects/templates/tooltip.hbs",
+      context,
+    );
+
     return context;
-  }
-
-  /* -------------------------------------------------- */
-
-  /** @inheritdoc */
-  async render(options = {}) {
-    if (!options.force && this.element.closest(".panel").classList.contains("hovered")) {
-      this._needsRefresh = true;
-      return;
-    }
-    const result = await super.render(options);
-    this._needsRefresh = false;
-    return result;
   }
 
   /* -------------------------------------------------- */
@@ -226,9 +213,6 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
       }
     }
 
-    this.element.addEventListener("pointerover", VisualActiveEffects.#pointerOver.bind(this));
-    this.element.addEventListener("pointerout", VisualActiveEffects.#pointerOut.bind(this));
-
     for (const element of this.element.querySelectorAll(".effect-item")) {
       element.addEventListener("pointerenter", VisualActiveEffects.#pointerEnter.bind(this));
     }
@@ -236,19 +220,6 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
 
   /* -------------------------------------------------- */
   /*   Event handlers                                   */
-  /* -------------------------------------------------- */
-
-  /**
-   * Execute the function of a custom button.
-   * @param {PointerEvent} event      The initiating click event.
-   * @param {HTMLElement} target      The element that defined the [data-action].
-   */
-  static #customButton(event, target) {
-    const id = target.dataset.id;
-    const button = this.buttons.find(b => b.id === id);
-    button.callback(event);
-  }
-
   /* -------------------------------------------------- */
 
   /**
@@ -287,29 +258,6 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     if (!info) return;
     const win = window.innerHeight;
     info.style.maxHeight = `${win - (50 + info.getBoundingClientRect().top)}px`;
-  }
-
-  /* -------------------------------------------------- */
-
-  /**
-   * Add the `hovered` class to an element.
-   * @param {PointerEvent} event      The initiating pointer event.
-   */
-  static #pointerOver(event) {
-    const target = event.currentTarget;
-    target.classList.add("hovered");
-  }
-
-  /* -------------------------------------------------- */
-
-  /**
-   * Remove the `hovered` class and optionally refresh the application.
-   * @param {PointerEvent} event      The initiating pointer event.
-   */
-  static #pointerOut(event) {
-    const target = event.currentTarget;
-    target.classList.remove("hovered");
-    if (this._needsRefresh === true) this.refresh(false);
   }
 
   /* -------------------------------------------------- */
@@ -499,3 +447,30 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     return game.i18n.localize("VISUAL_ACTIVE_EFFECTS.TIME.UNLIMITED");
   }
 }
+
+// Hooks.on(`${MODULE}.createEffectButtons`, (effect, buttons) => {
+//   buttons.push({
+//     label: "Click me!",
+//     callback: () => ui.notifications.info("CLICKED!"),
+//   });
+//   buttons.push({
+//     label: "Click me!",
+//     callback: () => ui.notifications.info("CLICKED!"),
+//   });
+//   buttons.push({
+//     label: "Click me!",
+//     callback: () => ui.notifications.info("CLICKED!"),
+//   });
+// });
+
+/* -------------------------------------------------- */
+
+Hooks.once("ready", () => {
+  document.addEventListener("click", event => {
+    const btn = event.target.closest("[data-action=customButton].vae-button");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const button = ui.visualActiveEffects.buttons.find(b => b.id === id);
+    if (button) button.callback(event);
+  });
+});

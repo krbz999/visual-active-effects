@@ -1,31 +1,31 @@
 <section id="visual-active-effects" class="panel visual-active-effects">
 
   {{#each primary.enabled}}
-  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="temporary"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="visual-active-effects temporary"}}
   {{/each}}
 
   <hr class="divider">
 
   {{#each primary.passive}}
-  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="passive"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="visual-active-effects passive"}}
   {{/each}}
 
   <hr class="divider">
 
   {{#each primary.disabled}}
-  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="disabled"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="visual-active-effects disabled"}}
   {{/each}}
 
   <hr class="divider">
 
   {{#each secondary.enabled}}
-  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="enchantments temporary"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="visual-active-effects enchantments temporary"}}
   {{/each}}
 
   <hr class="divider">
 
   {{#each secondary.disabled}}
-  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="enchantments disabled"}}
+  {{> "modules/visual-active-effects/templates/effect.hbs" cssClass="visual-active-effects enchantments disabled"}}
   {{/each}}
 
 </section>
