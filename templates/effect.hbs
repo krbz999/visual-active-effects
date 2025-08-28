@@ -1,6 +1,6 @@
 <div class="effect-item" data-effect-id="{{effect._id}}" data-effect-uuid="{{effect.uuid}}">
   <div class="effect-icon {{#if effect.disabled}}inactive{{/if}}" data-action="deleteEffect">
-    <div class="effect-icon-img" style="background-image: url('{{effect.img}}'); mask-image: url('{{effect.img}}'); {{#unless effect.disabled}}background-color: {{effect.tint.css}};{{/unless}}" data-tooltip-html="{{tooltip}}" data-tooltip-class="{{cssClass}}" data-tooltip-direction="LEFT"></div>
+    <div class="effect-icon-img" style="background-image: url('{{effect.img}}'); mask-image: url('{{effect.img}}'); {{#unless effect.disabled}}background-color: {{effect.tint.css}};{{/unless}}" data-tooltip-html="{{tooltip}}" data-tooltip-class="visual-active-effects {{cssClass}}" data-tooltip-direction="LEFT"></div>
     {{#if effect.isTemporary}}
     {{#if isExpired}}
     <i class="expired badge fa-solid fa-clock"></i>

@@ -1,3 +1,7 @@
+/* -------------------------------------------------- */
+/*   Variables                                        */
+/* -------------------------------------------------- */
+
 :root {
   --vae-border-color-temporary: rgba(158, 192, 255, 0.705);
   --vae-border-color-passive: rgba(255, 242, 167, 0.664);
@@ -15,15 +19,10 @@
   --vae-tag-color-source: rgba(255, 100, 255, 0.5);
 }
 
-/* ------------------------- */
-/*                           */
-/*        EFFECTS PANEL      */
-/*                           */
-/* ------------------------- */
-#interface:has(#sidebar-content.expanded) .visual-active-effects.panel {
-  /* hardcoded 300px because the variables are in the #sidebar element */
-  right: calc(var(--visual-active-effects-right-offset) + 316px * var(--ui-scale));
-}
+/* -------------------------------------------------- */
+/*   Panel                                            */
+/* -------------------------------------------------- */
+
 .visual-active-effects.panel {
   z-index: 100;
   filter: var(--vae-dropshadow);
@@ -37,7 +36,13 @@
   flex-direction: column;
   flex-wrap: wrap-reverse;
 
+  #interface:has(#sidebar-content.expanded) & {
+    /* hardcoded 300px because the variables are in the #sidebar element */
+    right: calc(var(--visual-active-effects-right-offset) + 316px * var(--ui-scale));
+  }
+
   .effect-item {
+    cursor: var(--cursor-pointer);
 
     .effect-icon {
       background-size: contain;
@@ -77,64 +82,62 @@
     }
   }
 
-  & hr.divider {
+  hr.divider {
     margin: .25em 0;
     width: var(--visual-active-effects-icon-size);
     display: none;
   }
+
   .effect-item + hr.divider:has( ~ .effect-item) {
     display: block;
   }
 }
 
+/* -------------------------------------------------- */
+/*   Tooltip                                          */
+/* -------------------------------------------------- */
+
 #tooltip.visual-active-effects,
 .locked-tooltip.visual-active-effects {
   padding: 0;
+  overflow: hidden auto;
+  max-width: var(--visual-active-effects-max-width);
+  min-width: var(--visual-active-effects-max-width);
+  filter: var(--vae-dropshadow);
+  background-color: var(--vae-backdrop-color);
+  border-left: 10px solid;
 
-  .effect-info {
-    max-width: var(--visual-active-effects-max-width);
-    min-width: var(--visual-active-effects-max-width);
-    filter: var(--vae-dropshadow);
-    background-color: var(--vae-backdrop-color);
-    border-left: 10px solid;
-    overflow: hidden auto;
+  &.temporary {
+    border-color: var(--vae-border-color-temporary);
+  }
+  &.passive {
+    border-color: var(--vae-border-color-passive);
+  }
+  &.disabled {
+    border-color: var(--vae-border-color-disabled);
+  }
 
-    .temporary & {
-      border-color: var(--vae-border-color-temporary);
-    }
-    .passive & {
-      border-color: var(--vae-border-color-passive);
-    }
-    .inactive & {
-      border-color: var(--vae-border-color-disabled);
-    }
+  .effect-info-header {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
 
-    .effect-info-header {
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 4px;
-      margin-bottom: 4px;
-
-      &:not(:last-child) {
-        border-bottom: var(--vae-name-border);
-      }
-
-      &:last-child {
-        border: none;
-      }
-
-      .name {
-        color: var(--vae-name-color);
-        text-align: center;
-        margin: .5rem;
-        font-size: 1.2rem;
-        font-family: var(--vae-name-font);
-        text-transform: uppercase;
-      }
+    &:not(:last-child) {
+      border-bottom: var(--vae-name-border);
     }
 
-    &.simple .effect-tags {
-      margin-bottom: 0;
+    &:last-child {
+      border: none;
+    }
+
+    .name {
+      color: var(--vae-name-color);
+      text-align: center;
+      margin: .5rem;
+      font-size: 1.2rem;
+      font-family: var(--vae-name-font);
+      text-transform: uppercase;
     }
   }
 
@@ -142,6 +145,7 @@
     padding: 0.5rem 0.75rem;
     overflow: hidden auto;
     font-size: var(--visual-active-effects-font-size);
+    line-height: normal;
   }
 
   .effect-tags {

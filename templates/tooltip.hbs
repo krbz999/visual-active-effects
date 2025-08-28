@@ -1,28 +1,28 @@
-<div class="effect-info {{cssClass}} {{#unless hasText}} simple {{/unless}}">
+<div class="effect-info {{#unless hasText}} simple {{/unless}}">
   <h1 class="effect-info-header">
     <span class="name">{{effect.name}}</span>
     <div class="effect-tags">
       <div class="effect-tag temporary">
         {{#if durationLabel}}
         <i class="fa-solid fa-hourglass"></i>
-        {{durationLabel}}
+        <span>{{durationLabel}}</span>
         {{else}}
         <i class="fa-solid fa-feather"></i>
-        {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}
+        <span>{{localize "VISUAL_ACTIVE_EFFECTS.LABELS.PASSIVE"}}</span>
         {{/if}}
       </div>
 
       {{#if effect.disabled}}
       <div class="effect-tag disabled">
         <i class="fa-solid fa-ban"></i>
-        {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.DISABLED"}}
+        <span>{{localize "VISUAL_ACTIVE_EFFECTS.LABELS.DISABLED"}}</span>
       </div>
       {{/if}}
 
       {{#if effect.sourceName}}
       <div class="effect-tag source">
         <i class="fa-solid fa-tree"></i>
-        {{localize "VISUAL_ACTIVE_EFFECTS.LABELS.SOURCE"}}: {{effect.sourceName}}
+        <span>{{localize "VISUAL_ACTIVE_EFFECTS.LABELS.SOURCE"}}: {{effect.sourceName}}</span>
       </div>
       {{/if}}
     </div>

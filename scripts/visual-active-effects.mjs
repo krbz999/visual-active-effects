@@ -12,7 +12,6 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
       },
     },
     classes: [MODULE, "panel", "themed", "theme-light"],
-    form: {},
     id: MODULE,
     window: {
       frame: false,
@@ -48,7 +47,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
 
   /**
    * The currently selected token's actor, otherwise the user's assigned actor.
-   * @type {Actor|null}
+   * @type {foundry.documents.Actor|null}
    */
   get actor() {
     let actor;
@@ -77,7 +76,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     const hideDisabled = game.settings.get(MODULE, HIDE_DISABLED);
     const hidePassive = game.settings.get(MODULE, HIDE_PASSIVE);
 
-    const skipping = (effect, isSecondary = false) => {
+    const skipping = effect => {
       if (effect.isSuppressed) return true;
       const data = effect.flags[MODULE]?.data ?? {};
       if (data.inclusion === 1) return false;
@@ -121,7 +120,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
 
   /**
    * Prepare context for an effect.
-   * @param {ActiveEffect} effect
+   * @param {foundry.documents.ActiveEffect} effect
    * @returns {Promise<object|null>}
    */
   async #prepareEffect(effect) {
@@ -147,7 +146,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
      * @param {ActiveEffect} effect     The effect.
      * @param {object[]} buttons        The button.
      */
-    Hooks.callAll("visual-active-effects.createEffectButtons", effect, buttons);
+    Hooks.callAll(`${MODULE}.createEffectButtons`, effect, buttons);
 
     context.buttons = buttons.filter(button => {
       if (!(typeof button.label === "string") || !(button.callback instanceof Function)) return false;
@@ -185,7 +184,7 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
     if (allowed === false) return null;
 
     context.tooltip = await foundry.applications.handlebars.renderTemplate(
-      "modules/visual-active-effects/templates/tooltip.hbs",
+      `modules/${MODULE}/templates/tooltip.hbs`,
       context,
     );
 
@@ -212,10 +211,6 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
         element.addEventListener("dblclick", VisualActiveEffects.#toggleEffect.bind(this));
       }
     }
-
-    for (const element of this.element.querySelectorAll(".effect-item")) {
-      element.addEventListener("pointerenter", VisualActiveEffects.#pointerEnter.bind(this));
-    }
   }
 
   /* -------------------------------------------------- */
@@ -224,8 +219,9 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
 
   /**
    * Delete an effect.
-   * @param {PointerEvent} event      The initiating click event.
-   * @param {HTMLElement} target      The element that defined the [data-action].
+   * @this {VisualActiveEffects}
+   * @param {PointerEvent} event    The initiating click event.
+   * @param {HTMLElement} target    The capturing element that defined the [data-action].
    */
   static async #deleteEffect(event, target) {
     const alt = event.shiftKey;
@@ -238,26 +234,14 @@ export default class VisualActiveEffects extends HandlebarsApplicationMixin(Appl
 
   /**
    * Toggle an effect.
-   * @param {PointerEvent} event      The initiating double-click event.
+   * @this {VisualActiveEffects}
+   * @param {PointerEvent} event    The initiating double-click event.
    */
   static async #toggleEffect(event) {
     const alt = event.ctrlKey || event.metaKey;
     const effect = await fromUuid(event.currentTarget.closest("[data-effect-uuid]").dataset.effectUuid);
     if (alt) effect.sheet.render({ force: true });
     else effect.update({ disabled: !effect.disabled });
-  }
-
-  /* -------------------------------------------------- */
-
-  /**
-   * Set the max height of effect description to prevent window overflow.
-   * @param {PointerEvent} event      The inititing pointer event.
-   */
-  static #pointerEnter(event) {
-    const info = event.currentTarget.querySelector(".effect-intro");
-    if (!info) return;
-    const win = window.innerHeight;
-    info.style.maxHeight = `${win - (50 + info.getBoundingClientRect().top)}px`;
   }
 
   /* -------------------------------------------------- */
