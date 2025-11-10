@@ -17,8 +17,12 @@
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.MENU.NAME": "Configuração de Interface",
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.HINT": "Se desmarcado, usuários não-MJ não poderão alternar ou excluir efeitos diretamente no painel.",
   "VISUAL_ACTIVE_EFFECTS.SETTINGS.PLAYER_CLICKS.NAME": "Permitir Interação do Jogador",
-  "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.HINT": "Altere o espaço entre o painel de efeitos e o topo da janela. Padrão: 25.",
-  "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.NAME": "Deslocamento Superior",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.HINT": "Altere o espaço entre o painel de efeitos e o topo da janela. Padrão: 16.",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.TOP_OFFSET.NAME": "Espaçamento Superior",
+  "VISUAL_ACTIVE_EFFECTS.SETTINGS.RIGHT_OFFSET": {
+    "NAME": "Espaçamento à Direita",
+    "HINT": "Altere o espaço entre o diretório do lado direito e o painel. Padrão: 50."
+  },
   "VISUAL_ACTIVE_EFFECTS.TIME.DAY": "1 dia",
   "VISUAL_ACTIVE_EFFECTS.TIME.DAYS": "{qty} dias",
   "VISUAL_ACTIVE_EFFECTS.TIME.EXPIRED": "Expirado",
